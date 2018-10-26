@@ -12,15 +12,27 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
      ">
-    <context:component-scan base-package="com">
+    <context:component-scan base-package="com.jaremo.freedom_talk">
         <!-- 在根配置文件中,需要排除@Controller -->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
     </context:component-scan>
+    <context:property-placeholder location="classpath:mysqlconf.properties"></context:property-placeholder>
+
+    <!-- redis的配置 -->
+    <!-- 引入redis的配置文件 -->
+    <!--<context:property-placeholder location="classpath:redisConf.properties"></context:property-placeholder>-->
+    <!-- jedis的配置 -->
+    <!--<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
+        <!--<property name="maxIdle" value="${redis.maxIdle}"></property>-->
+        <!--<property name="maxWaitMillis" value="${redis.maxWait}"></property>-->
+        <!--<property name="testOnBorrow" value="true"></property>-->
+        <!--<property name="blockWhenExhausted" value="true"></property>-->
+        <!--<property name="maxTotal" value="${redis.maxTotal}"></property>-->
+    <!--</bean>-->
 
     <!-- 数据库的连接
        配置数据源
    -->
-    <context:property-placeholder location="classpath:mysqlconf.properties"></context:property-placeholder>
     <!-- 使用的连接池为ali 的druid连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="${driverClass}"></property>

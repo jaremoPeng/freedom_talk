@@ -41,7 +41,6 @@
             <version>2.9.0</version>
         </dependency>
 
-
         <!-- 阿里巴巴的连接池 -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -70,6 +69,16 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
+            <version>4.3.18.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>4.3.18.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
             <version>4.3.18.RELEASE</version>
         </dependency>
 

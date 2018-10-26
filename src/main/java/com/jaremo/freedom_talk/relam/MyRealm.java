@@ -1,13 +1,12 @@
 package com.jaremo.freedom_talk.relam;
 
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.Sha256CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -22,6 +21,10 @@ public class MyRealm extends AuthorizingRealm{
 
 //    @Autowired
 //    private UserMapper userMapper;
+
+    public MyRealm(){
+        this.setCredentialsMatcher(new Sha256CredentialsMatcher()); // 设置加密类型
+    }
 
     /*
         授权
@@ -45,11 +48,12 @@ public class MyRealm extends AuthorizingRealm{
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        UsernamePasswordToken token = (UsernamePasswordToken)authenticationToken;
-//        User tempUser = userMapper.queryUserByUserName(token.getUsername());
-//        if(tempUser!=null && tempUser.getPassword().equals(new String(token.getPassword()))){
-//            SimpleAccount sa = new SimpleAccount(token.getUsername(),token.getPassword(),"MyRealm");
-//            return sa;
+        String username = (String) authenticationToken.getPrincipal(); // 拿到用户传进来的用户名
+        //        User tempUser = userMapper.queryUserByUserName(username);
+//        if(tempUser!=null){
+            SimpleAccount simpleAccount = new SimpleAccount(username,"sjflsjfksjfksjf45","myRealm");
+            simpleAccount.setCredentialsSalt( ByteSource.Util.bytes("salt")); // 解密
+//            return simpleAccount;
 //        }
         return null;
     }
