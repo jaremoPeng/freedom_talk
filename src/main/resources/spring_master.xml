@@ -72,7 +72,7 @@
         <property name="unauthorizedUrl" value="/un.jsp"/>
         <property name="filters">
             <util:map>
-                <entry key="myfilter" value-ref="myFilter"/>
+                <entry key="myfilter" value-ref="verifyFilter"/>
             </util:map>
         </property>
         <property name="filterChainDefinitions">

@@ -20,6 +20,13 @@
     </properties>
 
     <dependencies>
+        <!-- 发送邮件的jar包 -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+
         <!-- 操作json的jar包 -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
