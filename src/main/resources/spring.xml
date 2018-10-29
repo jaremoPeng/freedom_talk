@@ -20,7 +20,7 @@
     <!-- 引入其他的spring配置文件 -->
     <!--<import resource="classpath:spring-redis.xml" />-->
 
-    <!-- redis的配置 -->
+    <!-- redis的配置 https://www.cnblogs.com/phil_jing/p/7468586.html-->
     <!-- 引入redis的配置文件 -->
     <context:property-placeholder location="classpath:redisConf.properties"></context:property-placeholder>
     <!-- jedis的配置 -->
