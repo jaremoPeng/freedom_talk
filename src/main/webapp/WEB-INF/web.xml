@@ -14,7 +14,7 @@
     <!-- 指定spring根配置文件的路径 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring_master.xml</param-value>
+        <param-value>classpath:spring.xml</param-value>
     </context-param>
     <!-- 配置spring的监听器 -->
     <listener>

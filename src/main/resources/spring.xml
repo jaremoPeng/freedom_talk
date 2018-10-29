@@ -16,23 +16,63 @@
         <!-- 在根配置文件中,需要排除@Controller -->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
     </context:component-scan>
-    <context:property-placeholder location="classpath:mysqlconf.properties"></context:property-placeholder>
+
+    <!-- 引入其他的spring配置文件 -->
+    <!--<import resource="classpath:spring-redis.xml" />-->
 
     <!-- redis的配置 -->
     <!-- 引入redis的配置文件 -->
-    <!--<context:property-placeholder location="classpath:redisConf.properties"></context:property-placeholder>-->
+    <context:property-placeholder location="classpath:redisConf.properties"></context:property-placeholder>
     <!-- jedis的配置 -->
-    <!--<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
-        <!--<property name="maxIdle" value="${redis.maxIdle}"></property>-->
-        <!--<property name="maxWaitMillis" value="${redis.maxWait}"></property>-->
-        <!--<property name="testOnBorrow" value="true"></property>-->
-        <!--<property name="blockWhenExhausted" value="true"></property>-->
-        <!--<property name="maxTotal" value="${redis.maxTotal}"></property>-->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}"></property>
+        <property name="maxWaitMillis" value="${redis.maxWait}"></property>
+        <property name="testOnBorrow" value="true"></property>
+        <property name="maxTotal" value="${redis.maxTotal}"></property>
+    </bean>
+
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="poolConfig" ref="jedisPoolConfig"></property>
+        <property name="hostName" value="${redis.host}"></property>
+        <property name="password" value="${redis.password}"></property>
+        <property name="port" value="${redis.port}"></property>
+        <property name="timeout" value="${redis.timeout}"></property>
+        <property name="usePool" value="true"/>
+    </bean>
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"></property>
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"></bean>
+        </property>
+        <property name="hashKeySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+        </property>
+        <property name="hashValueSerializer">
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"></bean>
+        </property>
+        <!-- 开启REIDS事务支持 -->
+        <property name="enableTransactionSupport" value="false" />
+    </bean>
+
+    <!-- 注入redisTemplate -->
+    <bean id="redisUtil" class="com.jaremo.freedom_talk.utils.RedisUtil">
+        <property name="redisTemplate" ref="redisTemplate"></property>
+    </bean>
+    <!--&lt;!&ndash; 对string操作的封装 &ndash;&gt;-->
+    <!--<bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">-->
+        <!--<constructor-arg ref="jedisConnectionFactory" />-->
+        <!--&lt;!&ndash; 开启REIDS事务支持 &ndash;&gt;-->
+        <!--<property name="enableTransactionSupport" value="false" />-->
     <!--</bean>-->
 
     <!-- 数据库的连接
        配置数据源
    -->
+    <context:property-placeholder location="classpath:mysqlconf.properties"></context:property-placeholder>
     <!-- 使用的连接池为ali 的druid连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="${driverClass}"></property>
