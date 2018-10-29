@@ -67,7 +67,7 @@ public class VerifyFilter extends AuthorizationFilter {
 //            }
 //        }
         if(urlAuth==null){
-            return false;
+            return true;
         }
         //配置的过滤器是anon 直接放过
         if(urlAuth.startsWith("anon")){

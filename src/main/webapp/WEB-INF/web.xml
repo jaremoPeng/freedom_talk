@@ -22,9 +22,9 @@
     </listener>
     
     <!-- 配置shiro的监听器 -->
-    <listener>
-        <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
-    </listener>
+    <!--<listener>-->
+        <!--<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>-->
+    <!--</listener>-->
 
     <!--
     ================================================
