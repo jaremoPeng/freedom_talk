@@ -103,7 +103,7 @@
     </bean>
     <!-- 既然做ssm集成那么就免去mybatis的配置文件 , 这个bean是读取mybatis的接口映射的  -->
     <bean id="scannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.jaremo.freedom_talk.customer.dao"></property>
+        <property name="basePackage" value="com.jaremo.freedom_talk.*.dao"></property>
     </bean>
 
     <!-- 操作事务,应在service层 , 故在spring根配置文件中配置事务管理器-->

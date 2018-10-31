@@ -17,4 +17,13 @@ public interface CustomerService {
      * @return void
      */
     void insertCustomer(Customer customer , Integer questionId);
+
+    /**
+     * 功能描述 根据客户的登录名来查询客户
+     * @author pyj
+     * @date 2018/10/31 0031
+     * @param loginName
+     * @return
+     */
+    Customer selectCustomerByLoginName(String loginName);
 }

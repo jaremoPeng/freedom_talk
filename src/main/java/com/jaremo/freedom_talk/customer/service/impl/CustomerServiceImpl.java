@@ -10,6 +10,8 @@ import com.jaremo.freedom_talk.utils.UUIDPlusUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 /**
  * @描述: 客户服务层实现类
  * @Author: pyj
@@ -25,8 +27,8 @@ public class CustomerServiceImpl implements CustomerService {
 //    private RedisUtil redisUtil;
 
     @Override
-    public void insertCustomer(Customer customer , Integer questionId) {
-        if(customer!=null){
+    public void insertCustomer(Customer customer, Integer questionId) {
+        if (customer != null) {
             Question question = new Question();
             question.setId(questionId);
 
@@ -35,12 +37,31 @@ public class CustomerServiceImpl implements CustomerService {
             String id = UUIDPlusUtil.getUUID();
             customer.setId(id); // 设置客户id
 
-            String newPwd = EncryptUtil.encryptStr(customer.getPassword(),customer.getId()); // 给密码进行加密 , 客户的id作为盐值
+            String newPwd = EncryptUtil.encryptStr(customer.getPassword(), customer.getId()); // 给密码进行加密 , 客户的id作为盐值
             customer.setPassword(newPwd);
             System.err.println(customer);
             customerDao.addCustomer(customer);
-        }else{
+        } else {
 
         }
+    }
+
+    @Override
+    public Customer selectCustomerByLoginName(String loginName) {
+//        Set<Object> customerList = redisUtil.sGet("customerList"); // 先获取redis的中的customer集合
+//        if (customerList != null) {
+//            for (Object obj : customerList) {
+//                Customer cus = (Customer) obj;
+//                if (cus.getLoginName().equals(loginName)) {
+//                    return cus;
+//                }
+//            }
+//        }
+        Customer customer = customerDao.findCustomerByLoginName(loginName); // 如果集合中没有对应的数据,再到数据库中查询
+        if (customer != null) {
+//            redisUtil.sSet("customerList", customer); // 如果数据库中查到了对应的数据 则把它放入到redis中,以便下次查询
+            return customer;
+        }
+        return null;
     }
 }

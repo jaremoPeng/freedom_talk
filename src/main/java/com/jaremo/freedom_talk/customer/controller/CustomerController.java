@@ -31,6 +31,38 @@ public class CustomerController {
 
     private Logger log = Logger.getLogger(CustomerController.class);
 
+    /**
+     * 功能描述 用户登录
+     * @author pyj
+     * @date 2018/10/31 0031
+     * @param
+     * @return
+     */
+    @RequestMapping("/login.do")
+    public void lgnCustomer(){
+
+        Customer customer = new Customer();
+        customer.setLoginName("jaremo");
+        customer.setPassword("123456");
+
+        Customer checkCustomer = customerService.selectCustomerByLoginName(customer.getLoginName());
+        if(checkCustomer!=null){
+            System.err.println(checkCustomer);
+            if(checkCustomer.getPassword().equals(customer.getPassword())){ // 调用realm
+                System.out.println("sucsses");
+            }else{
+                System.out.println("failed");
+            }
+        }
+    }
+
+    /**
+     * 功能描述 注册用户
+     * @author pyj
+     * @date 2018/10/31 0031
+     * @param
+     * @return void
+     */
     @RequestMapping(value = "/regist.do")
     public void regCustomer(){
         Customer customer = new Customer();
@@ -49,6 +81,13 @@ public class CustomerController {
 //        }
     }
 
+    /**
+     * 功能描述 给用户发送邮件
+     * @author pyj
+     * @date 2018/10/31 0031
+     * @param
+     * @return void
+     */
     @RequestMapping("/sendEmail.do")
     public void verifyEmail(){
         String emailCode = RandomUtil.getRandom(6); // 生成邮箱验证码
@@ -64,7 +103,6 @@ public class CustomerController {
             log.debug("发送邮件验证失败: "+e.getMessage());
             e.printStackTrace();
         }
-
         redisUtil.set("emailCode",emailCode); // 将邮箱验证码存放到redis中 以邮箱作键
         redisUtil.expire("emailCode",120); // 设置过期时间
     }
