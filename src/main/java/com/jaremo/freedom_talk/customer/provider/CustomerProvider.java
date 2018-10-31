@@ -53,6 +53,7 @@ public class CustomerProvider {
         if(customer.getType()!=null){
             sql.SET("cus_type = #{customer.type}");
         }
-        return null;
+        sql.WHERE("cus_id=#{customer.id}");
+        return sql.toString();
     }
 }

@@ -6,6 +6,7 @@ import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.service.CustomerService;
 import com.jaremo.freedom_talk.utils.EncryptUtil;
 import com.jaremo.freedom_talk.utils.RedisUtil;
+import com.jaremo.freedom_talk.utils.TimeUtil;
 import com.jaremo.freedom_talk.utils.UUIDPlusUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,5 +64,20 @@ public class CustomerServiceImpl implements CustomerService {
             return customer;
         }
         return null;
+    }
+
+    @Override
+    public void updateCustomer(Customer customer) {
+        if(customer!=null){
+            if(customer.getPassword() != null){ // 修改密码的话需要重新加密
+                String newPwd = EncryptUtil.encryptStr(customer.getPassword(),customer.getId());
+                customer.setPassword(newPwd);
+            }
+            if(customer.getBirthdate() != null){
+                Integer age = TimeUtil.confirmAge(customer.getBirthdate()); // 根据出生年月确定年龄
+                customer.setAge(age);
+            }
+            customerDao.alterCustomer(customer);
+        }
     }
 }

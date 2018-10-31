@@ -34,18 +34,26 @@ public class CustomerController {
 
     private Logger log = Logger.getLogger(CustomerController.class);
 
-    @RequestMapping("")
+    /**
+     * 功能描述 修改用户信息
+     * @author pyj
+     * @date 2018/10/31 0031
+     * @param
+     * @return void
+     */
+    @RequestMapping("/edit.do")
     public void editCustomer(){
         // 个性签名, 昵称, 性别, 出生年月
         // 选择出生年份自动确定年龄
 
         Customer customer = new Customer();
+        customer.setId("da7dd3ba32eb430d8da4f6bbca63fb06");
         customer.setSuggest("我是根据修改的准值!!!");
         customer.setName("new name");
-        customer.setName("女");
+        customer.setSex("女");
         customer.setBirthdate("2002-03-28");
 
-
+        customerService.updateCustomer(customer);
     }
 
     /**

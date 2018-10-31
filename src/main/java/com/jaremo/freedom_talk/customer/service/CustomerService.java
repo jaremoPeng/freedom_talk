@@ -26,4 +26,13 @@ public interface CustomerService {
      * @return
      */
     Customer selectCustomerByLoginName(String loginName);
+
+    /**
+     * 功能描述 修改用户信息
+     * @author pyj
+     * @date 2018/10/31 0031
+     * @param customer
+     * @return void
+     */
+    void updateCustomer(Customer customer);
 }
