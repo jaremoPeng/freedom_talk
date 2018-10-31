@@ -6,6 +6,9 @@ import com.jaremo.freedom_talk.utils.RandomUtil;
 import com.jaremo.freedom_talk.utils.RedisUtil;
 import com.jaremo.freedom_talk.utils.mail.Apply;
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,38 +36,50 @@ public class CustomerController {
 
     /**
      * 功能描述 用户登录
-     * @author pyj
-     * @date 2018/10/31 0031
+     *
      * @param
      * @return
+     * @author pyj
+     * @date 2018/10/31 0031
      */
     @RequestMapping("/login.do")
-    public void lgnCustomer(){
+    public void lgnCustomer() {
 
         Customer customer = new Customer();
         customer.setLoginName("jaremo");
         customer.setPassword("123456");
+        customer.setAnswer("jetd");
 
-        Customer checkCustomer = customerService.selectCustomerByLoginName(customer.getLoginName());
-        if(checkCustomer!=null){
-            System.err.println(checkCustomer);
-            if(checkCustomer.getPassword().equals(customer.getPassword())){ // 调用realm
-                System.out.println("sucsses");
+        Customer checkCus = customerService.selectCustomerByLoginName(customer.getLoginName());
+
+        if(checkCus!=null & 2 == checkCus.getQuestion().getId()){ // 判断不为空的情况下,还要判断验证问题是否选者正确
+            if(checkCus.getAnswer().equals(customer.getAnswer())){ // 验证问题的答案是否正确
+                Subject subject = SecurityUtils.getSubject();
+                UsernamePasswordToken token = new UsernamePasswordToken(customer.getLoginName(), customer.getPassword());
+
+                subject.login(token);
+
+                if (subject.isAuthenticated()) {
+                    System.out.println("sucsses");
+                } else {
+                    System.out.println("failed");
+                }
             }else{
-                System.out.println("failed");
+                System.out.println("验证问题的答案输入错误");
             }
         }
     }
 
     /**
      * 功能描述 注册用户
-     * @author pyj
-     * @date 2018/10/31 0031
+     *
      * @param
      * @return void
+     * @author pyj
+     * @date 2018/10/31 0031
      */
     @RequestMapping(value = "/regist.do")
-    public void regCustomer(){
+    public void regCustomer() {
         Customer customer = new Customer();
         customer.setLoginName("jaremo");
         customer.setPassword("123456");
@@ -75,7 +90,7 @@ public class CustomerController {
 
 //        String trueCode = (String) redisUtil.get("emailCode"); // 获取redis中邮箱验证码
 //        if(trueCode != null && trueCode.equals(inputCode)){
-            customerService.insertCustomer(customer,2); // 这里选择验证问题 写死
+        customerService.insertCustomer(customer, 2); // 这里选择验证问题 写死
 //        }else{
 //            log.debug("验证码失效,或者不存在");
 //        }
@@ -83,27 +98,28 @@ public class CustomerController {
 
     /**
      * 功能描述 给用户发送邮件
-     * @author pyj
-     * @date 2018/10/31 0031
+     *
      * @param
      * @return void
+     * @author pyj
+     * @date 2018/10/31 0031
      */
     @RequestMapping("/sendEmail.do")
-    public void verifyEmail(){
+    public void verifyEmail() {
         String emailCode = RandomUtil.getRandom(6); // 生成邮箱验证码
         ArrayList<String> toList = new ArrayList<>();
         toList.add("744273057@qq.com");
         try {
-            Apply.sendEmail("jaremo@163.com",toList,"jj123456","163"
-                    ,"来自自由说论坛的验证邮件: ","你当前验证码为: "+emailCode+" 请在两分钟之内验证!!!!");
+            Apply.sendEmail("jaremo@163.com", toList, "jj123456", "163"
+                    , "来自自由说论坛的验证邮件: ", "你当前验证码为: " + emailCode + " 请在两分钟之内验证!!!!");
         } catch (IOException e) {
-            log.debug("发送邮件验证失败: "+e.getMessage());
+            log.debug("发送邮件验证失败: " + e.getMessage());
             e.printStackTrace();
         } catch (MessagingException e) {
-            log.debug("发送邮件验证失败: "+e.getMessage());
+            log.debug("发送邮件验证失败: " + e.getMessage());
             e.printStackTrace();
         }
-        redisUtil.set("emailCode",emailCode); // 将邮箱验证码存放到redis中 以邮箱作键
-        redisUtil.expire("emailCode",120); // 设置过期时间
+        redisUtil.set("emailCode", emailCode); // 将邮箱验证码存放到redis中 以邮箱作键
+        redisUtil.expire("emailCode", 120); // 设置过期时间
     }
 }

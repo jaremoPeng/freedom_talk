@@ -1,5 +1,7 @@
 package com.jaremo.freedom_talk.relam;
 
+import com.jaremo.freedom_talk.customer.dao.CustomerDao;
+import com.jaremo.freedom_talk.customer.domain.Customer;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.Sha256CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -7,6 +9,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -19,8 +22,8 @@ import java.util.Set;
 @Component
 public class MyRealm extends AuthorizingRealm{
 
-//    @Autowired
-//    private UserMapper userMapper;
+    @Autowired
+    private CustomerDao customerDao;
 
     public MyRealm(){
         this.setCredentialsMatcher(new Sha256CredentialsMatcher()); // 设置加密类型
@@ -49,12 +52,12 @@ public class MyRealm extends AuthorizingRealm{
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = (String) authenticationToken.getPrincipal(); // 拿到用户传进来的用户名
-        //        User tempUser = userMapper.queryUserByUserName(username);
-//        if(tempUser!=null){
-            SimpleAccount simpleAccount = new SimpleAccount(username,"sjflsjfksjfksjf45","myRealm");
-            simpleAccount.setCredentialsSalt( ByteSource.Util.bytes("salt")); // 解密
-//            return simpleAccount;
-//        }
+        Customer tempUser = customerDao.findCustomerByLoginName(username);
+        if(tempUser!=null){
+            SimpleAccount simpleAccount = new SimpleAccount(username,tempUser.getPassword(),"myRealm");
+            simpleAccount.setCredentialsSalt( ByteSource.Util.bytes(tempUser.getId())); // 解密
+            return simpleAccount;
+        }
         return null;
     }
 }
