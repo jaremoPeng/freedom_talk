@@ -42,4 +42,6 @@ public interface CustomerDao {
 
     @UpdateProvider(type = CustomerProvider.class,method = "editCustomer")
     void alterCustomer(@Param("customer") Customer customer);
+
+
 }
