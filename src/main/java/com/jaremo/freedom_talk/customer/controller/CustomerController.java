@@ -34,6 +34,12 @@ public class CustomerController {
 
     private Logger log = Logger.getLogger(CustomerController.class);
 
+    @RequestMapping("")
+    public void editCustomer(){
+        // 个性签名, 昵称, 性别, 年龄 , 出生年月
+        // 选择出生年份自动确定年龄
+    }
+
     /**
      * 功能描述 用户登录
      *
