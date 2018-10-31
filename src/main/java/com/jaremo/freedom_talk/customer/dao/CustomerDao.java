@@ -2,6 +2,7 @@ package com.jaremo.freedom_talk.customer.dao;
 
 import com.jaremo.freedom_talk.background.domain.Question;
 import com.jaremo.freedom_talk.customer.domain.Customer;
+import com.jaremo.freedom_talk.customer.provider.CustomerProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -38,4 +39,7 @@ public interface CustomerDao {
     })
     @Select("select * from tb_customer where cus_loginname = #{loginName}")
     Customer findCustomerByLoginName(String loginName);
+
+    @UpdateProvider(type = CustomerProvider.class,method = "editCustomer")
+    void alterCustomer(@Param("customer") Customer customer);
 }

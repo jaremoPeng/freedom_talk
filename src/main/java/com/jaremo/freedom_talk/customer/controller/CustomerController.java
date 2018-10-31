@@ -36,8 +36,16 @@ public class CustomerController {
 
     @RequestMapping("")
     public void editCustomer(){
-        // 个性签名, 昵称, 性别, 年龄 , 出生年月
+        // 个性签名, 昵称, 性别, 出生年月
         // 选择出生年份自动确定年龄
+
+        Customer customer = new Customer();
+        customer.setSuggest("我是根据修改的准值!!!");
+        customer.setName("new name");
+        customer.setName("女");
+        customer.setBirthdate("2002-03-28");
+
+
     }
 
     /**
