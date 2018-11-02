@@ -44,5 +44,17 @@ public interface LeaveWordDao {
     List<LeaveWord> findLeaveWordByCondition(@Param("leaveWord") LeaveWord leaveWord);
 
     @UpdateProvider(type = LeaveWordProvider.class,method = "editLeaveWord")
-    void editLeaveWordByIsDelete(@Param("leaveWord") LeaveWord leaveWord);
+    void editLeaveWordByCondition(@Param("leaveWord") LeaveWord leaveWord);
+
+    @Results({
+            @Result(id = true,property = "id",column = "lw_id"),
+            @Result(property = "content",column = "lw_content"),
+            @Result(property = "fromCustomer",column = "from_id",javaType = Customer.class, one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
+            @Result(property = "toCustomer",column = "to_id",javaType = Customer.class, one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
+            @Result(property = "time",column = "lw_time"),
+            @Result(property = "isStart",column = "isStart"),
+            @Result(property = "isDelete",column = "isDelete")
+    })
+    @Select("select * from tb_leaveword where lw_id = #{id}")
+    List<LeaveWord> findLeaveWordById(Integer id);
 }

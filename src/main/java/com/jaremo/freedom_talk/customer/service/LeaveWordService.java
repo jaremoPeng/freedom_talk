@@ -30,5 +30,12 @@ public interface LeaveWordService {
      */
     LeaveWord selectAllByOfficialId(String offId,String cusId);
 
-//    boolean delete
+    /**
+     * 功能描述 修改留言某些状态
+     * @author pyj
+     * @date 2018/11/2 0002
+     * @param leaveWord
+     * @return boolean
+     */
+    boolean updateLeaveWord(LeaveWord leaveWord);
 }

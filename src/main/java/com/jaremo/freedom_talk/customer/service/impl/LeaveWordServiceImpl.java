@@ -77,4 +77,13 @@ public class LeaveWordServiceImpl implements LeaveWordService {
         }
         return null;
     }
+
+    @Override
+    public boolean updateLeaveWord(LeaveWord leaveWord) {
+        if(leaveWord!=null){
+            leaveWordDao.editLeaveWordByCondition(leaveWord);
+            return true;
+        }
+        return false;
+    }
 }
