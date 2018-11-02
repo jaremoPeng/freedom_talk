@@ -29,4 +29,6 @@ public interface LeaveWordService {
      * @return void
      */
     LeaveWord selectAllByOfficialId(String offId,String cusId);
+
+//    boolean delete
 }

@@ -40,4 +40,21 @@ public class LeaveWordProvider {
         }
         return sql.toString();
     }
+
+    // 修改留言字段
+    public String editLeaveWord(Map map){
+        LeaveWord leaveWord = (LeaveWord) map.get("leaveWord");
+        SQL sql = new SQL();
+        sql.UPDATE("tb_leaveword");
+        if(leaveWord.getIsStart()!=null){
+            sql.SET("isStart=#{leaveWord.isStart}");
+        }
+        if(leaveWord.getIsDelete()!=null){
+            sql.SET("isDelete=#{leaveWord.isDelete}");
+        }
+        sql.WHERE("from_id=#{leaveWord.fromCustomer.id}");
+        sql.AND();
+        sql.WHERE("to_id=#{leaveWord.toCustomer.id}");
+        return sql.toString();
+    }
 }

@@ -62,6 +62,6 @@ public interface CustomerDao {
             @Result(column = "cus_age" , property = "age"),
             @Result(column = "cus_type" , property = "type")
     })
-    @Select("select * from tb_customer where cus_loginname = #{id}")
+    @Select("select * from tb_customer where cus_id = #{id}")
     Customer findCustomerById(String id);
 }

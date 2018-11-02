@@ -42,4 +42,7 @@ public interface LeaveWordDao {
     })
     @SelectProvider(type = LeaveWordProvider.class , method = "findLeaveWordByCondition")
     List<LeaveWord> findLeaveWordByCondition(@Param("leaveWord") LeaveWord leaveWord);
+
+    @UpdateProvider(type = LeaveWordProvider.class,method = "editLeaveWord")
+    void editLeaveWordByIsDelete(@Param("leaveWord") LeaveWord leaveWord);
 }

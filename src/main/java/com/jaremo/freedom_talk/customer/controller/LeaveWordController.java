@@ -21,11 +21,11 @@ public class LeaveWordController {
     @RequestMapping("/lendlw.do")
     public void lendLeaveWord(){
         LeaveWord leaveWord = new LeaveWord();
-        leaveWord.setContent("a say to b?");
+        leaveWord.setContent("b say to a?");
         Customer from = new Customer();
-        from.setId("a");
+        from.setId("b");
         Customer to = new Customer();
-        to.setId("b");
+        to.setId("a");
 
         leaveWord.setFromCustomer(from);
         leaveWord.setToCustomer(to);
