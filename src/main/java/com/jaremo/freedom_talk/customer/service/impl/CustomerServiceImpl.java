@@ -2,7 +2,9 @@ package com.jaremo.freedom_talk.customer.service.impl;
 
 import com.jaremo.freedom_talk.background.domain.Question;
 import com.jaremo.freedom_talk.customer.dao.CustomerDao;
+import com.jaremo.freedom_talk.customer.dao.LeaveWordDao;
 import com.jaremo.freedom_talk.customer.domain.Customer;
+import com.jaremo.freedom_talk.customer.domain.LeaveWord;
 import com.jaremo.freedom_talk.customer.service.CustomerService;
 import com.jaremo.freedom_talk.utils.EncryptUtil;
 import com.jaremo.freedom_talk.utils.RedisUtil;
@@ -11,6 +13,7 @@ import com.jaremo.freedom_talk.utils.UUIDPlusUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -23,6 +26,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerDao customerDao;
+
+    @Autowired
+    private LeaveWordDao leaveWordDao;
 
 //    @Autowired
 //    private RedisUtil redisUtil;
@@ -40,8 +46,18 @@ public class CustomerServiceImpl implements CustomerService {
 
             String newPwd = EncryptUtil.encryptStr(customer.getPassword(), customer.getId()); // 给密码进行加密 , 客户的id作为盐值
             customer.setPassword(newPwd);
-            System.err.println(customer);
             customerDao.addCustomer(customer);
+
+            // 由于构建表的失误, 所以不得不在此出此下策
+            LeaveWord leaveWord = new LeaveWord();
+            leaveWord.setContent("xxxx");
+            leaveWord.setToCustomer(customer);
+            Customer from = new Customer();
+            from.setId("gfrz");
+            String registTime= TimeUtil.dateToString(new Date(),1);
+            leaveWord.setTime(registTime);
+            leaveWordDao.addLeaveWord(leaveWord);
+
         } else {
 
         }

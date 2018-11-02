@@ -43,5 +43,25 @@ public interface CustomerDao {
     @UpdateProvider(type = CustomerProvider.class,method = "editCustomer")
     void alterCustomer(@Param("customer") Customer customer);
 
-
+    @Results({
+            @Result(id = true , column = "cus_id" , property = "id"),
+            @Result(column = "cus_loginname" , property = "loginName"),
+            @Result(column = "cus_password" , property = "password"),
+            @Result(column = "cus_email" , property = "email"),
+            @Result(column = "cus_img" , property = "img"),
+            @Result(column = "cus_suggest" , property = "suggest"),
+            @Result(column = "cus_name" , property = "name"),
+            @Result(column = "cus_sex" , property = "sex"),
+            @Result(column = "cus_birthdate" , property = "birthdate"),
+            @Result(column = "isUnuse" , property = "isUnuse"),
+            @Result(column = "isBm" , property = "isBm"),
+            @Result(column = "question_id" , property = "question" , javaType = Question.class , one = @One(select = "com.jaremo.freedom_talk.background.dao.QuestionDao.findQuestionById")),
+            @Result(column = "cus_answer" , property = "answer"),
+            @Result(column = "cus_fans" , property = "fansNum"),
+            @Result(column = "cus_follow" , property = "followNum"),
+            @Result(column = "cus_age" , property = "age"),
+            @Result(column = "cus_type" , property = "type")
+    })
+    @Select("select * from tb_customer where cus_loginname = #{id}")
+    Customer findCustomerById(String id);
 }
