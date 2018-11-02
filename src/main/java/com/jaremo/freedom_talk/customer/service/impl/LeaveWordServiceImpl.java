@@ -1,7 +1,9 @@
 package com.jaremo.freedom_talk.customer.service.impl;
 
 import com.jaremo.freedom_talk.customer.dao.LeaveWordDao;
+import com.jaremo.freedom_talk.customer.dao.UnLeaveWordDao;
 import com.jaremo.freedom_talk.customer.domain.LeaveWord;
+import com.jaremo.freedom_talk.customer.domain.UnLeaveWord;
 import com.jaremo.freedom_talk.customer.service.LeaveWordService;
 import com.jaremo.freedom_talk.utils.RedisUtil;
 import com.jaremo.freedom_talk.utils.TimeUtil;
@@ -24,41 +26,55 @@ public class LeaveWordServiceImpl implements LeaveWordService {
     private LeaveWordDao leaveWordDao;
 
     @Autowired
+    private UnLeaveWordDao unLeaveWordDao;
+
+    @Autowired
     private RedisUtil redisUtil;
 
     @Override
-    public boolean insertLeaveWord(LeaveWord leaveWord) {
-        // 应该先判断 [被留言者] 的留言板是否开启,除此,还要判断 [留言者] 有没有被 [被留言者] 禁言
+    public int insertLeaveWord(LeaveWord leaveWord) {
+        if (leaveWord != null) {
+            // 判断 [留言者] 有没有被 [被留言者] 禁言
+            UnLeaveWord unLeaveWord = new UnLeaveWord();
+            unLeaveWord.setFromCustomer(leaveWord.getToCustomer());
+            unLeaveWord.setToCustomer(leaveWord.getFromCustomer());
+            List<UnLeaveWord> unLeaveWordList = unLeaveWordDao.findUnLeaveWordByCondition(unLeaveWord);
 
-        // 应该给 [被留言者] 发送通知消息
-        if(leaveWord!=null){
-//            Set<Object> lwCustomers = redisUtil.sGet("lwCustomers");
-//            if(lwCustomers!=null){
-//                for (Object obj:lwCustomers) {
-//                    LeaveWord lw = (LeaveWord)obj;
-//
-//                    if(lw.getId()==leaveWord.getId() & lw.getIsStart() == 1){
-//                        String lwTime = TimeUtil.dateToString(new Date(), 1);
-//                        leaveWord.setTime(lwTime); // 设置留言时间
-//
-//                        leaveWordDao.addLeaveWord(leaveWord);
-//                        return true;
-//                    }
-//                }
-//            }else{
-                List<LeaveWord> lwList = leaveWordDao.findAllByOfficialId("gfrz");
-//                redisUtil.sSet("lwCustomers",lwList);
-                for (LeaveWord lw:lwList){
-                    if(lw.getId()==leaveWord.getId() & lw.getIsStart() == 1){
-                        String lwTime = TimeUtil.dateToString(new Date(), 1);
-                        leaveWord.setTime(lwTime); // 设置留言时间
+            if(unLeaveWordList!=null && unLeaveWordList.size()!=0){
+                System.out.println(unLeaveWordList);
+                return -1; // 被禁言了
+            }
 
-                        leaveWordDao.addLeaveWord(leaveWord);
-                        return true;
-                    }
-                }
-//            }
+            String time = TimeUtil.dateToString(new Date(),1);
+            leaveWord.setTime(time);
+            leaveWordDao.addLeaveWord(leaveWord);
+            // 应该给 [被留言者] 发送通知消息
+            return 1;
         }
-        return false;
+        return -2;
+    }
+
+    @Override
+    public LeaveWord selectAllByOfficialId(String offId, String cusId) {
+        Set<Object> lwCustomers = redisUtil.sGet("lwCustomers");
+        if (lwCustomers != null) {
+            for (Object obj : lwCustomers) {
+                LeaveWord lw = (LeaveWord) obj;
+
+                if (lw.getToCustomer().getId().equals(cusId) & lw.getIsStart() == 1) {
+                    return lw;
+                }
+            }
+        } else {
+            List<LeaveWord> lwList = leaveWordDao.findAllByOfficialId("gfrz");
+            redisUtil.sSet("lwCustomers",lwList);
+
+            for (LeaveWord leaveWord : lwList) {
+                if (leaveWord.getToCustomer().getId().equals(cusId) & leaveWord.getIsStart() == 1) {
+                    return leaveWord;
+                }
+            }
+        }
+        return null;
     }
 }

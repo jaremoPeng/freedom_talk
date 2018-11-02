@@ -2,6 +2,7 @@ package com.jaremo.freedom_talk.customer.dao;
 
 import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.domain.LeaveWord;
+import com.jaremo.freedom_talk.customer.provider.LeaveWordProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +30,16 @@ public interface LeaveWordDao {
     })
     @Select("select * from tb_leaveword where from_id = #{offId}")
     List<LeaveWord> findAllByOfficialId(String offId); // 根据官方的id查询用户的留言板是否开启
+
+    @Results({
+            @Result(id = true,property = "id",column = "lw_id"),
+            @Result(property = "content",column = "lw_content"),
+            @Result(property = "fromCustomer",column = "from_id",javaType = Customer.class, one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
+            @Result(property = "toCustomer",column = "to_id",javaType = Customer.class, one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
+            @Result(property = "time",column = "lw_time"),
+            @Result(property = "isStart",column = "isStart"),
+            @Result(property = "isDelete",column = "isDelete")
+    })
+    @SelectProvider(type = LeaveWordProvider.class , method = "findLeaveWordByCondition")
+    List<LeaveWord> findLeaveWordByCondition(@Param("leaveWord") LeaveWord leaveWord);
 }

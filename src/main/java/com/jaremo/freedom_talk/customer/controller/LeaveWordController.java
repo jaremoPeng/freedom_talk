@@ -21,15 +21,16 @@ public class LeaveWordController {
     @RequestMapping("/lendlw.do")
     public void lendLeaveWord(){
         LeaveWord leaveWord = new LeaveWord();
-        leaveWord.setContent("你还好吗?");
+        leaveWord.setContent("a say to b?");
         Customer from = new Customer();
-        from.setId("123");
+        from.setId("a");
         Customer to = new Customer();
-        to.setId("456");
+        to.setId("b");
 
         leaveWord.setFromCustomer(from);
         leaveWord.setToCustomer(to);
 
-        leaveWordService.insertLeaveWord(leaveWord);
+        int i = leaveWordService.insertLeaveWord(leaveWord);
+        System.out.println(i);
     }
 }
