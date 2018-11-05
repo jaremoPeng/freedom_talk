@@ -6,10 +6,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -130,8 +128,8 @@ public class QRCodeUtil {
 			g.dispose();
 			FileOutputStream out = new FileOutputStream(newImg);
 			ImageIO.write(image, "JPEG", out);
-			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-			encoder.encode(image);
+//			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+//			encoder.encode(image);
 			out.close();
 		} catch (Exception e) {
 			System.out.println(" 为二维码添加logo错误！");

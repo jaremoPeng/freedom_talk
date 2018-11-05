@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 /**
  * @描述: 帖子类的控制层
  * @Author: pyj
@@ -36,5 +38,32 @@ public class NoteController {
         }else{
             System.out.println("添加帖子失败");
         }
+    }
+
+    @RequestMapping("/delNote.do")
+    public void delNote(){
+        Note note = new Note();
+        note.setId(3);
+        note.setIsDelete(0);
+
+        noteService.updateNote(note);
+    }
+    @RequestMapping("/editNote.do")
+    public void editNote(){
+        Note note = new Note();
+        note.setId(3);
+        note.setBrowserNum(200);
+        note.setCommentNum(300);
+
+        noteService.updateNote(note);
+    }
+    @RequestMapping("/queryNote.do")
+    public void queryNote(){
+        Note note = new Note();
+        note.setTitle("hello");
+//        note.setId(3);
+
+        List<Note> noteList = noteService.selectAllByCondition(note);
+        System.out.println(noteList);
     }
 }

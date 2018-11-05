@@ -13,5 +13,14 @@
 <a href="/delete_lwr.do">删除留言回复</a>
 
 <a href="/lendNote.do">添加帖子</a>
+<a href="/lendCategory.do">添加分类</a>
+<a href="/editCategory.do">修改分类</a>
+<a href="/delCategory.do">删除分类</a>
+<a href="/queryCategory.do">查询分类</a>
+<br>
+<a href="/editNote.do">修改帖子</a>
+<a href="/delNote.do">删除帖子</a>
+<a href="/queryNote.do">查询帖子</a>
+
 </body>
 </html>

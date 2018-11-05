@@ -2,6 +2,8 @@ package com.jaremo.freedom_talk.customer.service;
 
 import com.jaremo.freedom_talk.customer.domain.Note;
 
+import java.util.List;
+
 /**
  * @描述: 帖子的服务层
  * @Author: pyj
@@ -10,4 +12,9 @@ import com.jaremo.freedom_talk.customer.domain.Note;
 public interface NoteService {
 
     boolean insertNote(Note note,String customer_id);
+
+    boolean updateNote(Note note);
+
+    List<Note> selectAllByCondition(Note note);
+
 }

@@ -5,11 +5,15 @@ import com.jaremo.freedom_talk.customer.dao.NoteDao;
 import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.domain.Note;
 import com.jaremo.freedom_talk.customer.service.NoteService;
+import com.jaremo.freedom_talk.utils.RedisUtil;
 import com.jaremo.freedom_talk.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @描述: 帖子服务层的实现类
@@ -25,6 +29,9 @@ public class NoteServiceImpl implements NoteService {
     @Autowired
     private CustomerDao customerDao;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Override
     public boolean insertNote(Note note, String customer_id) {
 
@@ -38,6 +45,38 @@ public class NoteServiceImpl implements NoteService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean updateNote(Note note) {
+        if(note!=null){
+            noteDao.editNote(note);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Note> selectAllByCondition(Note note) {
+//        if(note.getTitle()!=null){ // 客户在搜索帖子的时候(根据标题模糊搜索)
+//            List<Note> noteList = new ArrayList<>(); // 临时建立一个集合
+//
+//            Set<Object> notes = redisUtil.sGet("noteList"); // 当用户进行模糊搜索时,这时调用redis
+//            if(notes!=null){
+//                for(Object obj:notes){
+//                    Note tempNote = (Note) obj;
+//                    if(tempNote.getTitle().contains(note.getTitle())){
+//                        noteList.add(tempNote);
+//                    }
+//                }
+//                return noteList;
+//            }else{
+//                Note tempNote = new Note();
+//                redisUtil.sSet("noteList",noteDao.findAllByCondition(tempNote));
+//            }
+//        }
+        List<Note> notes = noteDao.findAllByCondition(note);
+        return notes;
     }
 }
 

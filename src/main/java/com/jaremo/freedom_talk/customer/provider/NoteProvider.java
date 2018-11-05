@@ -36,4 +36,48 @@ public class NoteProvider {
         }
         return sql.toString();
     }
+
+    public String editNote(Map map){
+        Note note = (Note) map.get("note");
+        SQL sql = new SQL();
+        sql.UPDATE("tb_note");
+        if(note.getBrowserNum()!=null){
+            sql.SET("note_browserNum=#{note.browserNum}");
+        }
+        if(note.getCommentNum()!=null){
+            sql.SET("note_commentNum=#{note.commentNum}");
+        }
+        if(note.getIsDelete()!=null){
+            sql.SET("isDelete=#{note.isDelete}");
+        }
+        if(note.getId()!=null){
+            sql.WHERE("note_id=#{note.id}");
+        }
+        if(note.getCustomer()!=null){
+            sql.WHERE("customer_id=#{note.customer.id}");
+        }
+        return sql.toString();
+    }
+
+    public String findAllByCondition(Map map){
+        Note note = (Note) map.get("note");
+        SQL sql = new SQL();
+        sql.SELECT("*").FROM("tb_note");
+        if(note.getIsDelete()!=null){
+            sql.WHERE("isDelete=#{note.isDelete}");
+        }
+        if(note.getId()!=null){
+            sql.WHERE("note_id=#{note.id}");
+        }
+        if(note.getCustomer()!=null){
+            sql.WHERE("customer_id=#{note.customer.id}");
+        }
+        if(note.getCategory()!=null){
+            sql.WHERE("note_category=#{note.category.id}");
+        }
+        if(note.getTitle()!=null){
+            sql.WHERE("note_title like CONCAT('%',#{note.title},'%')");
+        }
+        return sql.toString();
+    }
 }
