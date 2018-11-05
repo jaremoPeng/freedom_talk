@@ -38,4 +38,13 @@ public interface LeaveWordService {
      * @return boolean
      */
     boolean updateLeaveWord(LeaveWord leaveWord);
+
+    /**
+     * 功能描述 根据条件查询留言
+     * @author pyj
+     * @date 2018/11/5 0005
+     * @param leaveWord
+     * @return java.util.List<com.jaremo.freedom_talk.customer.domain.LeaveWord>
+     */
+    List<LeaveWord> selectLwByCondition(LeaveWord leaveWord);
 }

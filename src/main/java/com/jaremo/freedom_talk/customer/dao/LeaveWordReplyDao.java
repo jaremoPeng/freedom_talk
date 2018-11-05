@@ -17,9 +17,9 @@ import java.util.List;
 @Repository
 public interface LeaveWordReplyDao {
 
-    @Insert("insert into tb_lwreply(leaveword_id,from_id,to_id,lwr_content,lwr_time,isDelete) " +
+    @Insert("insert into tb_lwreply(leaveword_id,from_id,to_id,lwr_content,lwr_time) " +
             "values(#{leaveWordReply.leaveWord.id},#{leaveWordReply.fromCustomer.id},#{leaveWordReply.toCustomer.id},#{leaveWordReply.replyContent}," +
-            "#{leaveWordReply.replyTime},#{leaveWordReply.isDelete})")
+            "#{leaveWordReply.replyTime})")
     void addLeaveWordReply(@Param("leaveWordReply") LeaveWordReply leaveWordReply);
 
     @Results({
@@ -34,7 +34,7 @@ public interface LeaveWordReplyDao {
     @SelectProvider(type = LeaveWordReplyProvider.class,method = "findLeaveWordReplyByCondition")
     List<LeaveWordReply> findLeaveWordReplyByCondition(@Param("leaveWordReply") LeaveWordReply leaveWordReply);
 
-    @Update("update tb_leaveword set isDelete=0 where leaveword_id=#{leaveWordReply.leaveWord.id} and " +
-            "from_id=#{leaveWordReply.fromCustomer.id} and to_id=#{leaveWordReply.toCustomer.id}")
+
+    @UpdateProvider(type = LeaveWordReplyProvider.class,method = "editLeaveWordReply")
     void removeLeaveWordReply(@Param("leaveWordReply") LeaveWordReply leaveWordReply);
 }

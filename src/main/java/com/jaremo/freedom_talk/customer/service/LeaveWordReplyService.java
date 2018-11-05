@@ -29,4 +29,12 @@ public interface LeaveWordReplyService {
      */
     List<LeaveWordReply> selectLeaveWordReplyByCondition(LeaveWordReply leaveWordReply);
 
+    /**
+     * 功能描述 删除留言回复
+     * @author pyj
+     * @date 2018/11/5 0005
+     * @param leaveWordReply 留言回复类
+     * @return boolean
+     */
+    boolean deleteLeaveWordReply(LeaveWordReply leaveWordReply);
 }

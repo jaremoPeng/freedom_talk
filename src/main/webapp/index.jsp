@@ -7,5 +7,6 @@
 <a href="/regist.do">点击查看结果</a>
 <a href="/login.do">登录</a>
 <a href="/lendlw.do">留言</a>
+<a href="/lend_lwr.do">留言回复</a>
 </body>
 </html>

@@ -86,4 +86,10 @@ public class LeaveWordServiceImpl implements LeaveWordService {
         }
         return false;
     }
+
+    @Override
+    public List<LeaveWord> selectLwByCondition(LeaveWord leaveWord) {
+        List<LeaveWord> leaveWordList = leaveWordDao.findLeaveWordByCondition(leaveWord);
+        return leaveWordList;
+    }
 }

@@ -33,4 +33,24 @@ public class LeaveWordReplyProvider {
         }
         return sql.toString();
     }
+
+    public String editLeaveWordReply(Map map){
+        LeaveWordReply leaveWordReply = (LeaveWordReply) map.get("leaveWordReply");
+        SQL sql = new SQL();
+        sql.UPDATE("tb_lwreply");
+        sql.SET("isDelete=#{leaveWordReply.isDelete}");
+        if(leaveWordReply.getId()!=null){
+            sql.WHERE("lwr_id=#{leaveWordReply.id}");
+        }
+        if(leaveWordReply.getLeaveWord()!=null){
+            sql.WHERE("leaveword_id=#{leaveWordReply.leaveword.id}");
+        }
+        if(leaveWordReply.getFromCustomer()!=null){
+            sql.WHERE("leaveword_id=#{leaveWordReply.fromCustomer.id}");
+        }
+        if(leaveWordReply.getToCustomer()!=null){
+            sql.WHERE("leaveword_id=#{leaveWordReply.toCustomer.id}");
+        }
+        return sql.toString();
+    }
 }

@@ -2,10 +2,14 @@ package com.jaremo.freedom_talk.customer.controller;
 
 import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.domain.LeaveWord;
+import com.jaremo.freedom_talk.customer.domain.LeaveWordReply;
+import com.jaremo.freedom_talk.customer.service.LeaveWordReplyService;
 import com.jaremo.freedom_talk.customer.service.LeaveWordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * @描述: 留言类的控制层
@@ -17,6 +21,9 @@ public class LeaveWordController {
 
     @Autowired
     private LeaveWordService leaveWordService;
+
+    @Autowired
+    private LeaveWordReplyService leaveWordReplyService;
 
     @RequestMapping("/lendlw.do")
     public void lendLeaveWord(){
@@ -32,5 +39,26 @@ public class LeaveWordController {
 
         int i = leaveWordService.insertLeaveWord(leaveWord);
         System.out.println(i);
+    }
+
+    @RequestMapping("/querylw.do")
+    public void queryLeaveWord(){
+        Customer a = new Customer();
+        a.setId("a");
+
+        LeaveWord leaveWord = new LeaveWord();
+        leaveWord.setToCustomer(a);
+        leaveWord.setIsDelete(1);
+
+        List<LeaveWord> leaveWords = leaveWordService.selectLwByCondition(leaveWord);
+        if(leaveWord!=null && leaveWords.size()!=0){
+            for (LeaveWord lw:leaveWords){
+                LeaveWordReply leaveWordReply = new LeaveWordReply();
+                leaveWordReply.setLeaveWord(lw);
+                leaveWordReply.setIsDelete(1);
+
+                List<LeaveWordReply> leaveWordReplies = leaveWordReplyService.selectLeaveWordReplyByCondition(leaveWordReply);
+            }
+        }
     }
 }
