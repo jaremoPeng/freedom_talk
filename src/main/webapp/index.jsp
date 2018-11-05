@@ -7,6 +7,11 @@
 <a href="/regist.do">点击查看结果</a>
 <a href="/login.do">登录</a>
 <a href="/lendlw.do">留言</a>
+<a href="/querylw.do">查看留言</a>
+<a href="/deletelw.do">删除留言</a>
 <a href="/lend_lwr.do">留言回复</a>
+<a href="/delete_lwr.do">删除留言回复</a>
+
+<a href="/lendNote.do">添加帖子</a>
 </body>
 </html>

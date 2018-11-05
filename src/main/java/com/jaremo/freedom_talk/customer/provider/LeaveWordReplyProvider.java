@@ -43,7 +43,7 @@ public class LeaveWordReplyProvider {
             sql.WHERE("lwr_id=#{leaveWordReply.id}");
         }
         if(leaveWordReply.getLeaveWord()!=null){
-            sql.WHERE("leaveword_id=#{leaveWordReply.leaveword.id}");
+            sql.WHERE("leaveword_id=#{leaveWordReply.leaveWord.id}");
         }
         if(leaveWordReply.getFromCustomer()!=null){
             sql.WHERE("leaveword_id=#{leaveWordReply.fromCustomer.id}");

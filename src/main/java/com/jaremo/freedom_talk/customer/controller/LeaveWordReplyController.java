@@ -40,4 +40,14 @@ public class LeaveWordReplyController {
         leaveWordReplyService.insertLeaveWordReply(leaveWordReply);
 
     }
+
+    @RequestMapping("/delete_lwr.do")
+    public void deleteLeaveWordReply(){
+        // 删除留言回复
+        LeaveWordReply leaveWordReply = new LeaveWordReply();
+        leaveWordReply.setId(1);
+        leaveWordReply.setIsDelete(0);
+
+        leaveWordReplyService.deleteLeaveWordReply(leaveWordReply);
+    }
 }
