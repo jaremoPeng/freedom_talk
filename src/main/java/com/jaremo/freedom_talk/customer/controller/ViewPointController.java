@@ -61,4 +61,6 @@ public class ViewPointController {
         List<ViewPoint> viewPointList = viewPointService.selectAllByCondition(viewPoint);
         System.out.println(viewPointList);
     }
+
+
 }

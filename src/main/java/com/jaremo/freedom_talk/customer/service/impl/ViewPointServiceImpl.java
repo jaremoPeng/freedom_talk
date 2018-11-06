@@ -5,12 +5,14 @@ import com.jaremo.freedom_talk.customer.dao.ViewPointDao;
 import com.jaremo.freedom_talk.customer.domain.ReportViewPoint;
 import com.jaremo.freedom_talk.customer.domain.ViewPoint;
 import com.jaremo.freedom_talk.customer.service.ViewPointService;
+import com.jaremo.freedom_talk.utils.RedisUtil;
 import com.jaremo.freedom_talk.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @描述: 观点类的服务层的实现类
@@ -26,9 +28,28 @@ public class ViewPointServiceImpl implements ViewPointService{
     @Autowired
     private ReportViewPointDao reportViewPointDao;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Override
     public int insertViewPoint(ViewPoint viewPoint) {
         if(viewPoint!=null){
+            // 先判断redis里面有不有
+//            Set<Object> rvpList = redisUtil.sGet("rvpList");
+//            if(rvpList!=null){
+//                for(Object obj:rvpList){
+//                    ReportViewPoint tempReportViewPoint = (ReportViewPoint) obj;
+//                    if(viewPoint.getNote().getId()==tempReportViewPoint.getNote().getId()
+//                            && viewPoint.getCustomer().getId() == tempReportViewPoint.getToCustomer().getId()){
+//                        return -1;
+//                    }
+//                }
+//            }else{
+//                ReportViewPoint reportViewPoint = new ReportViewPoint();
+//                List<ReportViewPoint> rViewPointList = reportViewPointDao.findAllByCondition(reportViewPoint);
+//                redisUtil.sSet("rvpList",rViewPointList);
+//            }
+
             // 要先判断是否被版主所禁言
             ReportViewPoint reportViewPoint = new ReportViewPoint();
             reportViewPoint.setNote(viewPoint.getNote());
