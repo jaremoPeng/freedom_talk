@@ -16,9 +16,9 @@ public interface ViewPointService {
      * @author pyj
      * @date 2018/11/6 0006
      * @param viewPoint
-     * @return boolean
+     * @return int 1 发表观点成功, -1 该用户已被版主禁言 , -2 其他错误
      */
-    boolean insetViewPoint(ViewPoint viewPoint);
+    int insertViewPoint(ViewPoint viewPoint);
 
     /**
      * 功能描述 删除观点

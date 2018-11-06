@@ -32,5 +32,5 @@ public interface ReportViewPointDao {
             @Result(property = "isDelete",column = "isDelete")
     })
     @SelectProvider(type = ReportViewPointProvider.class,method = "findAllByCondition")
-    List<ReportViewPoint> findAllByCondition(ReportViewPoint reportViewPoint);
+    List<ReportViewPoint> findAllByCondition(@Param("reportViewPoint") ReportViewPoint reportViewPoint);
 }
