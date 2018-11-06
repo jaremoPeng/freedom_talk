@@ -24,5 +24,9 @@
 <a href="/lendvp.do">发表观点</a>
 <a href="/deletevp.do">删除观点</a>
 <a href="/queryvp.do">查询观点</a>
+<br>
+<a href="/lendvpr.do">发表观点回复</a>
+<a href="/deletevpr.do">删除观点回复</a>
+<a href="/queryvpr.do">查询观点回复</a>
 </body>
 </html>

@@ -5,9 +5,12 @@ import com.jaremo.freedom_talk.customer.domain.ReportViewPoint;
 import com.jaremo.freedom_talk.customer.domain.ViewPointReply;
 import com.jaremo.freedom_talk.customer.service.ViewPointReplyService;
 import com.jaremo.freedom_talk.utils.RedisUtil;
+import com.jaremo.freedom_talk.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -38,20 +41,48 @@ public class ViewPointReplyServiceImpl implements ViewPointReplyService {
 //                    }
 //                }
 //            }
+            String time = TimeUtil.dateToString(new Date(),1);
+            viewPointReply.setTime(time);
 
-
+            viewPointReplyDao.addViewPointReply(viewPointReply);
+            return 1;
         }
-
         return -2;
     }
 
     @Override
     public boolean deleteViewPointReply(ViewPointReply viewPointReply) {
+        if(viewPointReply!=null){
+            viewPointReplyDao.removeViewPointReply(viewPointReply);
+            return true;
+        }
         return false;
     }
 
     @Override
     public List<ViewPointReply> selectAllByCondition(ViewPointReply viewPointReply) {
+//        if(viewPointReply.getViewPoint().getId()!=null){
+//            List<ViewPointReply> tempList = new ArrayList<>();
+//
+//            Set<Object> vprList = redisUtil.sGet("vprList");
+//            if(vprList!=null){
+//                for(Object obj:vprList){
+//                    ViewPointReply tempViewPointReply = (ViewPointReply) obj;
+//                    if(tempViewPointReply.getViewPoint().getId() == viewPointReply.getViewPoint().getId()){
+//                        tempList.add(tempViewPointReply);
+//                    }
+//                }
+//                return tempList;
+//            }else{
+//                ViewPointReply tempViewPointReply = new ViewPointReply();
+//                List<ViewPointReply> viewPointReplyList = viewPointReplyDao.findAllByCondition(tempViewPointReply);
+//                redisUtil.sSet("vprList",viewPointReplyList);
+//            }
+//        }
+        if(viewPointReply!=null){
+            List<ViewPointReply> viewPointReplyList = viewPointReplyDao.findAllByCondition(viewPointReply);
+            return viewPointReplyList;
+        }
         return null;
     }
 }

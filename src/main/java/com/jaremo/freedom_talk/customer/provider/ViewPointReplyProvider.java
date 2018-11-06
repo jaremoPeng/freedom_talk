@@ -13,7 +13,7 @@ import java.util.Map;
 public class ViewPointReplyProvider {
 
     public String findAllByCondition(Map map){
-        ViewPointReply viewPointReply = (ViewPointReply) map.get("");
+        ViewPointReply viewPointReply = (ViewPointReply) map.get("viewPointReply");
         SQL sql = new SQL();
         sql.SELECT("*").FROM("tb_vpreply");
         if(viewPointReply.getId()!=null){
