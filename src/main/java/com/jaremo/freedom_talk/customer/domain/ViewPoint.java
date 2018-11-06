@@ -11,7 +11,7 @@ public class ViewPoint {
 
     private Integer id; // 观点id
     private String content; // 观点内容
-    private Customer customer; // 表表者
+    private Customer customer; // 发表者
     private Note note; // 哪篇帖子
     private String time; // 发表时间
     private Integer isDelete; // 是否删除
