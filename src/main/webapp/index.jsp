@@ -28,5 +28,9 @@
 <a href="/lendvpr.do">发表观点回复</a>
 <a href="/deletevpr.do">删除观点回复</a>
 <a href="/queryvpr.do">查询观点回复</a>
+<br>
+<a href="/lendCollect.do">添加收藏</a>
+<a href="/delCollect.do">删除收藏</a>
+<a href="/queryCollect.do">查询收藏</a>
 </body>
 </html>

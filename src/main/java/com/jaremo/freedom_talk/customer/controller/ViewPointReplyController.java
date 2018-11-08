@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 /**
- * @描述: 观点回复类的
+ * @描述: 观点回复类的控制层
  * @Author: pyj
  * @DateTime: 2018/11/6 0006--下午 4:29
  */
