@@ -32,5 +32,9 @@
 <a href="/lendCollect.do">添加收藏</a>
 <a href="/delCollect.do">删除收藏</a>
 <a href="/queryCollect.do">查询收藏</a>
+<br>
+<a href="/lendFollow.do">添加关注</a>
+<a href="/delFollow.do">删除关注</a>
+<a href="/queryFollow.do">查询关注</a>
 </body>
 </html>
