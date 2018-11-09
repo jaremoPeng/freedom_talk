@@ -40,5 +40,9 @@
 <a href="/lendHf.do">添加好友</a>
 <a href="/deleteHf.do">删除好友</a>
 <a href="/queryHf.do">查询好友</a>
+<br>
+<a href="/lendChat.do">添加聊天</a>
+<a href="/delChat.do">删除聊天</a>
+<a href="/queryChat.do">查询聊天</a>
 </body>
 </html>
