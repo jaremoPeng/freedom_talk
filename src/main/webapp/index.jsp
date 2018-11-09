@@ -36,5 +36,9 @@
 <a href="/lendFollow.do">添加关注</a>
 <a href="/delFollow.do">删除关注</a>
 <a href="/queryFollow.do">查询关注</a>
+<br>
+<a href="/lendHf.do">添加好友</a>
+<a href="/deleteHf.do">删除好友</a>
+<a href="/queryHf.do">查询好友</a>
 </body>
 </html>
