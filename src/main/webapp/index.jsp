@@ -44,5 +44,9 @@
 <a href="/lendChat.do">添加聊天</a>
 <a href="/delChat.do">删除聊天</a>
 <a href="/queryChat.do">查询聊天</a>
+
+<br>
+<a href="/queryMsg.do">查询消息</a>
+<a href="/deleteMsg.do">删除消息</a>
 </body>
 </html>
