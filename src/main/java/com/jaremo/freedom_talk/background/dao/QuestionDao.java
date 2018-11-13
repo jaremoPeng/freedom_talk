@@ -14,6 +14,4 @@ public interface QuestionDao {
 
     @Select("select que_id as id , que_content as questionContent from tb_login_question where que_id=#{id}")
     Question findQuestionById(Integer id);
-
-
 }

@@ -48,5 +48,10 @@
 <br>
 <a href="/queryMsg.do">查询消息</a>
 <a href="/deleteMsg.do">删除消息</a>
+
+<br>
+<a href="/queryacm.do">查询公告</a>
+<a href="/deleteacm.do">删除公告</a>
+<a href="/lendacm.do">添加公告</a>
 </body>
 </html>
