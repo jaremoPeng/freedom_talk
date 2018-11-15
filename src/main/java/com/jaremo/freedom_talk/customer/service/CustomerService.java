@@ -2,6 +2,8 @@ package com.jaremo.freedom_talk.customer.service;
 
 import com.jaremo.freedom_talk.customer.domain.Customer;
 
+import java.util.List;
+
 /**
  * @描述: 客户服务层
  * @Author: pyj
@@ -35,4 +37,13 @@ public interface CustomerService {
      * @return void
      */
     void updateCustomer(Customer customer);
+
+    /**
+     * 功能描述 根据条件查询客户
+     * @author pyj
+     * @date 2018/11/15 0015
+     * @param customer
+     * @return java.util.List<com.jaremo.freedom_talk.customer.domain.Customer>
+     */
+    List<Customer> selectAllByCondition(Customer customer);
 }

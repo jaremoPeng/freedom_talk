@@ -12,6 +12,15 @@ import java.util.List;
 public interface MessageService {
 
     /**
+     * 功能描述 添加消息
+     * @author pyj
+     * @date 2018/11/15 0015
+     * @param message
+     * @return boolean
+     */
+    boolean insertMsg(Message message);
+
+    /**
      * 功能描述 删除消息
      * @author pyj
      * @date 2018/11/10 0010

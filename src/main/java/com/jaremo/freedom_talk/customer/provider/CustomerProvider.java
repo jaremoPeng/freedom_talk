@@ -56,4 +56,29 @@ public class CustomerProvider {
         sql.WHERE("cus_id=#{customer.id}");
         return sql.toString();
     }
+
+    public String findCustomerByCondition(Map map){
+        Customer customer = (Customer) map.get("customer");
+        SQL sql =new SQL();
+        sql.SELECT("*").FROM("tb_customer");
+        if(customer.getIsUnuse()!=null){
+            sql.WHERE("isUnuse = #{customer.isUnuse}");
+        }
+        if(customer.getIsBm()!=null){
+            sql.WHERE("isBm = #{customer.isBm}");
+        }
+        if(customer.getType()!=null){
+            sql.WHERE("cus_type = #{customer.type}");
+        }
+        if(customer.getId()!=null){
+            sql.WHERE("cus_id = #{customer.id}");
+        }
+        if(customer.getEmail()!=null){
+            sql.WHERE("cus_email = #{customer.email}");
+        }
+        if(customer.getLoginName()!=null){
+            sql.WHERE("cus_loginname = #{customer.loginName}");
+        }
+        return sql.toString();
+    }
 }

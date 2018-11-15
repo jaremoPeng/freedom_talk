@@ -20,6 +20,15 @@ public class MessageServiceImpl implements MessageService{
     private MessageDao messageDao;
 
     @Override
+    public boolean insertMsg(Message message) {
+        if(message.getContent()!=null && message.getCustomer()!=null){
+            messageDao.addMsg(message);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean deleteMsg(Message message) {
         if(message.getId()!=null && message.getIsDelete()==0){
             messageDao.removeMsg(message);
