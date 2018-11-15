@@ -15,13 +15,13 @@ import java.util.List;
 @Repository
 public interface RoleDao {
 
-    @Insert("insert into tb_role(role_name) values(#{role.name})")
+    @Insert("insert into tb_role(role_id,role_name) values(#{role.id},#{role.name})")
     void addRole(@Param("role") Role role);
 
     @Update("update tb_role set isDelete=0 where role_id=#{id}")
     void removeRole(Integer id);
 
-    @Update("update tb_role set role_name=#{role.name} where role_id=#{id}")
+    @Update("update tb_role set role_name=#{role.name} where role_id=#{role.id}")
     void editRole(@Param("role") Role role);
 
     @Results({

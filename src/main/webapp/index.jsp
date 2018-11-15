@@ -53,5 +53,17 @@
 <a href="/queryacm.do">查询公告</a>
 <a href="/deleteacm.do">删除公告</a>
 <a href="/lendacm.do">添加公告</a>
+
+<br>
+<a href="/queryRole.do">查询角色</a>
+<a href="/delRole.do">删除角色</a>
+<a href="/lendRole.do">添加角色</a>
+<a href="/editRole.do">修改角色</a>
+
+<br>
+<a href="/queryPerm.do">查询权限</a>
+<a href="/delPerm.do">删除权限</a>
+<a href="/lendPerm.do">添加权限</a>
+<a href="/editPerm.do">修改权限</a>
 </body>
 </html>

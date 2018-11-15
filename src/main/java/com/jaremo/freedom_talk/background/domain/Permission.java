@@ -45,7 +45,6 @@ public class Permission {
     }
 
     public Integer getId() {
-
         return id;
     }
 

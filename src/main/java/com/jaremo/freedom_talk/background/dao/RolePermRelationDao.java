@@ -1,9 +1,7 @@
 package com.jaremo.freedom_talk.background.dao;
 
 import com.jaremo.freedom_talk.background.domain.RolePermRelation;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +20,7 @@ public interface RolePermRelationDao {
     })
     @Select("select * from role_permission_relation")
     List<RolePermRelation> findPidByRid(Integer rid);
+
+    @Insert("insert into role_permission_relation (role_id,perm_id) values (#{rid},#{pid})")
+    void addRolePermRelation(@Param("rid") Integer rid,@Param("pid") Integer pid);
 }
