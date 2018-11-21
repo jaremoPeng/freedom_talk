@@ -34,9 +34,9 @@ public class VerifyFilter extends AuthorizationFilter {
             return true;
         }
         regex=regex.replaceAll("\\.", "\\\\.");
-        // /login.html  /l*.html
+
         regex=regex.replaceAll("\\*", ".*");
-        // /**/login.html  /a/b/login.html
+
         if(regex.indexOf("/.*.*/")>=0){
             regex=regex.replaceAll("/\\.\\*\\.\\*/", "((/.*/)+|/)");
         }

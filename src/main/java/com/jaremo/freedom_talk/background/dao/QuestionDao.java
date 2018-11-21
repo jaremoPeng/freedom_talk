@@ -4,6 +4,8 @@ import com.jaremo.freedom_talk.background.domain.Question;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @描述: 问题类的数据访问层
  * @Author: pyj
@@ -14,4 +16,7 @@ public interface QuestionDao {
 
     @Select("select que_id as id , que_content as questionContent from tb_login_question where que_id=#{id}")
     Question findQuestionById(Integer id);
+
+    @Select("select que_id as id , que_content as questionContent from tb_login_question")
+    List<Question> findAll();
 }

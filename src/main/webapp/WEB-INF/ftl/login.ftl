@@ -34,11 +34,12 @@
 								</ul>
 								<div class="layui-tab-content">
 									<div class="layui-tab-item layui-show">
-										<form class="layui-form layui-form-pane" action="" method="">
+										<form class="layui-form layui-form-pane" action="/login.do" method="get">
+                                            <input type="hidden" name="logintype" value="1">
 											<div class="layui-form-item">
 												<label class="layui-form-label">登录名: </label>
 												<div class="layui-input-block">
-													<input type="text" name="loginanme" autocomplete="off" placeholder="请输入登录名" class="layui-input">
+													<input type="text" name="loginName" autocomplete="off" placeholder="请输入登录名" class="layui-input">
 												</div>
 											</div>
 											<div class="layui-form-item">
@@ -51,11 +52,13 @@
 												<div class="layui-inline">
 													<label class="layui-form-label">问题验证: </label>
 													<div class="layui-input-inline">
-														<select name="quiz">
+														<select name="question_id">
 															<option value="">请选择问题</option>
-															<option value="你工作的第一个城市">你工作的第一个城市</option>
-															<option value="你的工号">你的工号</option>
-															<option value="你最喜欢的老师">你最喜欢的老师</option>
+															<#if questionList?? >
+															    <#list questionList as question>
+															        <option value="${question.id}">${question.questionContent}</option>
+															    </#list>
+															</#if>
 														</select>
 													</div>
 												</div>
@@ -68,7 +71,7 @@
 											</div>
 											<div class="layui-form-item">
 												没有账号?
-												<a href="">去注册</a> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+												<a href="/getAllQue.do?type=2">去注册</a> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 												<a href="">忘记密码?</a>
 											</div>
 											<div class="layui-form-item">
@@ -78,11 +81,12 @@
 										</form>
 									</div>
 									<div class="layui-tab-item">
-										<form class="layui-form layui-form-pane" action="" method="">
+										<form class="layui-form layui-form-pane" action="/login.do" method="get">
+                                            <input type="hidden" name="logintype" value="2">
 											<div class="layui-form-item">
 												<label class="layui-form-label">邮箱地址: </label>
 												<div class="layui-input-block">
-													<input type="text" name="loginanme" lay-verify="email" autocomplete="off" placeholder="请输入邮箱" class="layui-input">
+													<input type="text" name="loginname" lay-verify="email" autocomplete="off" placeholder="请输入邮箱" class="layui-input">
 												</div>
 											</div>
 											<div class="layui-form-item">
@@ -95,12 +99,14 @@
 												<div class="layui-inline">
 													<label class="layui-form-label">问题验证: </label>
 													<div class="layui-input-inline">
-														<select name="quiz">
-															<option value="">请选择问题</option>
-															<option value="你工作的第一个城市">你工作的第一个城市</option>
-															<option value="你的工号">你的工号</option>
-															<option value="你最喜欢的老师">你最喜欢的老师</option>
-														</select>
+                                                        <select name="question_id">
+                                                            <option value="">请选择问题</option>
+															<#if questionList?? >
+																<#list questionList as question>
+															        <option value="${question.id}">${question.questionContent}</option>
+																</#list>
+															</#if>
+                                                        </select>
 													</div>
 												</div>
 											</div>
@@ -112,7 +118,7 @@
 											</div>
 											<div class="layui-form-item">
 												没有账号?
-												<a href="">去注册</a> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+												<a href="/getAllQue.do?type=2">去注册</a> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 												<a href="">忘记密码?</a>
 											</div>
 											<div class="layui-form-item">

@@ -1,5 +1,6 @@
 package com.jaremo.freedom_talk.customer.service;
 
+import com.jaremo.freedom_talk.background.domain.Question;
 import com.jaremo.freedom_talk.customer.domain.Customer;
 
 import java.util.List;
@@ -46,4 +47,13 @@ public interface CustomerService {
      * @return java.util.List<com.jaremo.freedom_talk.customer.domain.Customer>
      */
     List<Customer> selectAllByCondition(Customer customer);
+
+    /**
+     * 功能描述 获取所有的验证问题
+     * @author pyj
+     * @date 2018/11/21 0021
+     * @param
+     * @return java.util.List<com.jaremo.freedom_talk.background.domain.Question>
+     */
+    List<Question> selectAllQuestion();
 }

@@ -11,12 +11,15 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @描述: 客户控制层
@@ -31,6 +34,8 @@ public class CustomerController {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    private static String trueCode;
 
     private Logger log = Logger.getLogger(CustomerController.class);
 
@@ -65,31 +70,37 @@ public class CustomerController {
      * @date 2018/10/31 0031
      */
     @RequestMapping("/login.do")
-    public void lgnCustomer() {
+    public String lgnCustomer(Customer customer,Integer question_id,String logintype,ModelMap modelMap) {
+        List<Customer> customers = customerService.selectAllByCondition(customer);
 
-        Customer customer = new Customer();
-        customer.setLoginName("jaremo");
-        customer.setPassword("123456");
-        customer.setAnswer("jetd");
+        if(customers!=null && customers.size()==1 & question_id == customers.get(0).getQuestion().getId()){ // 判断不为空的情况下,还要判断验证问题是否选者正确
+            if(customers.get(0).getAnswer().equals(customer.getAnswer())){ // 验证问题的答案是否正确
+                if(customers.get(0).getIsUnuse()!=0){ // 判读用户是否被禁用
+                    Subject subject = SecurityUtils.getSubject();
+                    UsernamePasswordToken token = new UsernamePasswordToken(customers.get(0).getLoginName(), customer.getPassword());
 
-        Customer checkCus = customerService.selectCustomerByLoginName(customer.getLoginName());
+                    subject.login(token);
 
-        if(checkCus!=null & 2 == checkCus.getQuestion().getId()){ // 判断不为空的情况下,还要判断验证问题是否选者正确
-            if(checkCus.getAnswer().equals(customer.getAnswer())){ // 验证问题的答案是否正确
-                Subject subject = SecurityUtils.getSubject();
-                UsernamePasswordToken token = new UsernamePasswordToken(customer.getLoginName(), customer.getPassword());
-
-                subject.login(token);
-
-                if (subject.isAuthenticated()) {
-                    System.out.println("sucsses");
-                } else {
-                    System.out.println("failed");
+                    if (subject.isAuthenticated()) {
+                        System.out.println("登录成功");
+                        modelMap.addAttribute("now_customer",customers.get(0));
+                        if(customers.get(0).getType().equals("0")){
+                            return "bg_index";
+                        }
+                        return "index";
+                    } else {
+                        System.out.println("登录失败");
+                    }
+                }else{
+                    System.out.println("该用户已被禁用");
                 }
             }else{
                 System.out.println("验证问题的答案输入错误");
             }
+        }else{
+            System.out.println("用户不存在");
         }
+        return "login";
     }
 
     /**
@@ -101,21 +112,17 @@ public class CustomerController {
      * @date 2018/10/31 0031
      */
     @RequestMapping(value = "/regist.do")
-    public void regCustomer() {
-        Customer customer = new Customer();
-        customer.setLoginName("jaremo");
-        customer.setPassword("123456");
-        customer.setEmail("744273057@qq.com");
-        customer.setAnswer("jet"); // 设置登录验证问题答案
-
-//        String inputCode = "123456"; // 模拟客户输入邮箱验证码
+    public String regCustomer(Customer customer,Integer question_id,String inputCode) {
 
 //        String trueCode = (String) redisUtil.get("emailCode"); // 获取redis中邮箱验证码
-//        if(trueCode != null && trueCode.equals(inputCode)){
-        customerService.insertCustomer(customer, 2); // 这里选择验证问题 写死
-//        }else{
-//            log.debug("验证码失效,或者不存在");
-//        }
+        System.out.println("邮箱验证码为: " + trueCode);
+        if (trueCode != null && trueCode.equals(inputCode)){
+            customerService.insertCustomer(customer, question_id); // 这里选择验证问题 写死
+            return "login";
+        }else{
+            log.debug("验证码失效,或者不存在");
+            return "regist";
+        }
     }
 
     /**
@@ -126,14 +133,14 @@ public class CustomerController {
      * @author pyj
      * @date 2018/10/31 0031
      */
-    @RequestMapping("/sendEmail.do")
-    public void verifyEmail() {
-        String emailCode = RandomUtil.getRandom(6); // 生成邮箱验证码
+    @RequestMapping(value = "/sendEmail.do",method = RequestMethod.POST)
+    public void verifyEmail(String email) {
+        trueCode = RandomUtil.getRandom(6); // 生成邮箱验证码
         ArrayList<String> toList = new ArrayList<>();
-        toList.add("744273057@qq.com");
+        toList.add(email);
         try {
             Apply.sendEmail("jaremo@163.com", toList, "jj123456", "163"
-                    , "来自自由说论坛的验证邮件: ", "你当前验证码为: " + emailCode + " 请在两分钟之内验证!!!!");
+                    , "来自自由说论坛的验证邮件: ", "你当前验证码为: " + trueCode + " 请在两分钟之内验证!!!!");
         } catch (IOException e) {
             log.debug("发送邮件验证失败: " + e.getMessage());
             e.printStackTrace();
@@ -141,7 +148,25 @@ public class CustomerController {
             log.debug("发送邮件验证失败: " + e.getMessage());
             e.printStackTrace();
         }
-        redisUtil.set("emailCode", emailCode); // 将邮箱验证码存放到redis中 以邮箱作键
-        redisUtil.expire("emailCode", 120); // 设置过期时间
+//        redisUtil.set("emailCode", emailCode); // 将邮箱验证码存放到redis中 以邮箱作键
+//        redisUtil.expire("emailCode", 120); // 设置过期时间
+    }
+
+    @RequestMapping("/getAllQue.do")
+    public String getVerifyQue(String type,ModelMap modelMap) { //由于注册和登录都需要获取所有的问题 type 为1 就是登录界面,为2 注册界面
+        modelMap.addAttribute("questionList",customerService.selectAllQuestion());
+        if(type.equals("1")){
+            return "login";
+        }
+        if(type.equals("2")){
+            return "regist";
+        }
+        return null;
+    }
+
+    @RequestMapping("/exit.do")
+    public String exit(ModelMap modelMap) { //由于注册和登录都需要获取所有的问题 type 为1 就是登录界面,为2 注册界面
+        modelMap.remove("now_customer");
+        return "index";
     }
 }

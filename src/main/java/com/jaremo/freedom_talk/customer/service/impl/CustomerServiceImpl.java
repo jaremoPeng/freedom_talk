@@ -1,5 +1,6 @@
 package com.jaremo.freedom_talk.customer.service.impl;
 
+import com.jaremo.freedom_talk.background.dao.QuestionDao;
 import com.jaremo.freedom_talk.background.domain.Question;
 import com.jaremo.freedom_talk.customer.dao.CustomerDao;
 import com.jaremo.freedom_talk.customer.dao.LeaveWordDao;
@@ -30,6 +31,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private LeaveWordDao leaveWordDao;
+
+    @Autowired
+    private QuestionDao questionDao;
 
 //    @Autowired
 //    private RedisUtil redisUtil;
@@ -100,5 +104,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     public List<Customer> selectAllByCondition(Customer customer){
         return customerDao.findAllCustomerByCondition(customer);
+    }
+
+    @Override
+    public List<Question> selectAllQuestion() {
+        return questionDao.findAll();
     }
 }

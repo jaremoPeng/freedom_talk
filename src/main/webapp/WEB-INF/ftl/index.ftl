@@ -12,7 +12,7 @@
 
 	<body>
 		<div id="top">
-			<#import "guide.ftl" as guide>
+			<#include "guide.ftl">
 		</div>
 		<div class="layui-container">
 			<div class="layui-row layui-col-space5">
@@ -95,7 +95,7 @@
 			</div>
 		</div>
 		<div>
-			<#import "down.ftl" as guide>
+			<#include "down.ftl">
 		</div>
 
 		<script>
