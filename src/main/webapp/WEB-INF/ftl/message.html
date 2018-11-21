@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的消息</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../css/layui.css" />
+		<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="../js/layui.js"></script>
+	</head>
+
+	<body>
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+			<legend>自由说论坛-我的消息</legend>
+		</fieldset>
+		<div class="layui-container">
+			<div class="layui-row layui-col-space5">
+				<div class="layui-col-md3">
+
+				</div>
+				<div class="layui-col-md6">
+					<div class="layui-card" style="border: 1px solid lightgray;">
+						<div class="layui-card-header">系统通知消息: </div>
+						<div class="layui-card-body">
+							<div>
+								<blockquote class="layui-elem-quote"><font color="limegreen">已读</font> &emsp;&emsp;&emsp;&emsp;<span>时间: 2018-06-13 19:16:04</span></blockquote>
+								<img id="admin_say" src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 40px;height: 40px;">
+								<hr />
+							</div>
+							<div>
+								<blockquote class="layui-elem-quote"><font color="red">未读</font> &emsp;&emsp;&emsp;&emsp;<span>时间: 2018-06-13 19:16:04</span></blockquote>
+								<img id="admin_say1" src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 40px;height: 40px;">
+								<hr />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md3">
+
+				</div>
+			</div>
+		</div>
+
+		<script>
+			layui.use('layer', function() {
+				var $ = layui.jquery,
+					layer = layui.layer;
+				layer.tips('Hi，我是tipsHi，我是tipsHi，我是tipsHi，我是tipsHi，我是tipsHi，我是tips' +
+					'Hi', '#admin_say', {
+						time: -1,
+						tips: [2, 'gray'],
+						tipsMore: true,
+						area: ["480px", ""]
+					});
+				layer.tips('Hi，我是tips', '#admin_say1', {
+					time: -1,
+					tips: [2, 'gray'],
+					tipsMore: true,
+					area: ["500px", ""]
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>底部</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../css/layui.css" />
+		<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="../js/layui.js"></script>
+	</head>
+
+	<body>
+		<div class="layui-form">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">中文版</label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="test1" placeholder="yyyy-MM-dd">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">国际版</label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="test1-1" placeholder="yyyy-MM-dd">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//常规用法
+				laydate.render({
+					elem: '#test1'
+				});
+
+				//国际版
+				laydate.render({
+					elem: '#test1-1',
+					lang: 'en'
+				});
+			});
+		</script>
+	</body>
+
+</html>

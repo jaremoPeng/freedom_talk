@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>修改资料</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../css/layui.css" />
+		<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="../js/layui.js"></script>
+	</head>
+
+	<body>
+		<div class="layui-container">
+			<div class="layui-row layui-col-space5">
+				<div class="layui-col-md4">
+
+				</div>
+				<div class="layui-col-md5">
+					<div class="layui-card" style="border: 1px solid gainsboro;">
+						<div class="layui-card-header">
+							<h3>编辑</h3></div>
+						<div class="layui-card-body">
+							<form class="layui-form" action="" method="">
+								<div class="layui-upload">
+									&emsp;&emsp;&emsp;
+									<button type="button" class="layui-btn" id="test1">上传头像</button> &emsp;&emsp;&emsp;
+									<div class="layui-upload-list layui-inline">
+										<div style="width: 100px;height: 120px;border: 1px solid lightgray;">
+											<img style="width: 100px;height: 120px;" class="layui-upload-img" id="demo1">
+										</div>
+										<p id="demoText"></p>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">论坛昵称</label>
+									<div class="layui-input-block">
+										<input type="text" name="nickname" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">个性签名</label>
+									<div class="layui-input-block">
+										<input type="text" name="suggest" lay-verify="required" placeholder="请输入个性签名" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+
+								<div class="layui-form-item">
+									<label class="layui-form-label">性别</label>
+									<div class="layui-input-block">
+										<input type="radio" name="sex" value="男" title="男" checked="">
+										<input type="radio" name="sex" value="女" title="女">
+									</div>
+								</div>
+
+								<div class="layui-form-item">
+									<label class="layui-form-label">出生日期</label>
+									<div class="layui-input-inline">
+										<input type="text" class="layui-input" id="birthdate" placeholder="yyyy-MM-dd">
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<div class="layui-input-block">
+										<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+										<button type="reset" class="layui-btn">重置</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md3">
+
+				</div>
+			</div>
+		</div>
+
+		<script>
+			layui.use(['form', 'laydate','upload'], function() {
+				var form = layui.form,
+					laydate = layui.laydate,
+					upload = layui.upload;
+					
+				laydate.render({
+					elem: '#birthdate'
+				});
+
+				//普通图片上传
+				var uploadInst = upload.render({
+					elem: '#test1',
+					url: '/upload/',
+					//					auto: false,
+					//					multiple: true,
+					//					size: 60 //限制文件大小，单位 KB 
+					//	                bindAction: '#test9',
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo1').attr('src', result); //图片链接（base64）
+						});
+					},
+					done: function(res) {
+						//如果上传失败
+						if(res.code > 0) {
+							return layer.msg('上传失败');
+						}
+						//上传成功
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#demoText');
+						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

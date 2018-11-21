@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>帖子详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../css/layui.css" />
+		<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="../js/layui.js"></script>
+	</head>
+
+	<body>
+		<div class="layui-fluid">
+			<div class="layui-row layui-col-space5">
+				<div class="layui-col-md2" style="padding-top: 100px;">
+					&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;
+					<div class="layui-inline layui-text" style="width: 150px;height: 250px;border: 1px solid lightgray;">
+						&emsp;&emsp;&emsp;
+						<a href=""><img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
+						<br />
+						<br />
+						<h3>&emsp;昵称: <a href="">jaremo</a></h3>
+						<br />
+						<h6 class="ellipsis">个性签名: <i>数据覅看风景健身房看阿卡就就健康是福就数据覅看风景健身房看阿卡就就健康是福就数据覅看风景健身房看阿卡就就健康是福就</i></h6>
+						<br /> &emsp;&emsp;&emsp;&emsp;
+
+						<button class="layui-btn layui-btn-primary layui-btn-xs" type="button">关注</button>
+					</div>
+				</div>
+				<div class="layui-col-md10 layui-text">
+					<div class="layui-card" style="border: 1px solid lightgray;">
+						<div class="layui-card-header">
+							&emsp;&emsp;&emsp;&emsp;
+							<h2 class="layui-inline"><strong>反思重庆万州公交hello车坠江事件</strong></h2>
+							<span>
+								作者: <a href="">jaremo</a>
+								&emsp;&emsp;
+								<small>发帖时间: 2018-06-03 16:40:30</small>
+								&emsp;&emsp;
+								<small>浏览数: <em>666</em>&emsp;&emsp;&emsp; 评论数: <em>777</em></small>
+							</span>
+						</div>
+						<br />
+						<div class="layui-card-body" style="width: 70%;">
+							<h3>
+								&emsp;&emsp;教训之惨重，让人不敢直视，却不得不叩问，乘客与司机互殴何以一再出现？痛定思痛，别止于唏嘘，
+								更别停留于愤怒。无彻底反思就无真正救赎，不形成制度正义，类似悲剧便难断绝。
+							</h3>
+						</div>
+					</div>
+					<div class="layui-card" style="border: 1px solid lightgray;">
+						<div class="layui-card-header">
+							<h3>评论: </h3>
+						</div>
+						<br />
+						<div class="layui-card-body">
+							<div style="border: 1px solid lightgray;">
+								<br /> &emsp;
+								<a href="">
+									<img src="../img/j20.png" class="layui-nav-img" style="width: 40px;height: 40px;">
+								</a>
+								<a href="">jaremo</a>
+								<span>发表于(<small>时间: 2018-06-12 16:19:40 </small>): </span> &emsp;&emsp;
+								<span><u>教训深刻!!!</u></span>
+								<br />
+								<br /> &emsp;&emsp;&emsp;&emsp;
+								<button id="view_point_reply" type="button" class="layui-btn layui-btn-primary layui-btn-xs">回复</button>
+								<br />
+								<hr />
+
+								<div class="layui-card" style="width: 80%;padding-left: 50px;">
+									<div class="layui-card-header">以下是该评论的回复: </div>
+									<div class="layui-card-body">
+										<br /> &emsp;
+										<a href="">
+											<img src="../img/j20.png" class="layui-nav-img" style="width: 40px;height: 40px;">
+										</a>
+										<a href="">老k</a>
+										<span>回复 </span>
+										<a href="">
+											<img src="../img/j20.png" class="layui-nav-img" style="width: 40px;height: 40px;">
+										</a>
+										<a href="">老J</a>
+										(<small>时间: 2018-06-12 16:19:40 </small>): &emsp;&emsp;
+										<span><u>你还别说,我认为人呐,一定得忍!!!</u></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			layui.use(['form', 'layer'], function() {
+				var form = layui.form,
+					$ = layui.jquery,
+					layer = layui.layer;
+
+				$("#view_point_reply").on("click", function() {
+					layer.open({
+						type: 2,
+						title: '填写回复',
+						shadeClose: true,
+						shade: false,
+						maxmin: false, //开启最大化最小化按钮
+						area: ['600px', '400px'],
+						content: '//127.0.0.1:8020/freedom_talk2/ftl/view_point_reply.html'
+					});
+				});
+
+				$(".layui-text").each(function() { //遍历file_name中的每个子元素
+					    
+					var v = $(this).children('.ellipsis').text();    
+					if(v.length > 30) {
+						// 用V的前20个字符+"......"+后15个字符代替V
+						var new_value = v.substring(0, 12) + '...';
+						$(this).children('.ellipsis').text(new_value); //设置新的text()
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>
