@@ -115,7 +115,6 @@ public class CustomerController {
     public String regCustomer(Customer customer,Integer question_id,String inputCode) {
 
 //        String trueCode = (String) redisUtil.get("emailCode"); // 获取redis中邮箱验证码
-        System.out.println("邮箱验证码为: " + trueCode);
         if (trueCode != null && trueCode.equals(inputCode)){
             customerService.insertCustomer(customer, question_id); // 这里选择验证问题 写死
             return "login";
@@ -135,12 +134,15 @@ public class CustomerController {
      */
     @RequestMapping(value = "/sendEmail.do",method = RequestMethod.POST)
     public void verifyEmail(String email) {
+
+        System.out.println("邮箱: "+email);
         trueCode = RandomUtil.getRandom(6); // 生成邮箱验证码
+        System.out.println("邮箱验证码为: " + trueCode);
         ArrayList<String> toList = new ArrayList<>();
         toList.add(email);
         try {
             Apply.sendEmail("jaremo@163.com", toList, "jj123456", "163"
-                    , "来自自由说论坛的验证邮件: ", "你当前验证码为: " + trueCode + " 请在两分钟之内验证!!!!");
+                    , "来自自由说论坛的验证邮件: ", "你当前验证码为: <a href='#'>" + trueCode + "</a> 请在两分钟之内验证!!!!");
         } catch (IOException e) {
             log.debug("发送邮件验证失败: " + e.getMessage());
             e.printStackTrace();
@@ -165,8 +167,32 @@ public class CustomerController {
     }
 
     @RequestMapping("/exit.do")
-    public String exit(ModelMap modelMap) { //由于注册和登录都需要获取所有的问题 type 为1 就是登录界面,为2 注册界面
+    public String exit(ModelMap modelMap) { // 退出action
         modelMap.remove("now_customer");
         return "index";
+    }
+
+    @RequestMapping(value = "/verifyLoginName.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String verifyloginName(String loginName) { // 验证用户名是否已经注册
+        Customer customer = customerService.selectCustomerByLoginName(loginName);
+        if(customer!=null){
+            System.out.println("用户名已注册");
+            return "用户名已注册";
+        }
+        return "";
+    }
+
+    @RequestMapping(value = "/verifyMail.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String verifyMail(String email) { // 验证邮箱是否已经注册
+        Customer tempCustomer = new Customer();
+        tempCustomer.setEmail(email);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        if(customers!=null && customers.size()!=0){
+            System.out.println("邮箱已注册");
+            return "邮箱已注册";
+        }
+        return "";
     }
 }

@@ -54,6 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
             customerDao.addCustomer(customer);
 
             // 由于构建表的失误, 所以不得不在此出此下策
+            // 以这条记录为准, 决定用户是否开启了留言板
             LeaveWord leaveWord = new LeaveWord();
             leaveWord.setContent("xxxx");
             leaveWord.setToCustomer(customer);
@@ -61,6 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
             from.setId("gfrz");
             String registTime= TimeUtil.dateToString(new Date(),1);
             leaveWord.setTime(registTime);
+            leaveWord.setFromCustomer(from);
             leaveWordDao.addLeaveWord(leaveWord);
 
         } else {

@@ -30,15 +30,21 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">用户名</label>
 									<div class="layui-input-block">
-										<input type="text" name="loginName" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+										<input id="loginName" type="text" name="loginName" lay-verify="loginname" placeholder="请输入用户名" autocomplete="off" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">登录密码</label>
 									<div class="layui-input-block">
-										<input type="text" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+										<input type="password" name="password" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
 									</div>
 								</div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">确认密码</label>
+                                    <div class="layui-input-block">
+                                        <input type="password" name="repassword" lay-verify="repass" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
 
 								<div class="layui-form-item">
 									<label class="layui-form-label">邮箱</label>
@@ -58,7 +64,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">验证问题</label>
 									<div class="layui-input-inline">
-										<select name="question_id">
+										<select name="question_id" lay-verify="question">
 											<option value="">请选择问题</option>
 											<#if questionList?? >
 												<#list questionList as question>
@@ -71,13 +77,13 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">问题答案</label>
 									<div class="layui-input-block">
-										<input type="text" name="answer" placeholder="请输入问题答案" autocomplete="off" class="layui-input">
+										<input type="text" name="answer" lay-verify="answer" placeholder="请输入问题答案" autocomplete="off" class="layui-input">
 									</div>
 								</div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">邮箱验证码</label>
                                     <div class="layui-inline">
-                                        <input type="text" name="inputCode" placeholder="请输入验证码" class="layui-input">
+                                        <input id="inputCode" type="text" name="inputCode" lay-verify="inputCode" placeholder="请输入验证码" class="layui-input">
                                     </div>
                                     <button id="sendCode" class="layui-btn" type="button">发送</button>
                                 </div>
@@ -87,7 +93,7 @@
 								</div>
 								<div class="layui-form-item">
 									<div class="layui-input-block">
-										<button class="layui-btn" type="submit">立即提交</button>
+										<button class="layui-btn" lay-submit="" lay-filter="*">立即提交</button>
 										<button type="reset" class="layui-btn">重置</button>
 									</div>
 								</div>
@@ -99,36 +105,84 @@
 		</div>
 		
 		<script>
+            var lyr;
 			layui.use(['form', 'layedit'], function() {
 				var form = layui.form,
 					layer = layui.layer,
 					layedit = layui.layedit,
 					$ = layui.jquery;
 
-				//创建一个编辑器
-				var editIndex = layedit.build('LAY_demo_editor');
+				    lyr=layer;
 
 				//自定义验证规则
+                var password;
 				form.verify({
-					title: function(value) {
-						if(value.length < 5) {
-							return '标题至少得5个字符啊';
+					loginname: function(value) {
+						if(value.length < 3 || value.length > 8) {
+							return '用户名的长度为3-8位';
 						}
 					},
-					pass: [/(.+){6,12}$/, '密码必须6到12位'],
-					content: function(value) {
-						layedit.sync(editIndex);
-					}
+					pass: function(value) {
+					    password = value;
+                        if(value.length < 6 && value.length > 12) {
+                            return '密码的长度为6-12位';
+                        }
+                    },
+                    repass: function(value) {
+                        if(value!=password) {
+                            return '两次密码不一致';
+                        }
+                    },
+					email: function(value) {
+                        var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+                        if(!reg.test(value)){
+                            return '邮箱格式不正确';
+                        }
+					},
+                    question: function(value) {
+                        if(value.length==0) {
+                            return '请选择问题';
+                        }
+                    },
+                    answer: function(value) {
+                        if(value.length==0) {
+                            return '请输入问题答案';
+                        }
+                    },
+                    inputCode: function(value) {
+                        if(value.length==0) {
+                            return '请输入验证码';
+                        }
+                    }
 				});
 
-                var email_str = $("#email").val();
-                if(email_str!=null && email_str.length!=0){
-                    $("#sendCode").click(function () {
-                        $.post("/sendEmail.do",{email: email_str});
-                    });
-                }
-
 			});
+
+            var email_str = $("#email");
+            email_str.blur(function () {
+                if(email_str.val().length!=0){
+                    $.post("/verifyMail.do",{email: email_str.val()});
+                }
+			});
+            $("#sendCode").click(function () {
+                if(email_str.val().length!=0){
+                    $.post("/sendEmail.do",{email: email_str.val()});
+                    lyr.msg('邮箱发送成功');
+                    $("#sendCode").attr("disabled","disabled");
+                    $("#sendCode").attr("class","layui-btn layui-btn-disabled");
+                }
+            });
+            $("#inputCode").focus(function () {
+                $("#sendCode").attr("class","layui-btn");
+				$("#sendCode").removeAttr("disabled");
+            });
+
+
+            $("#loginName").blur(function () {
+                if( $("#loginName").val().length!=0){
+                    $.post("/verifyLoginName.do",{loginName: $("#loginName").val()});
+                }
+            });
 		</script>
 	</body>
 
