@@ -1,7 +1,11 @@
 package com.jaremo.freedom_talk.customer.domain;
 
 import com.jaremo.freedom_talk.background.domain.Question;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
@@ -12,8 +16,17 @@ import java.util.Objects;
 public class Customer {
 
     private String id; // id
+
+    @NotEmpty(message = "用户名不能为空")
+    @Size(max = 8,min = 1,message = "用户名长度应在1-8位")
     private String loginName; // 登录名
+
+    @NotEmpty(message = "密码不能为空")
+    @Size(max = 12,min = 6,message = "密码长度应在6-12位")
     private String password; // 登录密码
+
+    @NotEmpty(message = "邮箱不能为空")
+    @Pattern(regexp = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$",message = "邮箱格式不正确")
     private String email; // 邮箱地址
     private Integer type; // 客户类型
     private String img; // 客户头像
@@ -23,6 +36,7 @@ public class Customer {
     private Integer age; // 年龄
     private String birthdate; // 出生日期
     private Question question; // 问题
+    @NotEmpty(message = "需要填写答案")
     private String answer; // 验证问题的答案
     private Integer fansNum; // 粉丝数
     private Integer followNum; // 关注数

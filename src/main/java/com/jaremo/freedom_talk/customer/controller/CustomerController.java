@@ -12,14 +12,17 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @描述: 客户控制层
@@ -72,7 +75,7 @@ public class CustomerController {
     @RequestMapping("/login.do")
     public String lgnCustomer(Customer customer,Integer question_id,String logintype,ModelMap modelMap) {
         List<Customer> customers = customerService.selectAllByCondition(customer);
-
+        List<String> allErrors = new ArrayList<>();
         if(customers!=null && customers.size()==1 & question_id == customers.get(0).getQuestion().getId()){ // 判断不为空的情况下,还要判断验证问题是否选者正确
             if(customers.get(0).getAnswer().equals(customer.getAnswer())){ // 验证问题的答案是否正确
                 if(customers.get(0).getIsUnuse()!=0){ // 判读用户是否被禁用
@@ -82,23 +85,26 @@ public class CustomerController {
                     subject.login(token);
 
                     if (subject.isAuthenticated()) {
-                        System.out.println("登录成功");
                         modelMap.addAttribute("now_customer",customers.get(0));
                         if(customers.get(0).getType().equals("0")){
                             return "bg_index";
                         }
                         return "index";
                     } else {
-                        System.out.println("登录失败");
+                        allErrors.add("登录失败");
                     }
                 }else{
-                    System.out.println("该用户已被禁用");
+                    allErrors.add("该用户已被禁用");
                 }
             }else{
-                System.out.println("验证问题的答案输入错误");
+                allErrors.add("验证问题的答案输入错误");
             }
         }else{
-            System.out.println("用户不存在");
+            allErrors.add("用户不存在");
+        }
+        if(allErrors.size()!=0){
+            modelMap.addAttribute("errors",allErrors);
+            return "errors";
         }
         return "login";
     }
@@ -112,15 +118,30 @@ public class CustomerController {
      * @date 2018/10/31 0031
      */
     @RequestMapping(value = "/regist.do")
-    public String regCustomer(Customer customer,Integer question_id,String inputCode) {
+    public String regCustomer(@Valid Customer customer , BindingResult errors, Integer question_id, String inputCode,ModelMap modelMap) {
 
+        List<String> allErrors = new ArrayList<>();
 //        String trueCode = (String) redisUtil.get("emailCode"); // 获取redis中邮箱验证码
         if (trueCode != null && trueCode.equals(inputCode)){
+            if(errors.hasErrors()){
+                List<FieldError> fieldErrors = errors.getFieldErrors();
+                for (FieldError temp:fieldErrors) {
+                    allErrors.add(temp.getDefaultMessage());
+                }
+
+                modelMap.addAttribute("errors",allErrors);
+                return "errors";
+            }
             customerService.insertCustomer(customer, question_id); // 这里选择验证问题 写死
             return "login";
         }else{
-            log.debug("验证码失效,或者不存在");
-            return "regist";
+            errors.addError(new FieldError("customer","loginName","验证码失效,或者不存在"));
+            List<FieldError> fieldErrors = errors.getFieldErrors();
+            for (FieldError temp:fieldErrors) {
+                allErrors.add(temp.getDefaultMessage());
+            }
+            modelMap.addAttribute("errors",allErrors);
+            return "errors";
         }
     }
 
