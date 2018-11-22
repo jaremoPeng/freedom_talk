@@ -39,20 +39,20 @@
 											<div class="layui-form-item">
 												<label class="layui-form-label">登录名: </label>
 												<div class="layui-input-block">
-													<input type="text" name="loginName" autocomplete="off" placeholder="请输入登录名" class="layui-input">
+													<input type="text" name="loginName" lay-verify="loginName" autocomplete="off" placeholder="请输入登录名" class="layui-input">
 												</div>
 											</div>
 											<div class="layui-form-item">
 												<label class="layui-form-label">密码: </label>
 												<div class="layui-input-block">
-													<input type="password" name="password" autocomplete="off" placeholder="请输入登录密码" class="layui-input">
+													<input type="password" name="password" lay-verify="pass1" autocomplete="off" placeholder="请输入登录密码" class="layui-input">
 												</div>
 											</div>
 											<div class="layui-form-item">
 												<div class="layui-inline">
 													<label class="layui-form-label">问题验证: </label>
 													<div class="layui-input-inline">
-														<select name="question_id">
+														<select name="question_id" lay-verify="question_id1">
 															<option value="">请选择问题</option>
 															<#if questionList?? >
 															    <#list questionList as question>
@@ -66,7 +66,7 @@
 											<div class="layui-form-item">
 												<label class="layui-form-label">答案: </label>
 												<div class="layui-input-block">
-													<input type="text" name="answer" autocomplete="off" placeholder="请输入问题答案" class="layui-input">
+													<input type="text" name="answer" lay-verify="answer1" autocomplete="off" placeholder="请输入问题答案" class="layui-input">
 												</div>
 											</div>
 											<div class="layui-form-item">
@@ -75,7 +75,7 @@
 												<a href="">忘记密码?</a>
 											</div>
 											<div class="layui-form-item">
-												<button class="layui-btn" type="submit">登录</button>
+												<button class="layui-btn" lay-submit="" lay-filter="*" type="submit">登录</button>
 												<button class="layui-btn" type="reset">重置</button>
 											</div>
 										</form>
@@ -92,14 +92,14 @@
 											<div class="layui-form-item">
 												<label class="layui-form-label">密码: </label>
 												<div class="layui-input-block">
-													<input type="password" name="password" autocomplete="off" placeholder="请输入登录密码" class="layui-input">
+													<input type="password" name="password" lay-verify="pass2" autocomplete="off" placeholder="请输入登录密码" class="layui-input">
 												</div>
 											</div>
 											<div class="layui-form-item">
 												<div class="layui-inline">
 													<label class="layui-form-label">问题验证: </label>
 													<div class="layui-input-inline">
-                                                        <select name="question_id">
+                                                        <select name="question_id" lay-verify="question_id2">
                                                             <option value="">请选择问题</option>
 															<#if questionList?? >
 																<#list questionList as question>
@@ -113,7 +113,7 @@
 											<div class="layui-form-item">
 												<label class="layui-form-label">答案: </label>
 												<div class="layui-input-block">
-													<input type="text" name="answer" autocomplete="off" placeholder="请输入问题答案" class="layui-input">
+													<input type="text" name="answer" lay-verify="answer2" autocomplete="off" placeholder="请输入问题答案" class="layui-input">
 												</div>
 											</div>
 											<div class="layui-form-item">
@@ -122,7 +122,7 @@
 												<a href="">忘记密码?</a>
 											</div>
 											<div class="layui-form-item">
-												<button class="layui-btn" type="submit">登录</button>
+												<button class="layui-btn" lay-submit="" lay-filter="*" type="submit">登录</button>
 												<button class="layui-btn" type="reset">重置</button>
 											</div>
 										</form>
@@ -144,6 +144,55 @@
 					layedit = layui.layedit,
 					laydate = layui.laydate,
 					element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+                form.verify({
+                    loginName: function(value) {
+                        if(value.length==0) {
+                            return '请输入用户名';
+                        }
+                    },
+                    email: function(value) {
+                        if(value.length==0) {
+                            return '请输入邮箱';
+                        }
+                        var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+                        if(!reg.test(value)){
+                            return '邮箱格式不正确';
+                        }
+                    },
+                    pass1: function(value) {
+                        password = value;
+                        if(value.length==0) {
+                            return '请输入密码';
+                        }
+                    },
+                    pass2: function(value) {
+                        password = value;
+                        if(value.length==0) {
+                            return '请输入密码';
+                        }
+                    },
+                    question_id1: function(value) {
+                        if(value.length==0) {
+                            return '请选择问题';
+                        }
+                    },
+                    question_id2: function(value) {
+                        if(value.length==0) {
+                            return '请选择问题';
+                        }
+                    },
+                    answer1: function(value) {
+                        if(value.length==0) {
+                            return '请输入问题答案';
+                        }
+                    },
+                    answer2: function(value) {
+                        if(value.length==0) {
+                            return '请输入问题答案';
+                        }
+                    }
+                });
 
 				//触发事件
 				var active = {

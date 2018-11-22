@@ -93,7 +93,7 @@
 								</div>
 								<div class="layui-form-item">
 									<div class="layui-input-block">
-										<button class="layui-btn" lay-submit="" lay-filter="*">立即提交</button>
+										<button id="submit_form" class="layui-btn" lay-submit="" lay-filter="*">立即提交</button>
 										<button type="reset" class="layui-btn">重置</button>
 									</div>
 								</div>
@@ -161,7 +161,19 @@
             var email_str = $("#email");
             email_str.blur(function () {
                 if(email_str.val().length!=0){
-                    $.post("/verifyMail.do",{email: email_str.val()});
+                    $.post("/verifyMail.do",
+							{email: email_str.val()},
+                            function(data){
+                                if(data.length!=0){
+                                    lyr.msg('邮箱已被注册');
+                                    $("#sendCode").attr("disabled","disabled");
+                                    $("#sendCode").attr("class","layui-btn layui-btn-disabled");
+								}else{
+                                    $("#sendCode").attr("class","layui-btn");
+                                    $("#sendCode").removeAttr("disabled");
+								}
+                            }
+					);
                 }
 			});
             $("#sendCode").click(function () {
@@ -180,7 +192,19 @@
 
             $("#loginName").blur(function () {
                 if( $("#loginName").val().length!=0){
-                    $.post("/verifyLoginName.do",{loginName: $("#loginName").val()});
+                    $.post("/verifyLoginName.do",
+							{loginName: $("#loginName").val()},
+                            function(data){
+                                if(data.length!=0){
+                                    lyr.msg('用户名已被注册');
+                                    $("#submit_form").attr("disabled","disabled");
+                                    $("#submit_form").attr("class","layui-btn layui-btn-disabled");
+                                }else{
+                                    $("#submit_form").attr("class","layui-btn");
+                                    $("#submit_form").removeAttr("disabled");
+                                }
+                            }
+					);
                 }
             });
 		</script>
