@@ -54,6 +54,7 @@ public class CustomerController {
      * @return void
      */
     @RequestMapping("/edit.do")
+    @ResponseBody
     public void editCustomer(@RequestParam("file") MultipartFile mf,Customer customer){
         // 个性签名, 昵称, 性别, 出生年月
         // 选择出生年份自动确定年龄
@@ -63,16 +64,15 @@ public class CustomerController {
             String filename = new String(mf.getOriginalFilename().getBytes("utf-8"),"iso-8859-1");
             int result = filename.lastIndexOf(".");
             filename = "img_ft"+System.currentTimeMillis()+filename.substring(result);
-            System.out.println(filename);
             dbPath = "/img/"+filename;
             String savePath = "E:/ideacode/freedom_talk/src/main/webapp"; // Linux环境下路径需要修改
-//            mf.transferTo(new File(savePath));
+            mf.transferTo(new File(savePath+dbPath));
         }catch(IOException e){
             throw new RuntimeException(e.getMessage());
         }
 
-//        customer.setImg(dbPath);
-//        customerService.updateCustomer(customer);
+        customer.setImg(dbPath);
+        customerService.updateCustomer(customer);
     }
 
     /**
@@ -228,18 +228,66 @@ public class CustomerController {
         return "";
     }
 
+    @RequestMapping(value = "/index.do")
+    public String gotoIndex(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
+        return "index";
+    }
+
     @RequestMapping(value = "/gotoCenter.do")
-    public String gotoCenter() { // 做一个中转
+    public String gotoCenter(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
         return "center";
     }
 
     @RequestMapping(value = "/gotoHailFellow.do")
-    public String gotoHailFellow() { // 做一个中转
+    public String gotoHailFellow(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
         return "hail_fellow";
     }
 
     @RequestMapping(value = "/gotoMeans.do")
-    public String gotoMeans() { // 做一个中转
+    public String gotoMeans(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
         return "edit_means";
+    }
+
+    @RequestMapping(value = "/gotoFans.do")
+    public String gotoFans(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
+        return "fans";
+    }
+
+    @RequestMapping(value = "/gotoCollect.do")
+    public String gotoCollect(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
+        return "collect";
+    }
+
+    @RequestMapping(value = "/gotoCusDetail.do")
+    public String gotoCusDetail(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
+        return "customer_detail";
     }
 }

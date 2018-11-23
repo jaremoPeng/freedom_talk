@@ -20,16 +20,20 @@
 				<div class="layui-side-scroll">
 					<ul class="layui-nav layui-nav-tree" style="background-color: lightseagreen;" lay-filter="test">
 						<li class="layui-nav-item layui-nav-itemed">
-							<a href="#" data-url="/gotoMeans.do" data-title="修改资料" data-id="442" class="site-demo-active" data-type="tabAdd">修改资料</a>
+							<a href="#" data-url="/gotoMeans.do?cus_id=${now_customer.id}" data-title="修改资料" data-id="442" class="site-demo-active" data-type="tabAdd">修改资料</a>
 						</li>
 						<li class="layui-nav-item">
-							<a href="#" data-url="/gotoFollow.do" data-title="我的关注" data-id="443" class="site-demo-active" data-type="tabAdd">我的关注</a>
+							<a href="#" data-url="/gotoFollow.do?cus_id=${now_customer.id}" data-title="我的关注" data-id="443" class="site-demo-active" data-type="tabAdd">我的关注</a>
 						</li>
 						<li class="layui-nav-item">
-							<a href="#" data-url="/gotoFans.do" data-title="我的粉丝" data-id="444" class="site-demo-active" data-type="tabAdd">我的粉丝</a>
+							<#if now_customer.type==2>
+                                <a href="#" data-url="/gotoFans.do?cus_id=${now_customer.id}" data-title="我的粉丝" data-id="444" class="site-demo-active" data-type="tabAdd">我的粉丝</a>
+								<#else >
+								<a href="#">我的粉丝</a>
+							</#if>
 						</li>
 						<li class="layui-nav-item">
-							<a href="#" data-url="/gotoCollect.do" data-title="我的收藏" data-id="445" class="site-demo-active" data-type="tabAdd">我的收藏</a>
+							<a href="#" data-url="/gotoCollect.do?cus_id=${now_customer.id}" data-title="我的收藏" data-id="445" class="site-demo-active" data-type="tabAdd">我的收藏</a>
 						</li>
 						<li class="layui-nav-item">
 							<a href="javascript:;">账户安全</a>
@@ -53,6 +57,9 @@
 								</dd>
 							</dl>
 						</li>
+                        <li class="layui-nav-item">
+                            <a href="/index.do?cus_id=${now_customer.id}">返回首页</a>
+                        </li>
 					</ul>
 				</div>
 			</div>

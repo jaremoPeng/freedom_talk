@@ -20,10 +20,19 @@
     <div class="layui-col-xs4">
         <ul class="layui-nav layui-bg-green">
             <li class="layui-nav-item">
-                <a href="index.ftl"><img style="width: 50px;height: 30px;" src="/img/uugai.com_1542371006215.png"/></a>
+                <#if now_customer??>
+                    <a href="/index.do?cus_id=${now_customer.id}"><img style="width: 50px;height: 30px;" src="/img/uugai.com_1542371006215.png"/></a>
+                <#else >
+                    <a href="#"><img style="width: 50px;height: 30px;" src="/img/uugai.com_1542371006215.png"/></a>
+                </#if>
+
             </li>
             <li class="layui-nav-item">
-                <font>自由说论坛</font>
+                <#if now_customer??>
+                    <a href="/index.do?cus_id=${now_customer.id}"><strong>自由说论坛</strong></a>
+                <#else >
+                    <a href="#"><strong>自由说论坛</strong></a>
+                </#if>
             </li>
         </ul>
     </div>
@@ -53,16 +62,24 @@
                         </#if>
                     </dd>
                     <dd>
-                        <a href="/gotoCenter.do">个人中心</a>
+                        <#if now_customer??>
+                            <a href="/gotoCenter.do?cus_id=${now_customer.id}">个人中心</a>
+                        <#else >
+                                <a href="#">个人中心</a>
+                        </#if>
                     </dd>
                     <dd>
-                        <a href="/gotoHailFellow.do">我的好友</a>
+                        <#if now_customer??>
+                            <a href="/gotoHailFellow.do?cus_id=${now_customer.id}">我的好友</a>
+                        <#else >
+                                <a href="#">我的好友</a>
+                        </#if>
                     </dd>
                 </dl>
             </li>
             <#if now_customer??>
                 <li class="layui-nav-item">
-                    <a href="customer_detail.ftl">
+                    <a href="/gotoCusDetail.do?cus_id=${now_customer.id}">
                         <#if now_customer.img??>
                             <img src="${now_customer.img}" class="layui-nav-img" />
                             <#else >

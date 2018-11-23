@@ -23,6 +23,9 @@
 						<div class="layui-card-body">
 
 							<form class="layui-form" action="/edit.do" method="post" enctype="multipart/form-data">
+                                <#if now_customer??>
+                                    <input type="hidden" name="id" value="${now_customer.id}">
+                                </#if>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">选择头像</label>
                                     <div class="layui-input-block">
@@ -56,12 +59,12 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">出生日期</label>
 									<div class="layui-input-inline">
-										<input type="text" class="layui-input" id="birthdate" placeholder="yyyy-MM-dd">
+										<input type="text" name="birthdate" class="layui-input" id="birthdate" placeholder="yyyy-MM-dd">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<div class="layui-input-block">
-										<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+										<button class="layui-btn" lay-submit="">立即提交</button>
 										<button type="reset" class="layui-btn">重置</button>
 									</div>
 								</div>
