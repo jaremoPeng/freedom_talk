@@ -20,16 +20,16 @@
 				<div class="layui-side-scroll">
 					<ul class="layui-nav layui-nav-tree" style="background-color: lightseagreen;" lay-filter="test">
 						<li class="layui-nav-item layui-nav-itemed">
-							<a href="#" data-url="edit_means.html" data-title="修改资料" data-id="442" class="site-demo-active" data-type="tabAdd">修改资料</a>
+							<a href="#" data-url="/gotoMeans.do" data-title="修改资料" data-id="442" class="site-demo-active" data-type="tabAdd">修改资料</a>
 						</li>
 						<li class="layui-nav-item">
-							<a href="#" data-url="follow.html" data-title="我的关注" data-id="443" class="site-demo-active" data-type="tabAdd">我的关注</a>
+							<a href="#" data-url="/gotoFollow.do" data-title="我的关注" data-id="443" class="site-demo-active" data-type="tabAdd">我的关注</a>
 						</li>
 						<li class="layui-nav-item">
-							<a href="#" data-url="fans.html" data-title="我的粉丝" data-id="444" class="site-demo-active" data-type="tabAdd">我的粉丝</a>
+							<a href="#" data-url="/gotoFans.do" data-title="我的粉丝" data-id="444" class="site-demo-active" data-type="tabAdd">我的粉丝</a>
 						</li>
 						<li class="layui-nav-item">
-							<a href="#" data-url="collect.html" data-title="我的收藏" data-id="445" class="site-demo-active" data-type="tabAdd">我的收藏</a>
+							<a href="#" data-url="/gotoCollect.do" data-title="我的收藏" data-id="445" class="site-demo-active" data-type="tabAdd">我的收藏</a>
 						</li>
 						<li class="layui-nav-item">
 							<a href="javascript:;">账户安全</a>

@@ -53,10 +53,10 @@
                         </#if>
                     </dd>
                     <dd>
-                        <a href="center.ftl">个人中心</a>
+                        <a href="/gotoCenter.do">个人中心</a>
                     </dd>
                     <dd>
-                        <a href="hail_fellow.ftl">我的好友</a>
+                        <a href="/gotoHailFellow.do">我的好友</a>
                     </dd>
                 </dl>
             </li>

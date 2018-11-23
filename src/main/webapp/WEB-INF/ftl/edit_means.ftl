@@ -21,27 +21,27 @@
 						<div class="layui-card-header">
 							<h3>编辑</h3></div>
 						<div class="layui-card-body">
-							<form class="layui-form" action="" method="">
-								<div class="layui-upload">
-									&emsp;&emsp;&emsp;
-									<button type="button" class="layui-btn" id="test1">上传头像</button> &emsp;&emsp;&emsp;
-									<div class="layui-upload-list layui-inline">
-										<div style="width: 100px;height: 120px;border: 1px solid lightgray;">
-											<img style="width: 100px;height: 120px;" class="layui-upload-img" id="demo1">
-										</div>
-										<p id="demoText"></p>
-									</div>
-								</div>
+
+							<form class="layui-form" action="/edit.do" method="post" enctype="multipart/form-data">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">选择头像</label>
+                                    <div class="layui-input-block">
+                                        <input id="file" type="file" name="file" class="layui-input">
+                                        <div style="width: 100px;height: 120px;border: 1px solid lightgray;">
+                                            <img style="width: 100px;height: 120px;" class="layui-upload-img" id="img">
+                                        </div>
+                                    </div>
+                                </div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">论坛昵称</label>
 									<div class="layui-input-block">
-										<input type="text" name="nickname" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+										<input type="text" name="nickname" placeholder="请输入昵称" autocomplete="off" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">个性签名</label>
 									<div class="layui-input-block">
-										<input type="text" name="suggest" lay-verify="required" placeholder="请输入个性签名" autocomplete="off" class="layui-input">
+										<input type="text" name="suggest" placeholder="请输入个性签名" autocomplete="off" class="layui-input">
 									</div>
 								</div>
 
@@ -85,38 +85,27 @@
 					elem: '#birthdate'
 				});
 
-				//普通图片上传
-				var uploadInst = upload.render({
-					elem: '#test1',
-					url: '/upload/',
-					//					auto: false,
-					//					multiple: true,
-					//					size: 60 //限制文件大小，单位 KB 
-					//	                bindAction: '#test9',
-					before: function(obj) {
-						//预读本地文件示例，不支持ie8
-						obj.preview(function(index, file, result) {
-							$('#demo1').attr('src', result); //图片链接（base64）
-						});
-					},
-					done: function(res) {
-						//如果上传失败
-						if(res.code > 0) {
-							return layer.msg('上传失败');
-						}
-						//上传成功
-					},
-					error: function() {
-						//演示失败状态，并实现重传
-						var demoText = $('#demoText');
-						demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-						demoText.find('.demo-reload').on('click', function() {
-							uploadInst.upload();
-						});
-					}
-				});
-
 			});
+
+            $("#file").change(function() {
+                var objUrl = getObjectURL(this.files[0]);
+                console.log("objUrl = " + objUrl);
+                if(objUrl) {
+                    $("#img").attr("src", objUrl);
+                }
+            });
+            //建立一個可存取到該file的url
+            function getObjectURL(file) {
+                var url = null;
+                if(window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if(window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if(window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
+            }
 		</script>
 	</body>
 

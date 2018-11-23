@@ -2,7 +2,7 @@
 <html>
 
 	<head>
-		<meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>自由说-登录</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="../css/layui.css" />
@@ -34,7 +34,7 @@
 								</ul>
 								<div class="layui-tab-content">
 									<div class="layui-tab-item layui-show">
-										<form class="layui-form layui-form-pane" action="/login.do" method="get">
+										<form class="layui-form layui-form-pane" action="/login.do" method="post" accept-charset="UTF-8">
                                             <input type="hidden" name="logintype" value="1">
 											<div class="layui-form-item">
 												<label class="layui-form-label">登录名: </label>
@@ -81,7 +81,7 @@
 										</form>
 									</div>
 									<div class="layui-tab-item">
-										<form class="layui-form layui-form-pane" action="/login.do" method="get">
+										<form class="layui-form layui-form-pane" action="/login.do" method="post" accept-charset="UTF-8">
                                             <input type="hidden" name="logintype" value="2">
 											<div class="layui-form-item">
 												<label class="layui-form-label">邮箱地址: </label>

@@ -4,6 +4,7 @@ import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.service.CustomerService;
 import com.jaremo.freedom_talk.utils.RandomUtil;
 import com.jaremo.freedom_talk.utils.RedisUtil;
+import com.jaremo.freedom_talk.utils.UUIDPlusUtil;
 import com.jaremo.freedom_talk.utils.mail.Apply;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -14,14 +15,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -50,18 +54,25 @@ public class CustomerController {
      * @return void
      */
     @RequestMapping("/edit.do")
-    public void editCustomer(){
+    public void editCustomer(@RequestParam("file") MultipartFile mf,Customer customer){
         // 个性签名, 昵称, 性别, 出生年月
         // 选择出生年份自动确定年龄
+        String dbPath = null;
+        try{
+            // 文件名
+            String filename = new String(mf.getOriginalFilename().getBytes("utf-8"),"iso-8859-1");
+            int result = filename.lastIndexOf(".");
+            filename = "img_ft"+System.currentTimeMillis()+filename.substring(result);
+            System.out.println(filename);
+            dbPath = "/img/"+filename;
+            String savePath = "E:/ideacode/freedom_talk/src/main/webapp"; // Linux环境下路径需要修改
+//            mf.transferTo(new File(savePath));
+        }catch(IOException e){
+            throw new RuntimeException(e.getMessage());
+        }
 
-        Customer customer = new Customer();
-        customer.setId("da7dd3ba32eb430d8da4f6bbca63fb06");
-        customer.setSuggest("我是根据修改的准值!!!");
-        customer.setName("new name");
-        customer.setSex("女");
-        customer.setBirthdate("2002-03-28");
-
-        customerService.updateCustomer(customer);
+//        customer.setImg(dbPath);
+//        customerService.updateCustomer(customer);
     }
 
     /**
@@ -72,7 +83,7 @@ public class CustomerController {
      * @author pyj
      * @date 2018/10/31 0031
      */
-    @RequestMapping("/login.do")
+    @RequestMapping(value = "/login.do",method = RequestMethod.POST)
     public String lgnCustomer(Customer customer,Integer question_id,String logintype,ModelMap modelMap) {
         List<Customer> customers = customerService.selectAllByCondition(customer);
         List<String> allErrors = new ArrayList<>();
@@ -117,7 +128,7 @@ public class CustomerController {
      * @author pyj
      * @date 2018/10/31 0031
      */
-    @RequestMapping(value = "/regist.do")
+    @RequestMapping(value = "/regist.do",method = RequestMethod.POST)
     public String regCustomer(@Valid Customer customer , BindingResult errors, Integer question_id, String inputCode,ModelMap modelMap) {
 
         List<String> allErrors = new ArrayList<>();
@@ -215,5 +226,20 @@ public class CustomerController {
             return "邮箱已注册";
         }
         return "";
+    }
+
+    @RequestMapping(value = "/gotoCenter.do")
+    public String gotoCenter() { // 做一个中转
+        return "center";
+    }
+
+    @RequestMapping(value = "/gotoHailFellow.do")
+    public String gotoHailFellow() { // 做一个中转
+        return "hail_fellow";
+    }
+
+    @RequestMapping(value = "/gotoMeans.do")
+    public String gotoMeans() { // 做一个中转
+        return "edit_means";
     }
 }

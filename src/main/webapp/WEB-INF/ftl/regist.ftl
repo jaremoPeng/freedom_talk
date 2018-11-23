@@ -26,7 +26,7 @@
 						<div class="layui-card-header">
 							<h3>用戶注册</h3></div>
 						<div class="layui-card-body">
-							<form class="layui-form" action="/regist.do" method="get">
+							<form class="layui-form" action="/regist.do" method="post" accept-charset="UTF-8">
 								<div class="layui-form-item">
 									<label class="layui-form-label">用户名</label>
 									<div class="layui-input-block">
