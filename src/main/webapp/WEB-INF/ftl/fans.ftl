@@ -17,67 +17,40 @@
 
 				</div>
 				<div class="layui-col-md6">
-					<!--white-space: nowrap;overflow: hidden;text-overflow: ellipsis;-->
-					<div class="layui-inline layui-text" style="width: 150px;height: 200px;border: 1px solid lightgray;">
-						&emsp;&emsp;&emsp;
-						<a href=""><img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
-						<br />
-						<h3>昵称: <a href="">jaremo</a></h3>
-						<br />
-						<h6 class="ellipsis">个性签名: <i>数据覅看风景健身房看阿卡就就健康是福就</i></h6> 
-						<br />
-						&emsp;&emsp;&emsp;&emsp;
-						
-						<button class="layui-btn layui-btn-primary layui-btn-xs" type="button">取消关注</button>
-					</div>
-					<div class="layui-inline layui-text" style="width: 150px;height: 200px;border: 1px solid lightgray;">
-						&emsp;&emsp;&emsp;
-						<a href=""><img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
-						<br />
-						<h3>昵称: <a href="">jaremo</a></h3>
-						<br />
-						<h6 class="ellipsis">个性签名: <i>数据覅看风景健身房看阿卡就就健康是福就</i></h6> 
-						<br />
-						&emsp;&emsp;&emsp;&emsp;
-						
-						<button class="layui-btn layui-btn-primary layui-btn-xs" type="button">取消关注</button>
-					</div>
-					<div class="layui-inline layui-text" style="width: 150px;height: 200px;border: 1px solid lightgray;">
-						&emsp;&emsp;&emsp;
-						<a href=""><img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
-						<br />
-						<h3>昵称: <a href="">jaremo</a></h3>
-						<br />
-						<h6 class="ellipsis">个性签名: <i>数据覅看风景健身房看阿卡就就健康是福就</i></h6> 
-						<br />
-						&emsp;&emsp;&emsp;&emsp;
-						
-						<button class="layui-btn layui-btn-primary layui-btn-xs" type="button">取消关注</button>
-					</div>
-					<div class="layui-inline layui-text" style="width: 150px;height: 200px;border: 1px solid lightgray;">
-						&emsp;&emsp;&emsp;
-						<a href=""><img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
-						<br />
-						<h3>昵称: <a href="">jaremo</a></h3>
-						<br />
-						<h6 class="ellipsis">个性签名: <i>数据覅看风景健身房看阿卡就就健康是福就</i></h6> 
-						<br />
-						&emsp;&emsp;&emsp;&emsp;
-						
-						<button class="layui-btn layui-btn-primary layui-btn-xs" type="button">取消关注</button>
-					</div>
-					<div class="layui-inline layui-text" style="width: 150px;height: 200px;border: 1px solid lightgray;">
-						&emsp;&emsp;&emsp;
-						<a href=""><img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
-						<br />
-						<h3>昵称: <a href="">jaremo</a></h3>
-						<br />
-						<h6 class="ellipsis">个性签名: <i>数据覅看风景健身房看阿卡就就健康是福就</i></h6> 
-						<br />
-						&emsp;&emsp;&emsp;&emsp;
-						
-						<button class="layui-btn layui-btn-primary layui-btn-xs" type="button">取消关注</button>
-					</div>
+					<#if fansList??>
+						<#if (fansList?size>0) >
+							<#list fansList as fans>
+					        <div class="layui-inline layui-text" style="width: 150px;height: 200px;border: 1px solid lightgray;">
+                                &emsp;&emsp;
+                                <#if fans.customer.img??>
+									<a href="/gotoCusDetail.do?cus_id=${fans.customer.id}"><img src="${fans.customer.img}" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
+                                    <#else >
+									<a href="/gotoCusDetail.do?cus_id=${fans.customer.id}"><img src="#" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
+                                </#if>
+                                <br />
+                                <h3>昵称: <a href="/gotoCusDetail.do?cus_id=${fans.customer.id}">
+									<#if fans.customer.name??>
+										${fans.customer.name}
+									<#else >
+										${fans.customer.loginName}
+									</#if>
+                                </a></h3>
+                                <br />
+                                <h6 class="ellipsis">个性签名: <i>
+									<#if fans.customer.suggest??>
+										${fans.customer.suggest}
+									</#if>
+                                </i></h6>
+                                <br />
+
+                            </div>
+							</#list>
+						<#else >
+								亲爱的,版主,貌似你还没有没有粉丝,多多发帖,积累粉丝吧...
+						</#if>
+					<#else >
+							亲爱的,版主,貌似你还没有没有粉丝,多多发帖,积累粉丝吧...
+					</#if>
 				</div>
 				<div class="layui-col-md3">
 

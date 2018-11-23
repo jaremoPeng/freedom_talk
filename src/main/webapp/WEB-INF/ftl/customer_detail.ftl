@@ -21,57 +21,93 @@
 				</div>
 				<div class="layui-col-md6">
 					<div class="layui-card">
-						<div class="layui-card-body">
-							<div class="layui-form-item">
-								<label class="layui-form-label">用户名</label>
-								<div class="layui-input-block">
-									<input type="text" readonly="readonly" value="ja***mo" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">昵称</label>
-								<div class="layui-input-block">
-									<input type="text" readonly="readonly" value="我最强" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">个性签名</label>
-								<div class="layui-input-block">
-									<input type="text" readonly="readonly" value="宇宙超级无敌的无人可挡的独一无二的地表最强" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">邮箱</label>
-								<div class="layui-input-block">
-									<input type="text" readonly="readonly" value="744265465@qq.com" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">性别</label>
-								<div class="layui-input-block">
-									<input type="text" readonly="readonly" value="男" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">出生年月</label>
-								<div class="layui-input-block">
-									<input type="text" readonly="readonly" value="1999-04-12" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">年龄</label>
-								<div class="layui-input-block">
-									<input type="text" readonly="readonly" value="19" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-						</div>
+						<#if now_customer??>
+                            <div class="layui-card-body">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">用户名</label>
+                                    <div class="layui-input-block">
+										<#if now_customer.loginName??>
+                                            <input type="text" readonly="readonly" value="${now_customer.loginName}" autocomplete="off" class="layui-input">
+										<#else >
+											<input type="text" readonly="readonly" autocomplete="off" class="layui-input">
+										</#if>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">昵称</label>
+                                    <div class="layui-input-block">
+										<#if now_customer.name??>
+                                            <input type="text" readonly="readonly" value="${now_customer.name}" autocomplete="off" class="layui-input">
+										<#else >
+											<input type="text" readonly="readonly" autocomplete="off" class="layui-input">
+										</#if>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">个性签名</label>
+                                    <div class="layui-input-block">
+										<#if now_customer.suggest??>
+                                            <input type="text" readonly="readonly" value="${now_customer.suggest}" autocomplete="off" class="layui-input">
+										<#else >
+											<input type="text" readonly="readonly" autocomplete="off" class="layui-input">
+										</#if>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">邮箱</label>
+                                    <div class="layui-input-block">
+										<#if now_customer.email??>
+                                            <input type="text" readonly="readonly" value="${now_customer.email}" autocomplete="off" class="layui-input">
+										<#else >
+											<input type="text" readonly="readonly" autocomplete="off" class="layui-input">
+										</#if>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">性别</label>
+                                    <div class="layui-input-block">
+										<#if now_customer.sex??>
+                                            <input type="text" readonly="readonly" value="${now_customer.sex}" autocomplete="off" class="layui-input">
+										<#else >
+											 <input type="text" readonly="readonly" autocomplete="off" class="layui-input">
+										</#if>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">出生年月</label>
+                                    <div class="layui-input-block">
+										<#if now_customer.birthdate??>
+                                            <input type="text" readonly="readonly" value="${now_customer.birthdate}" autocomplete="off" class="layui-input">
+											<#else >
+											<input type="text" readonly="readonly" autocomplete="off" class="layui-input">
+										</#if>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">年龄</label>
+                                    <div class="layui-input-block">
+										<#if now_customer.age??>
+                                            <input type="text" readonly="readonly" value="${now_customer.age}" autocomplete="off" class="layui-input">
+											<#else >
+											<input type="text" readonly="readonly" autocomplete="off" class="layui-input">
+										</#if>
+                                    </div>
+                                </div>
+                            </div>
+						</#if>
 					</div>
 				</div>
 				<div class="layui-col-md4">
 					&emsp;&emsp;&emsp;&emsp;
 					用户头像: 
 					&emsp;&emsp;
-					<img src="../img/j20.png" class="layui-nav-img" style="width: 100px;height: 100px;">
+					<#if now_customer??>
+						<#if now_customer.img??>
+						    <img src="${now_customer.img}" class="layui-nav-img" style="width: 100px;height: 100px;">
+						<#else >
+							<img src="#" class="layui-nav-img" style="width: 100px;height: 100px;">
+						</#if>
+					</#if>
 				</div>
 			</div>
 		</div>

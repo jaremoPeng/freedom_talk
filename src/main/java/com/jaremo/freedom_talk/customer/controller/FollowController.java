@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -41,18 +42,20 @@ public class FollowController {
     }
 
     @RequestMapping("/delFollow.do")
-    public void delFollow(){
+    @ResponseBody
+    public String delFollow(String cusid,String bmid){
         Customer customer = new Customer();
-        customer.setId("c");
+        customer.setId(cusid);
 
         Customer moderator = new Customer();
-        moderator.setId("a");
+        moderator.setId(bmid);
 
         Follow follow = new Follow();
         follow.setCustomer(customer);
         follow.setModerator(moderator);
 
         followService.deleteFollow(follow);
+        return "";
     }
 
     @RequestMapping("/queryFollow.do")
@@ -75,5 +78,21 @@ public class FollowController {
         modelMap.addAttribute("now_customer",customers.get(0));
         modelMap.addAttribute("followList",followList);
         return "follow";
+    }
+
+    @RequestMapping(value = "/gotoFans.do")
+    public String gotoFans(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+
+        Follow follow = new Follow();
+        follow.setModerator(tempCustomer);
+
+        List<Follow> fansList = followService.selectFollowByCondition(follow);
+
+        modelMap.addAttribute("now_customer",customers.get(0));
+        modelMap.addAttribute("fansList",fansList);
+        return "fans";
     }
 }

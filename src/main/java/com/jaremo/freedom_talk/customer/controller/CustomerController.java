@@ -264,24 +264,6 @@ public class CustomerController {
         return "edit_means";
     }
 
-    @RequestMapping(value = "/gotoFans.do")
-    public String gotoFans(String cus_id,ModelMap modelMap) { // 做一个中转
-        Customer tempCustomer = new Customer();
-        tempCustomer.setId(cus_id);
-        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
-        modelMap.addAttribute("now_customer",customers.get(0));
-        return "fans";
-    }
-
-    @RequestMapping(value = "/gotoCollect.do")
-    public String gotoCollect(String cus_id,ModelMap modelMap) { // 做一个中转
-        Customer tempCustomer = new Customer();
-        tempCustomer.setId(cus_id);
-        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
-        modelMap.addAttribute("now_customer",customers.get(0));
-        return "collect";
-    }
-
     @RequestMapping(value = "/gotoCusDetail.do")
     public String gotoCusDetail(String cus_id,ModelMap modelMap) { // 做一个中转
         Customer tempCustomer = new Customer();
