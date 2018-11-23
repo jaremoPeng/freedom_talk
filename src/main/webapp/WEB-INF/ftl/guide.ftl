@@ -42,11 +42,15 @@
     </div>
     <div class="layui-col-xs4">
         <ul class="layui-nav layui-bg-green">
-            <li class="layui-nav-item">
+            <li class="layui-nav-item" id="my">
                 <a href="javascript:;">我的</a>
                 <dl class="layui-nav-child">
                     <dd>
-                        <a href="/queryMsg.do">通知消息</a>
+                        <#if now_customer??>
+                            <a href="/queryMsg.do?cus_id=${now_customer.id}">通知消息&nbsp;<font id="unread_count" color="red">0</font></a>
+                            <#else >
+                                <a href="#">通知消息&nbsp;<font id="unread_count" color="red">0</font></a>
+                        </#if>
                     </dd>
                     <dd>
                         <a href="center.ftl">个人中心</a>
@@ -59,8 +63,16 @@
             <#if now_customer??>
                 <li class="layui-nav-item">
                     <a href="customer_detail.ftl">
-                        <img src="${now_customer.img}" class="layui-nav-img" />
-                        ${now_customer.name ! now_customer.loginname}
+                        <#if now_customer.img??>
+                            <img src="${now_customer.img}" class="layui-nav-img" />
+                            <#else >
+                                <img src="http://img4.imgtn.bdimg.com/it/u=2309262615,3096530225&fm=200&gp=0.jpg" class="layui-nav-img" />
+                        </#if>
+                        <#if now_customer.name??>
+                            ${now_customer.name}
+                            <#else>
+                                ${now_customer.loginName}
+                        </#if>
                     </a>
                 </li>
                 <li class="layui-nav-item">
@@ -85,10 +97,20 @@
 
 <script>
     layui.use('element', function () {
-        var element = layui.element;
+        var element = layui.element,
+                $=layui.jquery;
 
         element.on('nav(demo)', function (elem) {
             layer.msg(elem.text());
+        });
+
+        $("#my").on("mouseover",function () {
+            <#if now_customer??>
+                var cus_id = '${now_customer.id}';
+                $.post("/getUnreadMsg.do",{cus_id: cus_id},function (data){
+                    $("#unread_count").text(data);
+                });
+            </#if>
         });
 
     });

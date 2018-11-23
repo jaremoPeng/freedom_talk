@@ -3,9 +3,11 @@ package com.jaremo.freedom_talk.customer.service.impl;
 import com.jaremo.freedom_talk.customer.dao.MessageDao;
 import com.jaremo.freedom_talk.customer.domain.Message;
 import com.jaremo.freedom_talk.customer.service.MessageService;
+import com.jaremo.freedom_talk.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +24,8 @@ public class MessageServiceImpl implements MessageService{
     @Override
     public boolean insertMsg(Message message) {
         if(message.getContent()!=null && message.getCustomer()!=null){
+            String time = TimeUtil.dateToString(new Date(),1);
+            message.setTime(time);
             messageDao.addMsg(message);
             return true;
         }

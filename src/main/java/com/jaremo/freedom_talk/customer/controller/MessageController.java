@@ -52,7 +52,7 @@ public class MessageController {
     @RequestMapping("/queryMsg.do")
     public String queryMsg(String cus_id,ModelMap map){
         Customer customer = new Customer();
-        customer.setId("a");
+        customer.setId(cus_id);
 
         Message message = new Message();
         message.setCustomer(customer);
@@ -61,5 +61,26 @@ public class MessageController {
         List<Message> messages = messageService.selectMsgByCondition(message);
         map.addAttribute("messages",messages);
         return "message";
+    }
+
+    @RequestMapping("/getUnreadMsg.do")
+    @ResponseBody
+    public int getUnreadMsg(String cus_id){
+        Customer customer = new Customer();
+        customer.setId(cus_id);
+
+        Message message = new Message();
+        message.setCustomer(customer);
+        message.setIsDelete(1);
+
+        List<Message> messages = messageService.selectMsgByCondition(message);
+
+        int resultCount = 0;
+        for (int i=0;i<messages.size();i++) {
+            if(messages.get(i).getIsRead()==0){
+                ++resultCount;
+            }
+        }
+        return resultCount;
     }
 }

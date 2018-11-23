@@ -17,8 +17,8 @@ import java.util.List;
 public interface MessageDao {
 
 
-    @Insert("insert into tb_message(customer_id,msg_content) " +
-            "values(#{message.customer.id},#{message.content})")
+    @Insert("insert into tb_message(customer_id,msg_content,msg_time) " +
+            "values(#{message.customer.id},#{message.content},#{message.time})")
     void addMsg(@Param("message") Message message);
 
     @UpdateProvider(type = MessageProvider.class,method = "editMessage")
@@ -31,6 +31,7 @@ public interface MessageDao {
             @Result(property = "id",column = "msg_id",id = true),
             @Result(property = "customer",column = "customer_id",javaType = Customer.class,one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
             @Result(property = "content",column = "msg_content"),
+            @Result(property = "time",column = "msg_time"),
             @Result(property = "isDelete",column = "isDelete"),
             @Result(property = "isRead",column = "isRead")
     })

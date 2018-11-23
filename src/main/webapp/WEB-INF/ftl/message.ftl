@@ -31,6 +31,7 @@
 											<#else >
 											 	<font color="limegreen"><small>已读</small></font>
 										</#if>
+                                        &emsp;&emsp;&emsp;<small>时间: ${message.time}</small>
                                         <br>
                                         <img id="msg${message.id}" src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 40px;height: 40px;">
                                         <hr />
@@ -70,9 +71,6 @@
 				$.post("/editMsg.do",{cus_id: cus_id});
 			});
 
-            setInterval(function(){
-                window.location.reload();
-            },3000)
 		</script>
 	</body>
 

@@ -12,6 +12,7 @@ public class Message {
     private Integer id; // id
     private Customer customer; // 客户
     private String content; // 消息体
+    private String time; // 时间
     private Integer isDelete; // 是否删除
     private Integer isRead; // 是否已读
 
@@ -21,6 +22,7 @@ public class Message {
                 "id=" + id +
                 ", customer=" + customer +
                 ", content='" + content + '\'' +
+                ", time='" + time + '\'' +
                 ", isDelete=" + isDelete +
                 ", isRead=" + isRead +
                 '}';
@@ -34,6 +36,7 @@ public class Message {
         return Objects.equals(id, message.id) &&
                 Objects.equals(customer, message.customer) &&
                 Objects.equals(content, message.content) &&
+                Objects.equals(time, message.time) &&
                 Objects.equals(isDelete, message.isDelete) &&
                 Objects.equals(isRead, message.isRead);
     }
@@ -41,7 +44,7 @@ public class Message {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, customer, content, isDelete, isRead);
+        return Objects.hash(id, customer, content, time, isDelete, isRead);
     }
 
     public Integer getId() {
@@ -67,6 +70,14 @@ public class Message {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public Integer getIsDelete() {
