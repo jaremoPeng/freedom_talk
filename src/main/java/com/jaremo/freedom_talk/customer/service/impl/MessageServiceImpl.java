@@ -41,4 +41,13 @@ public class MessageServiceImpl implements MessageService{
     public List<Message> selectMsgByCondition(Message message) {
         return messageDao.findMsgByCondition(message);
     }
+
+    @Override
+    public boolean updateMsgState(Message message) {
+        if(message.getCustomer().getId()!=null && message.getIsRead() == 1){
+            messageDao.editMsg(message);
+            return true;
+        }
+        return false;
+    }
 }

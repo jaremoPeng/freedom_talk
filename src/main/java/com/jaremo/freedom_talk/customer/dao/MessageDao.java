@@ -34,6 +34,6 @@ public interface MessageDao {
             @Result(property = "isDelete",column = "isDelete"),
             @Result(property = "isRead",column = "isRead")
     })
-    @Select("select * from tb_message where customer_id=#{message.customer.id}")
+    @Select("select * from tb_message where customer_id=#{message.customer.id} and isDelete=#{message.isDelete}")
     List<Message> findMsgByCondition(@Param("message") Message message);
 }

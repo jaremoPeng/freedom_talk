@@ -37,4 +37,13 @@ public interface MessageService {
      * @return java.util.List<com.jaremo.freedom_talk.customer.domain.Message>
      */
     List<Message> selectMsgByCondition(Message message);
+
+    /**
+     * 功能描述 修改消息的状态
+     * @author pyj
+     * @date 2018/11/23 0023
+     * @param message
+     * @return boolean
+     */
+    boolean updateMsgState(Message message);
 }

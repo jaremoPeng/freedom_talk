@@ -46,7 +46,7 @@
                 <a href="javascript:;">我的</a>
                 <dl class="layui-nav-child">
                     <dd>
-                        <a href="ftl/message.ftl">通知消息</a>
+                        <a href="/queryMsg.do">通知消息</a>
                     </dd>
                     <dd>
                         <a href="center.ftl">个人中心</a>
