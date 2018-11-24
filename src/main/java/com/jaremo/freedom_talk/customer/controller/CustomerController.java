@@ -1,5 +1,6 @@
 package com.jaremo.freedom_talk.customer.controller;
 
+import com.jaremo.freedom_talk.background.domain.Question;
 import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.service.CustomerService;
 import com.jaremo.freedom_talk.utils.RandomUtil;
@@ -8,6 +9,7 @@ import com.jaremo.freedom_talk.utils.UUIDPlusUtil;
 import com.jaremo.freedom_talk.utils.mail.Apply;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,19 +92,23 @@ public class CustomerController {
         if(customers!=null && customers.size()==1 & question_id == customers.get(0).getQuestion().getId()){ // 判断不为空的情况下,还要判断验证问题是否选者正确
             if(customers.get(0).getAnswer().equals(customer.getAnswer())){ // 验证问题的答案是否正确
                 if(customers.get(0).getIsUnuse()!=0){ // 判读用户是否被禁用
-                    Subject subject = SecurityUtils.getSubject();
-                    UsernamePasswordToken token = new UsernamePasswordToken(customers.get(0).getLoginName(), customer.getPassword());
+                    Subject subject = null;
+                    try {
+                        subject = SecurityUtils.getSubject();
+                        UsernamePasswordToken token = new UsernamePasswordToken(customers.get(0).getLoginName(), customer.getPassword());
 
-                    subject.login(token);
-
-                    if (subject.isAuthenticated()) {
-                        modelMap.addAttribute("now_customer",customers.get(0));
-                        if(customers.get(0).getType().equals("0")){
-                            return "bg_index";
+                        subject.login(token);
+                        if (subject.isAuthenticated()) {
+                            modelMap.addAttribute("now_customer",customers.get(0));
+                            if(customers.get(0).getType().equals("0")){
+                                return "bg_index";
+                            }
+                            return "index";
+                        } else {
+                            allErrors.add("登录失败");
                         }
-                        return "index";
-                    } else {
-                        allErrors.add("登录失败");
+                    } catch (AuthenticationException e) {
+                        allErrors.add("用户验证失败(可能原因有: <br>1.密码输入错误;<br>2该用户未注册[如实在还有问题,请发至邮箱 jaremo@163.com])");
                     }
                 }else{
                     allErrors.add("该用户已被禁用");
@@ -204,6 +210,26 @@ public class CustomerController {
         return "index";
     }
 
+    @RequestMapping(value = "/editPass.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String editPass(String email, String email_code,ModelMap modelMap) { // 校验修改时发送的邮箱验证码是否正确
+        if(trueCode.equals(email_code)){
+            Customer tempCustomer = new Customer();
+            tempCustomer.setEmail(email);
+            List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+            if(customers!=null && customers.size()!=0){
+                return "";
+            }else{
+                return "该邮箱还未注册";
+            }
+        }
+
+        if(!trueCode.equals(email_code)){
+            return "邮箱验证码输入错误";
+        }
+        return "失败";
+    }
+
     @RequestMapping(value = "/verifyLoginName.do",method = RequestMethod.POST)
     @ResponseBody
     public String verifyloginName(String loginName) { // 验证用户名是否已经注册
@@ -271,5 +297,50 @@ public class CustomerController {
         List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
         modelMap.addAttribute("now_customer",customers.get(0));
         return "customer_detail";
+    }
+
+    @RequestMapping(value = "/gotoEditPass.do")
+    public String gotoEditPass(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
+        return "edit_password";
+    }
+
+    @RequestMapping(value = "/editNewPass.do")
+    public void editNewPass(Customer customer) { // 做一个中转
+        customerService.updateCustomer(customer);
+    }
+
+    @RequestMapping(value = "/gotoNewPass.do")
+    public String gotoNewPass(String email,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setEmail(email);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+
+        modelMap.addAttribute("now_customer",customers.get(0));
+        return "edit_password_newpwd";
+    }
+
+    @RequestMapping(value = "/gotoEditQue.do")
+    public String gotoEditQue(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+
+        modelMap.addAttribute("questionList",customerService.selectAllQuestion());
+        modelMap.addAttribute("now_customer",customers.get(0));
+        return "edit_question";
+    }
+
+    @RequestMapping(value = "/editNewQue.do")
+    @ResponseBody
+    public void editNewQue(Customer customer,Integer question_id) { // 做一个中转
+        Question question = new Question();
+        question.setId(question_id);
+        customer.setQuestion(question);
+        customerService.updateCustomer(customer);
+
     }
 }

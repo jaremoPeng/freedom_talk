@@ -62,12 +62,30 @@
 					$ = layui.jquery,
 					layer = layui.layer;
 
+                var mail_url;
 				$('#require').on('click', function() {
-					layer.msg('亲爱的用户,已向你所注册的邮箱发送了验证码,赶快去接收吧!', {
-						time: 20000, //20s后自动关闭
-						btn: ['知道了']
-					});
+                    mail_url = $("#email").val();
+					if(mail_url.length!=0){
+                        $('#require').attr("class","layui-btn layui-btn-disabled");
+                        $('#require').attr("disabled","disabled");
+
+                        $.post("/sendEmail.do",{email: mail_url});
+                        layer.msg('亲爱的用户,已向你所注册的邮箱发送了验证码,赶快去接收吧!', {
+                            time: 20000, //20s后自动关闭
+                            btn: ['知道了']
+                        });
+                    }else {
+                        layer.msg('亲爱的用户,您还未填写邮箱', {
+                            time: 20000, //20s后自动关闭
+                            btn: ['知道了']
+                        });
+                    }
 				});
+
+				$("#verify").on("focus",function () {
+                    $('#require').attr("class","layui-btn");
+                    $('#require').removeAttr("disabled");
+                });
 
 				$('#verify').on('click', function() {
 					var email_code = $("#email_code");
@@ -83,15 +101,22 @@
 							btn: ['知道了']
 						});
 					} else {
-						layer.open({
-							type: 2,
-							title: '填写新密码',
-							shadeClose: true,
-							shade: false,
-							maxmin: false, //开启最大化最小化按钮
-							area: ['600px', '400px'],
-							content: '/gotoNewPass.do/'
-						});
+                        $.post("/editPass.do",{email: mail_url,email_code: email_code.val()},function (data) {
+                            if(data.length==0){
+                                layer.open({
+                                    type: 2,
+                                    title: '填写新密码',
+                                    shadeClose: true,
+                                    shade: false,
+                                    maxmin: false, //开启最大化最小化按钮
+                                    area: ['600px', '400px'],
+                                    content: '/gotoNewPass.do?email='+mail_url
+                                });
+                            }else{
+                                layer.msg("修改失败");
+                            }
+                        });
+
 					}
 				});
 			});
