@@ -39,10 +39,10 @@
 							<a href="javascript:;">账户安全</a>
 							<dl class="layui-nav-child">
 								<dd>
-									<a data-url="edit_password.html" data-id="11" data-title="修改密码" href="#" class="site-demo-active" data-type="tabAdd">修改密码</a>
+									<a data-url="/gotoEditPass.do?cus_id=${now_customer.id}" data-id="11" data-title="修改密码" href="#" class="site-demo-active" data-type="tabAdd">修改密码</a>
 								</dd>
 								<dd>
-									<a href="#" data-url="edit_question.html" data-title="修改验证问题" data-id="22" class="site-demo-active" data-type="tabAdd">修改验证问题</a>
+									<a href="#" data-url="/gotoEditQue.do?cus_id=${now_customer.id}" data-title="修改验证问题" data-id="22" class="site-demo-active" data-type="tabAdd">修改验证问题</a>
 								</dd>
 							</dl>
 						</li>
@@ -50,10 +50,14 @@
 							<a href="javascript:;">功能管理</a>
 							<dl class="layui-nav-child">
 								<dd>
-									<a data-url="leave_word.html" data-id="23" data-title="留言管理" href="#" class="site-demo-active" data-type="tabAdd">留言管理</a>
+									<a data-url="/gotoLeaveWorld.do?cus_id=${now_customer.id}" data-id="23" data-title="留言管理" href="#" class="site-demo-active" data-type="tabAdd">留言管理</a>
 								</dd>
 								<dd>
-									<a href="#" data-url="note_list.html" data-title="帖子管理" data-id="24" class="site-demo-active" data-type="tabAdd">帖子管理</a>
+                                    <#if now_customer.type==2>
+                                        <a href="#" data-url="/gotoNoteList.do?cus_id=${now_customer.id}" data-title="帖子管理" data-id="24" class="site-demo-active" data-type="tabAdd">帖子管理</a>
+                                    <#else >
+								        <a href="#">帖子管理</a>
+                                    </#if>
 								</dd>
 							</dl>
 						</li>

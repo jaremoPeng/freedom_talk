@@ -24,27 +24,29 @@
 						<div class="layui-card-header">
 							<h3>密码修改</h3></div>
 						<div class="layui-card-body">
+							<#if now_customer??>
+								<input id="email" type="hidden" name="email" value="${now_customer.email}" class="layui-input">
+								<#else>
+								<div class="layui-form-item">
+									<label class="layui-form-label">邮箱</label>
+									<div class="layui-input-inline">
+										<input id="email" type="text" name="email" placeholder="请输入邮箱" lay-verify="email" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+							</#if>
 							<div class="layui-form-item">
-								<label class="layui-form-label">邮箱</label>
-								<div class="layui-input-inline">
-									<input type="text" name="email" placeholder="请输入邮箱" lay-verify="email" autocomplete="off" class="layui-input">
+								<label class="layui-form-label">验证码</label>
+								<div class="layui-input-block">
+									<input id="email_code" type="text" name="email_code" style="width: 150px;float: left;" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input">
+									<button id="require" type="button" class="layui-btn">发送验证码</button>
 								</div>
 							</div>
-							<form class="layui-form" action="" method="">
-								<div class="layui-form-item">
-									<label class="layui-form-label">验证码</label>
-									<div class="layui-input-block">
-										<input id="email_code" type="text" name="email_code" style="width: 150px;float: left;" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input">
-										<button id="require" type="button" class="layui-btn">发送验证码</button>
-									</div>
-								</div>
 
-								<div class="layui-form-item">
-									<div class="layui-input-block">
-										<button id="verify" type="button" class="layui-btn">确认</button>
-									</div>
+							<div class="layui-form-item">
+								<div class="layui-input-block">
+									<button id="verify" type="button" class="layui-btn">确认</button>
 								</div>
-							</form>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -88,7 +90,7 @@
 							shade: false,
 							maxmin: false, //开启最大化最小化按钮
 							area: ['600px', '400px'],
-							content: '//127.0.0.1:8020/freedom_talk2/ftl/edit_password_newpwd.html'
+							content: '/gotoNewPass.do/'
 						});
 					}
 				});

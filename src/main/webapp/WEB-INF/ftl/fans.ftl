@@ -21,14 +21,14 @@
 						<#if (fansList?size>0) >
 							<#list fansList as fans>
 					        <div class="layui-inline layui-text" style="width: 150px;height: 200px;border: 1px solid lightgray;">
-                                &emsp;&emsp;
+                                &emsp;&emsp;&emsp;
                                 <#if fans.customer.img??>
 									<a href="/gotoCusDetail.do?cus_id=${fans.customer.id}"><img src="${fans.customer.img}" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
                                     <#else >
 									<a href="/gotoCusDetail.do?cus_id=${fans.customer.id}"><img src="#" class="layui-nav-img" style="width: 60px;height: 60px;"></a>
                                 </#if>
                                 <br />
-                                <h3>昵称: <a href="/gotoCusDetail.do?cus_id=${fans.customer.id}">
+                                &emsp;<h3>&emsp;昵称: <a href="/gotoCusDetail.do?cus_id=${fans.customer.id}">
 									<#if fans.customer.name??>
 										${fans.customer.name}
 									<#else >
@@ -62,9 +62,9 @@
 			$(".layui-text").each(function() {//遍历file_name中的每个子元素
 				    
 				var v = $(this).children('.ellipsis').text();    
-				if(v.length > 20){
+				if(v.length > 15){
 					// 用V的前20个字符+"......"+后15个字符代替V
-					var new_value = v.substring(0, 11) + '...';
+					var new_value = v.substring(0, 8) + '...';
 					$(this).children('.ellipsis').text(new_value); //设置新的text()
 				}
 			});

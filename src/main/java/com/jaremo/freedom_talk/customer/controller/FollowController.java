@@ -93,6 +93,7 @@ public class FollowController {
 
         modelMap.addAttribute("now_customer",customers.get(0));
         modelMap.addAttribute("fansList",fansList);
+        System.out.println("liujing 的粉丝团队是: "+fansList);
         return "fans";
     }
 }

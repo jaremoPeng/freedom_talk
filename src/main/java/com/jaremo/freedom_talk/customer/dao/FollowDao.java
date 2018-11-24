@@ -2,6 +2,7 @@ package com.jaremo.freedom_talk.customer.dao;
 
 import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.domain.Follow;
+import com.jaremo.freedom_talk.customer.provider.FollowProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +28,7 @@ public interface FollowDao {
             @Result(property = "customer",column = "customer_id",javaType = Customer.class,one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
             @Result(property = "moderator",column = "moderator_id",javaType = Customer.class,one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById"))
     })
-    @Select("select * from tb_follow where customer_id=#{follow.customer.id}")
+    @SelectProvider(type = FollowProvider.class,method = "findAllByCondition")
     List<Follow> findFollowByCondition(@Param("follow") Follow follow);
 
 }

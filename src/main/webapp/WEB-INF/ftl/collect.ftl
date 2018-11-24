@@ -24,7 +24,7 @@
                                     <div class="layui-card-header">
                                         <a class="ellipsis" href="">${collect.note.title}</a>
                                         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                                        <button class="layui-btn layui-btn-xs" type="button" onclick="unCollect('${collect.customer.id}','${collect.id}')">取消收藏</button>
+                                        <button class="layui-btn layui-btn-xs" type="button" onclick="unCollect('${collect.customer.id}','${collect.note.id}')">取消收藏</button>
                                     </div>
                                     <div class="layui-card-body layui-inline layui-text">
 										${collect.note.content}
@@ -64,8 +64,8 @@
 				}
 			});
 
-			function unCollect(cusid,colid) {
-				$.post("/delCollect.do",{cusid: cusid,colid: colid},function (data) {
+			function unCollect(cusid,noteid) {
+				$.post("/delCollect.do",{cusid: cusid,noteid: noteid},function (data) {
 					if(data.length==0){
 					    lyr.msg("取消收藏成功");
 					}

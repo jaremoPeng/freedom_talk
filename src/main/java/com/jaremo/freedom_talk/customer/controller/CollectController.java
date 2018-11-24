@@ -44,13 +44,15 @@ public class CollectController {
 
     @RequestMapping("/delCollect.do")
     @ResponseBody
-    public String delCollect(String cusid,String colid){
+    public String delCollect(String cusid,String noteid){
         Customer customer = new Customer();
         customer.setId(cusid);
 
+        Note note = new Note();
+        note.setId(Integer.parseInt(noteid));
         Collect collect = new Collect();
         collect.setCustomer(customer);
-        collect.setId(Integer.parseInt(colid));
+        collect.setNote(note);
 
         collectService.deleteCollect(collect);
 
