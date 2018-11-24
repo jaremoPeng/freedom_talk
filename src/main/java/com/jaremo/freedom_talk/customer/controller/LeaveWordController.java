@@ -3,10 +3,12 @@ package com.jaremo.freedom_talk.customer.controller;
 import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.domain.LeaveWord;
 import com.jaremo.freedom_talk.customer.domain.LeaveWordReply;
+import com.jaremo.freedom_talk.customer.service.CustomerService;
 import com.jaremo.freedom_talk.customer.service.LeaveWordReplyService;
 import com.jaremo.freedom_talk.customer.service.LeaveWordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -27,6 +29,9 @@ public class LeaveWordController {
 
     @Autowired
     private LeaveWordReplyService leaveWordReplyService;
+
+    @Autowired
+    private CustomerService customerService;
 
     @RequestMapping("/lendlw.do")
     public void lendLeaveWord(){
@@ -93,5 +98,37 @@ public class LeaveWordController {
         leaveWordReply.setIsDelete(0);
 
         leaveWordReplyService.deleteLeaveWordReply(leaveWordReply);
+    }
+
+    @RequestMapping(value = "/gotoLeaveWorld.do")
+    public String gotoEditQue(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+
+        LeaveWord leaveWord = new LeaveWord();
+        leaveWord.setToCustomer(tempCustomer);
+        leaveWord.setIsDelete(1);
+
+        Map<Integer,List<LeaveWordReply>> map = new HashMap<>(); // 留言对应的留言回复(以留言id作键,留言回复类作值)
+
+        List<LeaveWord> leaveWords = leaveWordService.selectLwByCondition(leaveWord);
+        if(leaveWord!=null && leaveWords.size()!=0){
+            for (LeaveWord lw:leaveWords){
+                LeaveWordReply leaveWordReply = new LeaveWordReply();
+                leaveWordReply.setLeaveWord(lw);
+                leaveWordReply.setIsDelete(1);
+
+                List<LeaveWordReply> leaveWordReplies = leaveWordReplyService.selectLeaveWordReplyByCondition(leaveWordReply);
+                map.put(lw.getId(),leaveWordReplies);
+            }
+        }
+
+        // 根据时间排序
+        // 去出官方认证的记录
+        modelMap.addAttribute("leaveWordReplys",map); // 留言回复总
+        modelMap.addAttribute("leaveWords",leaveWords); // 留言
+        modelMap.addAttribute("now_customer",customers.get(0)); // 当前用户
+        return "leave_word";
     }
 }
