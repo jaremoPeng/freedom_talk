@@ -127,4 +127,13 @@ public class LeaveWordServiceImpl implements LeaveWordService {
         }
         return null;
     }
+
+    @Override
+    public boolean deleteUnLw(UnLeaveWord unLeaveWord) {
+        if(unLeaveWord.getFromCustomer()!=null && unLeaveWord.getToCustomer()!=null){
+            unLeaveWordDao.editUnLeaveWord(unLeaveWord);
+            return true;
+        }
+        return false;
+    }
 }

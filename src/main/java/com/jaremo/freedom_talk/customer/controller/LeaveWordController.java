@@ -114,6 +114,26 @@ public class LeaveWordController {
         return "";
     }
 
+    @RequestMapping(value = "/start_Lw.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String startLw(String fromid,String toid){
+        UnLeaveWord unLeaveWord = new UnLeaveWord();
+        Customer from = new Customer();
+        from.setId(fromid);
+        Customer to = new Customer();
+        to.setId(toid);
+
+        unLeaveWord.setFromCustomer(from);
+        unLeaveWord.setToCustomer(to);
+        unLeaveWord.setIsDelete(0);
+
+        boolean result = leaveWordService.deleteUnLw(unLeaveWord);
+        if (result){
+            return "";
+        }
+        return "failed";
+    }
+
     @RequestMapping(value = "/gotoLeaveWorld.do")
     public String gotoEditQue(String cus_id,ModelMap modelMap) { // 做一个中转
         Customer tempCustomer = new Customer();
@@ -138,6 +158,7 @@ public class LeaveWordController {
 
         UnLeaveWord unLeaveWord = new UnLeaveWord();
         unLeaveWord.setFromCustomer(tempCustomer);
+        unLeaveWord.setIsDelete(1);
         List<UnLeaveWord> unLeaveWordList = leaveWordService.selectUnLwByFromCustomer(unLeaveWord);
         // 根据时间排序(根据时间倒序)
         modelMap.addAttribute("leaveWords",leaveWords); // 留言

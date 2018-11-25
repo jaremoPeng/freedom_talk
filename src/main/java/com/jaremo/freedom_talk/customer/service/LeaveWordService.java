@@ -75,4 +75,13 @@ public interface LeaveWordService {
      * @return java.util.List<com.jaremo.freedom_talk.customer.domain.UnLeaveWord>
      */
     List<UnLeaveWord> selectUnLwByFromCustomer(UnLeaveWord unLeaveWord);
+
+    /**
+     * 功能描述 删除禁止留言的用户
+     * @author pyj
+     * @date 2018/11/5 0005
+     * @param unLeaveWord
+     * @return java.util.List<com.jaremo.freedom_talk.customer.domain.LeaveWord>
+     */
+    boolean deleteUnLw(UnLeaveWord unLeaveWord);
 }

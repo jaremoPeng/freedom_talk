@@ -147,7 +147,7 @@
                                                     </#if>
                                                 </a>
                                                 &emsp;&emsp;
-                                                <button class="layui-btn layui-btn-primary layui-btn-xs">解除禁止留言</button>
+                                                <button class="layui-btn layui-btn-primary layui-btn-xs" onclick="start_lw('${now_customer.id}','${unLeaveWord.toCustomer.id}')">解除禁止留言</button>
                                             </h4>
                                         </div>
                                     </li>
@@ -227,6 +227,16 @@
                     return;
                 }
                 lyr.msg("禁言失败");
+            });
+        }
+
+        function start_lw(fromid,toid) {
+            $.post("/start_Lw.do",{fromid:fromid,toid: toid},function (data) {
+                if(data.length==0){
+                    lyr.msg("解除禁言成功");
+                    return;
+                }
+                lyr.msg("解除禁言失败");
             });
         }
 
