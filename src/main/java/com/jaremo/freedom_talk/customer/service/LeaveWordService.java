@@ -1,6 +1,7 @@
 package com.jaremo.freedom_talk.customer.service;
 
 import com.jaremo.freedom_talk.customer.domain.LeaveWord;
+import com.jaremo.freedom_talk.customer.domain.UnLeaveWord;
 
 import java.util.List;
 
@@ -47,4 +48,22 @@ public interface LeaveWordService {
      * @return java.util.List<com.jaremo.freedom_talk.customer.domain.LeaveWord>
      */
     List<LeaveWord> selectLwByCondition(LeaveWord leaveWord);
+
+    /**
+     * 功能描述 添加禁止留言的用户
+     * @author pyj
+     * @date 2018/11/5 0005
+     * @param unLeaveWord
+     * @return java.util.List<com.jaremo.freedom_talk.customer.domain.LeaveWord>
+     */
+    boolean insertUnLw(UnLeaveWord unLeaveWord);
+
+    /**
+     * 功能描述 根据fromid和toid查询被禁的用户
+     * @author pyj
+     * @date 2018/11/5 0005
+     * @param unLeaveWord
+     * @return java.util.List<com.jaremo.freedom_talk.customer.domain.LeaveWord>
+     */
+    UnLeaveWord selectUnLwById(UnLeaveWord unLeaveWord);
 }

@@ -2,6 +2,7 @@ package com.jaremo.freedom_talk.customer.dao;
 
 import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.domain.LeaveWord;
+import com.jaremo.freedom_talk.customer.domain.LeaveWordReply;
 import com.jaremo.freedom_talk.customer.provider.LeaveWordProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -38,7 +39,8 @@ public interface LeaveWordDao {
             @Result(property = "toCustomer",column = "to_id",javaType = Customer.class, one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
             @Result(property = "time",column = "lw_time"),
             @Result(property = "isStart",column = "isStart"),
-            @Result(property = "isDelete",column = "isDelete")
+            @Result(property = "isDelete",column = "isDelete"),
+            @Result(property = "leaveWordReplyList",column = "lw_id",javaType = List.class,many = @Many(select = "com.jaremo.freedom_talk.customer.dao.LeaveWordReplyDao.findLeaveWordReplyByLwid"))
     })
     @SelectProvider(type = LeaveWordProvider.class , method = "findLeaveWordByCondition")
     List<LeaveWord> findLeaveWordByCondition(@Param("leaveWord") LeaveWord leaveWord);

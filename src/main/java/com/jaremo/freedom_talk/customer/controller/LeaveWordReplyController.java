@@ -7,6 +7,8 @@ import com.jaremo.freedom_talk.customer.service.LeaveWordReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @描述: 留言回复类的控制层
@@ -19,26 +21,30 @@ public class LeaveWordReplyController {
     @Autowired
     private LeaveWordReplyService leaveWordReplyService;
 
-    @RequestMapping("/lend_lwr.do")
-    public void lendLeaveWordReply(){
+    @RequestMapping(value = "/lend_lwr.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String lendLeaveWordReply(Integer lwid,String fromid,String toid,String content){
 
         LeaveWordReply leaveWordReply = new LeaveWordReply();
-        leaveWordReply.setReplyContent("你禁我言干啥?");
+        leaveWordReply.setReplyContent(content);
 
         LeaveWord leaveWord = new LeaveWord(); // 回复哪条留言
-        leaveWord.setId(3);
+        leaveWord.setId(lwid);
 
         Customer fromCustomer = new Customer();
-        fromCustomer.setId("b");
+        fromCustomer.setId(fromid);
         Customer toCustomer = new Customer();
-        toCustomer.setId("a");
+        toCustomer.setId(toid);
 
         leaveWordReply.setLeaveWord(leaveWord);
         leaveWordReply.setFromCustomer(fromCustomer);
         leaveWordReply.setToCustomer(toCustomer);
 
-        leaveWordReplyService.insertLeaveWordReply(leaveWordReply);
-
+        boolean result = leaveWordReplyService.insertLeaveWordReply(leaveWordReply);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 
     @RequestMapping("/delete_lwr.do")

@@ -37,4 +37,16 @@ public interface LeaveWordReplyDao {
 
     @UpdateProvider(type = LeaveWordReplyProvider.class,method = "editLeaveWordReply")
     void removeLeaveWordReply(@Param("leaveWordReply") LeaveWordReply leaveWordReply);
+
+    @Results({
+            @Result(id = true,property = "id",column = "lwr_id"),
+            @Result(property = "leaveWord",column = "leaveword_id",javaType = LeaveWord.class,one = @One(select = "com.jaremo.freedom_talk.customer.dao.LeaveWordDao.findLeaveWordById")),
+            @Result(property = "fromCustomer",column = "from_id",javaType = Customer.class,one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
+            @Result(property = "toCustomer",column = "to_id",javaType = Customer.class,one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
+            @Result(property = "replyContent",column = "lwr_content"),
+            @Result(property = "replyTime",column = "lwr_time"),
+            @Result(property = "isDelete",column = "isDelete")
+    })
+    @Select("select * from tb_lwreply where leaveword_id=#{lw_id} and isDelete=1")
+    List<LeaveWordReply> findLeaveWordReplyByLwid(Integer lw_id);
 }

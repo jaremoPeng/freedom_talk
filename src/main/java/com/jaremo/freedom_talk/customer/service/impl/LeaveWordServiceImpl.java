@@ -92,4 +92,26 @@ public class LeaveWordServiceImpl implements LeaveWordService {
         List<LeaveWord> leaveWordList = leaveWordDao.findLeaveWordByCondition(leaveWord);
         return leaveWordList;
     }
+
+    @Override
+    public boolean insertUnLw(UnLeaveWord unLeaveWord) {
+        UnLeaveWord checkUnlw = selectUnLwById(unLeaveWord);
+        if(checkUnlw!=null){ // 判断是否存在
+            if(checkUnlw.getIsDelete()==0){
+                checkUnlw.setIsDelete(1);
+                unLeaveWordDao.editUnLeaveWord(checkUnlw);
+                return true;
+            }
+        }
+        if(checkUnlw==null){
+            unLeaveWordDao.addUnleaveWord(unLeaveWord);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public UnLeaveWord selectUnLwById(UnLeaveWord unLeaveWord) {
+        return unLeaveWordDao.findUnLeaveWordByCondition(unLeaveWord).get(0);
+    }
 }

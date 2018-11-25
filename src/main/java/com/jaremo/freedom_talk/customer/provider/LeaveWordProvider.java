@@ -52,6 +52,8 @@ public class LeaveWordProvider {
         if(leaveWord.getIsDelete()!=null){
             sql.SET("isDelete=#{leaveWord.isDelete}");
         }
+        sql.WHERE("lw_id=#{leaveWord.id}");
+        sql.AND();
         sql.WHERE("from_id=#{leaveWord.fromCustomer.id}");
         sql.AND();
         sql.WHERE("to_id=#{leaveWord.toCustomer.id}");

@@ -1,5 +1,6 @@
 package com.jaremo.freedom_talk.customer.domain;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,6 +17,7 @@ public class LeaveWord {
     private String time; // 留言时间
     private Integer isStart; // 是否开启留言板(指留言者是否开启留言板)
     private Integer isDelete; // 是否删除
+    private List<LeaveWordReply> leaveWordReplyList; // 关于这条留言的所有回复
 
     @Override
     public String toString() {
@@ -27,6 +29,7 @@ public class LeaveWord {
                 ", time='" + time + '\'' +
                 ", isStart=" + isStart +
                 ", isDelete=" + isDelete +
+                ", leaveWordReplyList=" + leaveWordReplyList +
                 '}';
     }
 
@@ -41,13 +44,14 @@ public class LeaveWord {
                 Objects.equals(toCustomer, leaveWord.toCustomer) &&
                 Objects.equals(time, leaveWord.time) &&
                 Objects.equals(isStart, leaveWord.isStart) &&
-                Objects.equals(isDelete, leaveWord.isDelete);
+                Objects.equals(isDelete, leaveWord.isDelete) &&
+                Objects.equals(leaveWordReplyList, leaveWord.leaveWordReplyList);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, content, fromCustomer, toCustomer, time, isStart, isDelete);
+        return Objects.hash(id, content, fromCustomer, toCustomer, time, isStart, isDelete, leaveWordReplyList);
     }
 
     public Integer getId() {
@@ -105,5 +109,13 @@ public class LeaveWord {
 
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public List<LeaveWordReply> getLeaveWordReplyList() {
+        return leaveWordReplyList;
+    }
+
+    public void setLeaveWordReplyList(List<LeaveWordReply> leaveWordReplyList) {
+        this.leaveWordReplyList = leaveWordReplyList;
     }
 }
