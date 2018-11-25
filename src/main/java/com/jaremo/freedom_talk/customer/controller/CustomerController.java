@@ -341,6 +341,5 @@ public class CustomerController {
         question.setId(question_id);
         customer.setQuestion(question);
         customerService.updateCustomer(customer);
-
     }
 }

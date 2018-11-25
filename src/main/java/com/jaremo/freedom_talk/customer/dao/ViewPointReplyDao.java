@@ -37,4 +37,15 @@ public interface ViewPointReplyDao {
     @SelectProvider(type = ViewPointReplyProvider.class,method = "findAllByCondition")
     List<ViewPointReply> findAllByCondition(@Param("viewPointReply") ViewPointReply viewPointReply);
 
+    @Results({
+            @Result(property = "id",column = "vpr_id",id = true),
+            @Result(property = "content",column = "vpr_content"),
+            @Result(property = "time",column = "vpr_time"),
+            @Result(property = "fromCustomer",column = "from_id",javaType = Customer.class , one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
+            @Result(property = "toCustomer",column = "to_id",javaType = Customer.class , one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
+            @Result(property = "viewPoint",column = "viewpoint_id",javaType = ViewPoint.class,one = @One(select = "com.jaremo.freedom_talk.customer.dao.ViewPointDao.findViewPointById")),
+            @Result(property = "isDelete",column = "isDelete")
+    })
+    @Select("select * from tb_vpreply where viewpoint_id=#{vp_id}")
+    List<ViewPointReply> findAllByVPId(Integer vp_id);
 }

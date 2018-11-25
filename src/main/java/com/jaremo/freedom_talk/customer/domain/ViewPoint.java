@@ -1,5 +1,6 @@
 package com.jaremo.freedom_talk.customer.domain;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,6 +16,7 @@ public class ViewPoint {
     private Note note; // 哪篇帖子
     private String time; // 发表时间
     private Integer isDelete; // 是否删除
+    private List<ViewPointReply> viewPointReplyList; // 该评论的所有回复
 
     @Override
     public String toString() {
@@ -25,6 +27,7 @@ public class ViewPoint {
                 ", note=" + note +
                 ", time='" + time + '\'' +
                 ", isDelete=" + isDelete +
+                ", viewPointReplyList=" + viewPointReplyList +
                 '}';
     }
 
@@ -38,13 +41,14 @@ public class ViewPoint {
                 Objects.equals(customer, viewPoint.customer) &&
                 Objects.equals(note, viewPoint.note) &&
                 Objects.equals(time, viewPoint.time) &&
-                Objects.equals(isDelete, viewPoint.isDelete);
+                Objects.equals(isDelete, viewPoint.isDelete) &&
+                Objects.equals(viewPointReplyList, viewPoint.viewPointReplyList);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, content, customer, note, time, isDelete);
+        return Objects.hash(id, content, customer, note, time, isDelete, viewPointReplyList);
     }
 
     public Integer getId() {
@@ -94,5 +98,13 @@ public class ViewPoint {
 
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public List<ViewPointReply> getViewPointReplyList() {
+        return viewPointReplyList;
+    }
+
+    public void setViewPointReplyList(List<ViewPointReply> viewPointReplyList) {
+        this.viewPointReplyList = viewPointReplyList;
     }
 }

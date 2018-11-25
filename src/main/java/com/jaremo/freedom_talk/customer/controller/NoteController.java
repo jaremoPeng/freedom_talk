@@ -1,11 +1,19 @@
 package com.jaremo.freedom_talk.customer.controller;
 
 import com.jaremo.freedom_talk.background.domain.Category;
+import com.jaremo.freedom_talk.background.service.CategoryService;
+import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.domain.Note;
+import com.jaremo.freedom_talk.customer.domain.ViewPoint;
+import com.jaremo.freedom_talk.customer.service.CustomerService;
 import com.jaremo.freedom_talk.customer.service.NoteService;
+import com.jaremo.freedom_talk.customer.service.ViewPointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -20,18 +28,25 @@ public class NoteController {
     @Autowired
     private NoteService noteService;
 
-    @RequestMapping("/lendNote.do")
-    public void lendNote(){
-        Note note = new Note();
+    @Autowired
+    private CustomerService customerService;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private ViewPointService viewPointService;
+
+    @RequestMapping(value = "/lendNote.do",method = RequestMethod.POST)
+    @ResponseBody
+    public void lendNote(String cusid,Note note,Integer category_id){
         Category category = new Category();
-        category.setId(2);
+        category.setId(category_id);
 
         note.setCategory(category);
-        note.setContent("十年前，在那个优秀得分手井喷的年代，科比，艾弗森他们为我们上演了无数次得分盛宴，他们将个人英雄主义演绎到极致，一场场飙分大战即使到现在很多人也记忆犹新。而如今，他们已离开了NBA，而联盟也不再由得分后卫来接管，我们能欣赏到的高分盛宴越来越少，那么现役50分先生还有几人？且随我一同来看！");
-        note.setTitle("【盘点现役50+分俱乐部成员】震惊，没想到他竟是50分先生！");
+        // 帖子的图片功能尚未完成
 
-        boolean result = noteService.insertNote(note, "a");
+        boolean result = noteService.insertNote(note, cusid);
 
         if(result){
             System.out.println("添加帖子成功");
@@ -40,14 +55,20 @@ public class NoteController {
         }
     }
 
-    @RequestMapping("/delNote.do")
-    public void delNote(){
+    @RequestMapping(value = "/delNote.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String delNote(Integer noteid){
         Note note = new Note();
-        note.setId(3);
+        note.setId(noteid);
         note.setIsDelete(0);
 
-        noteService.updateNote(note);
+        boolean result = noteService.updateNote(note);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
+
     @RequestMapping("/editNote.do")
     public void editNote(){
         Note note = new Note();
@@ -57,15 +78,49 @@ public class NoteController {
 
         noteService.updateNote(note);
     }
-    @RequestMapping("/queryNote.do")
-    public void queryNote(){
+
+    @RequestMapping(value = "/gotoNoteList.do")
+    public String gotoNoteList(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
         Note note = new Note();
-        note.setTitle("hello");
-//        note.setId(3);
+        note.setCustomer(tempCustomer);
+        note.setIsDelete(1);
 
         List<Note> noteList = noteService.selectAllByCondition(note);
-        System.out.println(noteList);
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
+        modelMap.addAttribute("noteList",noteList);
+        return "note_list";
+    }
+
+    @RequestMapping(value = "/gotoNoteAdd.do")
+    public String gotoNoteAdd(String cus_id,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(cus_id);
+
+        Category category = new Category();
+        List<Category> categoryList = categoryService.selectAllByCondition(category);
+
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
+        modelMap.addAttribute("categoryList",categoryList);
+        return "note_add";
     }
 
 
+    @RequestMapping(value = "/gotoNoteDetail.do")
+    public String gotoNoteDetail(Integer note_id,ModelMap modelMap) { // 做一个中转
+        Note note = new Note();
+        note.setId(note_id);
+
+        ViewPoint viewPoint = new ViewPoint();
+        viewPoint.setNote(note);
+        List<ViewPoint> viewPointList = viewPointService.selectAllByCondition(viewPoint);
+
+        List<Note> noteList = noteService.selectAllByCondition(note);
+        modelMap.addAttribute("note",noteList.get(0));
+        modelMap.addAttribute("viewPointList",viewPointList);
+        return "note_detail";
+    }
 }

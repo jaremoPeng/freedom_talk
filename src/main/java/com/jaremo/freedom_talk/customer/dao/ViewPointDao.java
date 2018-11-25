@@ -30,7 +30,8 @@ public interface ViewPointDao {
             @Result(property = "time",column = "vp_time"),
             @Result(property = "customer",column = "from_id",javaType = Customer.class , one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
             @Result(property = "note",column = "note_id",javaType = Note.class,one = @One(select = "com.jaremo.freedom_talk.customer.dao.NoteDao.findNoteById")),
-            @Result(property = "isDelete",column = "isDelete")
+            @Result(property = "isDelete",column = "isDelete"),
+            @Result(property = "viewPointReplyList",column = "vp_id",javaType = List.class,many = @Many(select = "com.jaremo.freedom_talk.customer.dao.ViewPointReplyDao.findAllByVPId"))
     })
     @SelectProvider(type = ViewPointProvider.class,method = "findAllByCondition")
     List<ViewPoint> findAllByCondition(@Param("viewPoint") ViewPoint viewPoint);
@@ -41,7 +42,8 @@ public interface ViewPointDao {
             @Result(property = "time",column = "vp_time"),
             @Result(property = "customer",column = "from_id",javaType = Customer.class , one = @One(select = "com.jaremo.freedom_talk.customer.dao.CustomerDao.findCustomerById")),
             @Result(property = "note",column = "note_id",javaType = Note.class,one = @One(select = "com.jaremo.freedom_talk.customer.dao.NoteDao.findNoteById")),
-            @Result(property = "isDelete",column = "isDelete")
+            @Result(property = "isDelete",column = "isDelete"),
+            @Result(property = "viewPointReplyList",column = "vp_id",javaType = List.class,many = @Many(select = "com.jaremo.freedom_talk.customer.dao.ViewPointReplyDao.findAllByVPId"))
     })
     @Select("select * from tb_viewpoint where vp_id=#{id}")
     ViewPoint findViewPointById(Integer id);
