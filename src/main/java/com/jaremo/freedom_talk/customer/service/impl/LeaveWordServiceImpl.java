@@ -112,6 +112,19 @@ public class LeaveWordServiceImpl implements LeaveWordService {
 
     @Override
     public UnLeaveWord selectUnLwById(UnLeaveWord unLeaveWord) {
-        return unLeaveWordDao.findUnLeaveWordByCondition(unLeaveWord).get(0);
+        List<UnLeaveWord> unLeaveWordList = unLeaveWordDao.findUnLeaveWordByCondition(unLeaveWord);
+        if(unLeaveWordList!=null && unLeaveWordList.size()>0){
+            return unLeaveWordList.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public List<UnLeaveWord> selectUnLwByFromCustomer(UnLeaveWord unLeaveWord) {
+        List<UnLeaveWord> unLeaveWordList = unLeaveWordDao.findUnLeaveWordByCondition(unLeaveWord);
+        if(unLeaveWordList!=null && unLeaveWordList.size()>0){
+            return unLeaveWordList;
+        }
+        return null;
     }
 }

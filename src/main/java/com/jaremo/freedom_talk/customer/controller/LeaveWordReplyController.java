@@ -47,13 +47,18 @@ public class LeaveWordReplyController {
         return "failed";
     }
 
-    @RequestMapping("/delete_lwr.do")
-    public void deleteLeaveWordReply(){
+    @RequestMapping(value = "/delete_lwr.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteLeaveWordReply(Integer lwrid){
         // 删除留言回复
         LeaveWordReply leaveWordReply = new LeaveWordReply();
-        leaveWordReply.setId(1);
+        leaveWordReply.setId(lwrid);
         leaveWordReply.setIsDelete(0);
 
-        leaveWordReplyService.deleteLeaveWordReply(leaveWordReply);
+        boolean result = leaveWordReplyService.deleteLeaveWordReply(leaveWordReply);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 }

@@ -27,6 +27,10 @@
 		<div class="layui-container">
 			<div class="layui-row layui-col-space5">
 				<div class="layui-col-md3">
+                    &emsp;
+                    <br>
+                    &emsp;
+                    <br>
                     <div id="reply_page" class="layui-card" style="border: 1px solid lightgray;display: none;">
                         <div class="layui-card-header">
                             回复 - <font id="reply_name"></font> :
@@ -64,13 +68,13 @@
                                             &emsp;&emsp;<u>${leaveWord.content}</u>
                                         </p>
 
-                                        <small>时间: ${leaveWord.time}</small>
+                                        <small>时间: ${leaveWord.time}</small>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                                         <button class="layui-btn layui-btn-primary layui-btn-xs"
                                                 onclick="showpage('${now_customer.id}'
                                                         ,'${leaveWord.fromCustomer.id}'
                                                         ,'${leaveWord.id}'
                                                         ,'<#if leaveWord.fromCustomer.name??>${leaveWord.fromCustomer.name}<#else >${leaveWord.fromCustomer.loginName}</#if>')">回复</button>
-
+                                        <br>&emsp;&emsp;<br>
                                         <#if leaveWord.leaveWordReplyList??>
                                         <div class="layui-card layui-text" style="border: 1px solid lightgray;">
                                             <div class="layui-card-header">
@@ -104,7 +108,7 @@
                                                                     ,'${leaveWord.id}'
                                                                     ,'<#if lwr.fromCustomer.name??>${lwr.fromCustomer.name}<#else >${lwr.fromCustomer.loginName}</#if>')">回复</button>
                                                             <#if leaveWord.toCustomer.id==now_customer.id>
-                                                                &emsp;<button class="layui-btn layui-btn-primary layui-btn-xs">删除</button>
+                                                                &emsp;<button class="layui-btn layui-btn-primary layui-btn-xs" onclick="del_lwr('${lwr.id}')">删除</button>
                                                             </#if>
                                                         </p>
                                                     </div>
@@ -124,8 +128,34 @@
 					</#if>
 				</div>
 				<div class="layui-col-md3">
-
-				</div>
+                    <h3><strong>被禁止留言的用户:</strong></h3>
+                    &emsp;
+                    <br>
+                    <ul class="layui-timeline">
+                        <#if unLeaveWordList??>
+                            <#if (unLeaveWordList?size>0)>
+                                <#list unLeaveWordList as unLeaveWord>
+                                    <li class="layui-timeline-item">
+                                        <i class="layui-icon layui-timeline-axis"></i>
+                                        <div class="layui-timeline-content layui-text">
+                                            <h4 class="layui-timeline-title">
+                                                <a href="/gotoCusDetail.do?cus_id=${unLeaveWord.toCustomer.id}">
+                                                    <#if unLeaveWord.toCustomer.name??>
+                                                        ${unLeaveWord.toCustomer.name}
+                                                        <#else>
+                                                            ${unLeaveWord.toCustomer.loginName}
+                                                    </#if>
+                                                </a>
+                                                &emsp;&emsp;
+                                                <button class="layui-btn layui-btn-primary layui-btn-xs">解除禁止留言</button>
+                                            </h4>
+                                        </div>
+                                    </li>
+                                </#list>
+                            </#if>
+                        </#if>
+                    </ul>
+                </div>
 			</div>
 		</div>
 
@@ -180,6 +210,16 @@
             });
         }
 
+        function del_lwr(lwrid) {
+            $.post("/delete_lwr.do",{lwrid: lwrid},function (data) {
+                if(data.length==0){
+                    lyr.msg("留言回复删除成功");
+                    return;
+                }
+                lyr.msg("留言回复删除失败");
+            });
+        }
+
         function un_lw(fromid,toid) {
             $.post("/addUnLw.do",{fromid:fromid ,toid: toid},function (data) {
                 if(data.length==0){
@@ -191,9 +231,9 @@
         }
 
         function reply() {
-            var fromid = $("input[name='fromid']").val(fromid);
-            var toid = $("input[name='toid']").val(toid);
-            var lwid = $("input[name='lwid']").val(lwid);
+            var fromid = $("input[name='fromid']").val();
+            var toid = $("input[name='toid']").val();
+            var lwid = $("input[name='lwid']").val();
 
             var rcontent = $("#reply_content").val();
             if(rcontent.length!=0){

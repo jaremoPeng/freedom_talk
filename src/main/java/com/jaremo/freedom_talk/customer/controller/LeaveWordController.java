@@ -98,6 +98,7 @@ public class LeaveWordController {
         leaveWordReplyService.deleteLeaveWordReply(leaveWordReply);
         return "";
     }
+
     @RequestMapping(value = "/addUnLw.do",method = RequestMethod.POST)
     @ResponseBody
     public String editlwIsDelete(String fromid,String toid){
@@ -134,9 +135,13 @@ public class LeaveWordController {
             }
         }
         leaveWords.remove(temp);
+
+        UnLeaveWord unLeaveWord = new UnLeaveWord();
+        unLeaveWord.setFromCustomer(tempCustomer);
+        List<UnLeaveWord> unLeaveWordList = leaveWordService.selectUnLwByFromCustomer(unLeaveWord);
         // 根据时间排序(根据时间倒序)
         modelMap.addAttribute("leaveWords",leaveWords); // 留言
-
+        modelMap.addAttribute("unLeaveWordList",unLeaveWordList); // 禁止留言的用户列表
         modelMap.addAttribute("now_customer",customers.get(0)); // 当前用户
         return "leave_word";
     }

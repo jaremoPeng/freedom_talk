@@ -68,6 +68,7 @@ public class LeaveWordReplyServiceImpl implements LeaveWordReplyService {
     public boolean deleteLeaveWordReply(LeaveWordReply leaveWordReply) {
         if(leaveWordReply!=null){
             leaveWordReplyDao.removeLeaveWordReply(leaveWordReply);
+            return true;
         }
         return false;
     }
