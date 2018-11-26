@@ -6,6 +6,8 @@ import com.jaremo.freedom_talk.customer.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -20,20 +22,22 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
-    @RequestMapping("/lendChat.do")
-    public void lendChat(){
+    @RequestMapping(value = "/lendChat.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String lendChat(String fromid,String toid,Chat chat){
         Customer fromCustomer = new Customer();
-        fromCustomer.setId("a");
+        fromCustomer.setId(fromid);
         Customer toCustomer = new Customer();
-        toCustomer.setId("c");
+        toCustomer.setId(toid);
 
-        Chat chat = new Chat();
         chat.setFromCustomer(fromCustomer);
         chat.setToCustomer(toCustomer);
-        chat.setContent("hello , i'm a!");
 
-        chatService.insertChat(chat);
-
+        boolean result = chatService.insertChat(chat);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 
     @RequestMapping("/delChat.do")

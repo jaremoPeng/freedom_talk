@@ -272,15 +272,6 @@ public class CustomerController {
         return "center";
     }
 
-    @RequestMapping(value = "/gotoHailFellow.do")
-    public String gotoHailFellow(String cus_id,ModelMap modelMap) { // 做一个中转
-        Customer tempCustomer = new Customer();
-        tempCustomer.setId(cus_id);
-        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
-        modelMap.addAttribute("now_customer",customers.get(0));
-        return "hail_fellow";
-    }
-
     @RequestMapping(value = "/gotoMeans.do")
     public String gotoMeans(String cus_id,ModelMap modelMap) { // 做一个中转
         Customer tempCustomer = new Customer();

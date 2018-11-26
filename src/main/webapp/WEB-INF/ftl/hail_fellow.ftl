@@ -20,42 +20,42 @@
 					<div class="layui-card layui-text" style="border: 1px solid lightgray;">
 						<div class="layui-card-header">好友列表</div>
 						<div class="layui-card-body">
-							<div class="hf" style="border: 1px solid lightgray;">
-								&emsp;&emsp;
-								<a href="">
-									<img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 40px;height: 40px;">
-								</a>
-								<sup><a href="">jaremo</a></sup> &emsp;
-								<small class="hf_substr">数据福克斯设计费开始看风景看见空间看空间反倒是看见看见</small> &emsp;
-								<button id="to_chat" class="layui-btn layui-btn-xs">与TA聊天</button>
-								<button id="edit_remarks" class="layui-btn layui-btn-primary layui-btn-xs">修改备注</button>
-								<button id="del_hf" class="layui-btn layui-btn-danger layui-btn-xs"> 删除好友</button>
-							</div>
-							<br />
-							<div class="hf" style="border: 1px solid lightgray;">
-								&emsp;&emsp;
-								<a href="">
-									<img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 40px;height: 40px;">
-								</a>
-								<sup><a href="">jaremo</a></sup> &emsp;
-								<small class="hf_substr">数据福克斯设计费开始看风景看见空间看空间反倒是看见看见</small> &emsp;
-								<button class="layui-btn layui-btn-xs">与TA聊天</button>
-								<button class="layui-btn layui-btn-primary layui-btn-xs">修改备注</button>
-								<button class="layui-btn layui-btn-danger layui-btn-xs"> 删除好友</button>
-							</div>
-							<br />
-							<div class="hf" style="border: 1px solid lightgray;">
-								&emsp;&emsp;
-								<a href="">
-									<img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 40px;height: 40px;">
-								</a>
-								<sup><a href="">jaremo</a></sup> &emsp;
-								<small class="hf_substr">数据福克斯设计费开始看风景看见空间看空间反倒是看见看见</small> &emsp;
-								<button class="layui-btn layui-btn-xs">与TA聊天</button>
-								<button class="layui-btn layui-btn-primary layui-btn-xs">修改备注</button>
-								<button class="layui-btn layui-btn-danger layui-btn-xs">删除好友</button>
-							</div>
-							<br />
+							<#if hailFellows??>
+								<#if (hailFellows?size>0)>
+									<#list hailFellows as hailFellow>
+									    <div class="hf" style="border: 1px solid lightgray;">
+                                            &emsp;&emsp;
+                                            <a href="/gotoCusDetail.do?cus_id=${hailFellow.toCustomer.id}">
+                                                <img src="${hailFellow.toCustomer.img}" class="layui-nav-img" style="width: 40px;height: 40px;">
+                                            </a>
+                                            <sup><a href="/gotoCusDetail.do?cus_id=${hailFellow.toCustomer.id}">
+												<#if hailFellow.remarks??>
+													${hailFellow.remarks}
+													<#else >
+														<#if hailFellow.toCustomer.name??>
+															${hailFellow.toCustomer.name}
+															<#else>
+																${hailFellow.toCustomer.loginName}
+														</#if>
+												</#if>
+											</a></sup> &emsp;
+                                            <small class="hf_substr">
+												<#if hailFellow.toCustomer.suggest??>
+													${hailFellow.toCustomer.suggest}
+												</#if>
+											</small> &emsp;
+                                            <button id="to_chat" class="layui-btn layui-btn-xs" onclick="to_chat('${now_customer.id}','${hailFellow.toCustomer.id}','<#if hailFellow.remarks??>${hailFellow.remarks}<#else ><#if hailFellow.toCustomer.name??>${hailFellow.toCustomer.name}<#else>${hailFellow.toCustomer.loginName}</#if></#if>')">与TA聊天</button>
+                                            <button id="edit_remarks" class="layui-btn layui-btn-primary layui-btn-xs" onclick="edit_remarks('${now_customer.id}','${hailFellow.toCustomer.id}','<#if hailFellow.remarks??>${hailFellow.remarks}<#else ><#if hailFellow.toCustomer.name??>${hailFellow.toCustomer.name}<#else>${hailFellow.toCustomer.loginName}</#if></#if>')">修改备注</button>
+                                            <button id="del_hf" class="layui-btn layui-btn-danger layui-btn-xs" onclick="del_hf('${now_customer.id}','${hailFellow.toCustomer.id}')"> 删除好友</button>
+                                        </div>
+										<br />
+									</#list>
+									<#else>
+										你还没有好友...
+								</#if>
+								<#else>
+									你还没有好友...
+							</#if>
 						</div>
 					</div>
 				</div>
@@ -66,9 +66,12 @@
 		</div>
 
 		<script>
+			var lyr;
 			layui.use('layer', function() {
 				var $ = layui.jquery,
 					layer = layui.layer;
+
+                lyr = layer;
 
 				$(".hf").each(function() { //遍历file_name中的每个子元素
 					    
@@ -80,48 +83,55 @@
 					}
 				});
 
-				$("#to_chat").on("click", function() {
-					layer.open({
-						type: 2,
-						title: '与- 某某  聊天中...',
-						shadeClose: true,
-						shade: false,
-						maxmin: true, //开启最大化最小化按钮
-						area: ['600px', '400px'],
-						content: '//127.0.0.1:8020/freedom_talk2/ftl/hf_chat.html'
-					});
-				});
-
-				$("#edit_remarks").on("click", function() {
-					layer.open({
-						type: 2,
-						title: '给好友- 某某  备注中...',
-						shadeClose: true,
-						shade: false,
-						maxmin: false, //开启最大化最小化按钮
-						area: ['400px', '200px'],
-						content: '//127.0.0.1:8020/freedom_talk2/ftl/hf_remarks.html'
-					});
-				});
-
-				$("#del_hf").on("click", function() {
-					layer.confirm('你确定删除该好友？', {
-						btn: ['确定', '取消'] //按钮
-					}, function() {
-						layer.msg('删除成功', {
-							icon: 1
-						});
-//						layer.msg('删除失败', {
-//							icon: 2
-//						});
-					}, function() {
-						layer.msg('就是嘛,你怎么忍心!!', {
-							time: 20000, //20s后自动关闭
-							btn: ['懂我', '无聊']
-						});
-					});
-				});
 			});
+
+			function edit_remarks(fromid,toid,name) {
+                lyr.open({
+                    type: 2,
+                    title: '给好友- '+name+'  备注中...',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: false, //开启最大化最小化按钮
+                    area: ['400px', '200px'],
+                    content: '/gotoHfremarks.do?fromid='+fromid+'&toid='+toid
+                });
+            }
+
+			function del_hf(fromid,toid) {
+                lyr.confirm('你确定删除该好友？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function() {
+                    $.post('/deleteHf.do',{fromid:fromid,toid:toid},function (data) {
+						if(data.length==0){
+                            lyr.msg('删除成功', {
+                                icon: 1
+                            });
+                            return;
+						}
+                        lyr.msg('删除失败', {
+                            icon: 2
+                        });
+                    });
+
+                }, function() {
+                    lyr.msg('取消成功', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了']
+                    });
+                });
+            }
+
+            function to_chat(fromid,toid,name) {
+                lyr.open({
+                    type: 2,
+                    title: '与- '+name+'  聊天中...',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['600px', '400px'],
+                    content: '/gotoHfchat.do?fromid='+fromid+'&toid='+toid
+                });
+            }
 		</script>
 	</body>
 
