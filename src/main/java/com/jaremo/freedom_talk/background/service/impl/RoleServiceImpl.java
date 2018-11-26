@@ -57,6 +57,8 @@ public class RoleServiceImpl implements RoleService{
     public boolean updateRole(Role role) {
         if(role!=null){
             roleDao.editRole(role);
+            rolePermRelationDao.removeRole(role.getId());
+            insertRole(role);
             return true;
         }
         return false;

@@ -50,7 +50,7 @@
 						</#if>
 						</tbody>
 					</table>
-					<button class="layui-btn layui-btn-xs" onclick="add_role('${role.id}')">添加</button>
+					<button class="layui-btn layui-btn-xs" onclick="add_role()">添加</button>
 				</div>
 				<div class="layui-col-md3">
 
@@ -68,7 +68,7 @@
 				lyr = layer;
 			});
 
-            function add_role(roleid) {
+            function add_role() {
                 lyr.open({
                     type: 2,
                     title: '',
@@ -76,7 +76,7 @@
                     shade: false,
                     maxmin: false, //开启最大化最小化按钮
                     area: ['600px', '300px'],
-                    content: '/gotoBgRoleAdd.do?roleid='+roleid
+                    content: '/gotoBgRoleAdd.do'
                 });
             }
 
@@ -96,7 +96,7 @@
 				lyr.confirm('确认删除？', {
 					btn: ['是', '否'] //按钮
 				}, function() {
-				    $.post("",{roleid:roleid},function (data) {
+				    $.post("/delRole.do",{roleid:roleid},function (data) {
 						if(data.length==0){
                             lyr.msg('删除成功', {
                                 icon: 1

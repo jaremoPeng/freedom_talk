@@ -34,7 +34,7 @@
 								<label class="layui-form-label">选择权限</label>
 								<div class="layui-input-block">
 									<!--disabled="disabled"禁选  有疑问? http://sun.faysunshine.com/layui/formSelects-v4/example/example_v4.html -->
-									<select id="perms" xm-select="selectId">
+									<select id="perms" name="perms" xm-select="selectId">
                                         <option value="">请选择权限</option>
 										<#if permissionList??>
 										    <#if (permissionList?size>0)>
@@ -71,12 +71,18 @@
 			function role_edit() {
 			    var roleid = $("#role_id").val();
 				var rolename = $("#role_name").val();
-				var perms = $("#perms").val();
+				var perms = formSelects.value('selectId','valStr');
 
 				if(rolename.length==0 || perms.length==0){
 				    lyr.msg("您还没选择权限,或者没有填写角色名");
 				}else{
-
+					$.post("/editRole.do",{roleid:roleid,rolename:rolename,perms:perms},function (data) {
+						if(data.length==0){
+                            lyr.msg("修改成功");
+						}else{
+                            lyr.msg("修改失败");
+						}
+                    });
 				}
             }
 		</script>

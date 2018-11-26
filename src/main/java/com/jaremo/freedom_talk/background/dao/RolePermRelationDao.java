@@ -23,4 +23,7 @@ public interface RolePermRelationDao {
 
     @Insert("insert into role_permission_relation (role_id,perm_id) values (#{rid},#{pid})")
     void addRolePermRelation(@Param("rid") Integer rid,@Param("pid") Integer pid);
+
+    @Delete("delete from role_permission_relation where role_id=#{rid}")
+    void removeRole(Integer rid);
 }

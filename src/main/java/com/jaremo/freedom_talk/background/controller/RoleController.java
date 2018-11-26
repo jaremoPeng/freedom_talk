@@ -56,20 +56,28 @@ public class RoleController {
         return "failed";
     }
 
-    @RequestMapping("/editRole.do")
+    @RequestMapping(value = "/editRole.do",method = RequestMethod.POST)
     @ResponseBody
-    public String editRole(){
+    public String editRole(Integer roleid,String rolename,String perms){
         Role role = new Role();
-        role.setName("admin");
-        role.setId(2850);
+        role.setName(rolename);
+        role.setId(roleid);
+        String[] split = perms.split(",");
+
+        List<Permission> permList = new ArrayList<>();
+        for(int i=0;i<split.length;i++){
+            Permission permission = new Permission();
+            permission.setId(Integer.parseInt(split[i]));
+            permList.add(permission);
+        }
+        role.setPermList(permList);
 
         roleService.updateRole(role);
         return null;
     }
     @RequestMapping("/gotoBgRoleAdd.do")
-    public String gotoBgRoleAdd(Integer roleid , ModelMap modelMap){
+    public String gotoBgRoleAdd(ModelMap modelMap){
         Role role = new Role();
-        role.setId(roleid);
         role.setIsDelete(1);
 
         List<Role> roles = roleService.selectRoleByCondition(role);
@@ -98,7 +106,6 @@ public class RoleController {
     @RequestMapping("/gotoBgRoleManage.do")
     public String gotoBgRoleManage(ModelMap modelMap){
         Role role = new Role();
-        role.setIsDelete(1);
         List<Role> roles = roleService.selectRoleByCondition(role);
         modelMap.addAttribute("roles",roles);
         return "bg_role_manage";
