@@ -28,19 +28,29 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td></td>
-								<td>1</td>
-								<td>customer</td>
-								<td>是</td>
-								<td>
-									<button onclick="del_name()" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-									<button onclick="edit_name()" class="layui-btn layui-btn-warm layui-btn-xs">修改</button>
-								</td>
-							</tr>
+						<#if roles??>
+						    <#if (roles?size>0)>
+						        <#list roles as role>
+						            <tr>
+                                        <td></td>
+                                        <td>${role.id}</td>
+                                        <td>${role.name}</td>
+                                        <td><#if role.isDelete==0>
+                                            是
+											<#else>
+											否
+                                        </#if></td>
+                                        <td>
+                                            <button onclick="del_role('${role.id}')" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
+                                            <button onclick="edit_role('${role.id}')" class="layui-btn layui-btn-warm layui-btn-xs">修改</button>
+                                        </td>
+                                    </tr>
+						        </#list>
+						    </#if>
+						</#if>
 						</tbody>
 					</table>
-					<button id='role_add' class="layui-btn layui-btn-xs">添加</button>
+					<button class="layui-btn layui-btn-xs" onclick="add_role('${role.id}')">添加</button>
 				</div>
 				<div class="layui-col-md3">
 
@@ -56,21 +66,21 @@
 					layer = layui.layer;
 
 				lyr = layer;
-				$("#role_add").on("click", function() {
-					layer.open({
-						type: 2,
-						title: '',
-						shadeClose: true,
-						shade: false,
-						maxmin: false, //开启最大化最小化按钮
-						area: ['600px', '300px'],
-						content: '//127.0.0.1:8020/freedom_talk2/ftl/bg_role_add.html'
-					});
-				});
-
 			});
 
-			function edit_name() {
+            function add_role(roleid) {
+                lyr.open({
+                    type: 2,
+                    title: '',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: false, //开启最大化最小化按钮
+                    area: ['600px', '300px'],
+                    content: '/gotoBgRoleAdd.do?roleid='+roleid
+                });
+            }
+
+			function edit_role(roleid) {
 				lyr.open({
 					type: 2,
 					title: '',
@@ -78,19 +88,27 @@
 					shade: false,
 					maxmin: false, //开启最大化最小化按钮
 					area: ['600px', '300px'],
-					content: '//127.0.0.1:8020/freedom_talk2/ftl/bg_role_edit.html'
+					content: '/gotoBgRoleEdit.do?roleid='+roleid
 				});
 			}
 
-			function del_name() {
+			function del_role(roleid) {
 				lyr.confirm('确认删除？', {
 					btn: ['是', '否'] //按钮
 				}, function() {
-					layer.msg('删除成功', {
-						icon: 1
-					});
+				    $.post("",{roleid:roleid},function (data) {
+						if(data.length==0){
+                            lyr.msg('删除成功', {
+                                icon: 1
+                            });
+						}else{
+                            lyr.msg('删除失败', {
+                                icon: 2
+                            });
+						}
+                    });
 				}, function() {
-					layer.msg('取消成功', {
+                    lyr.msg('取消成功', {
 						icon: 1
 					});
 				});

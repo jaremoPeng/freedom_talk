@@ -4,7 +4,10 @@ import com.jaremo.freedom_talk.background.domain.Announcement;
 import com.jaremo.freedom_talk.background.service.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -19,29 +22,44 @@ public class AnnouncementController {
     @Autowired
     private AnnouncementService announcementService;
 
-    @RequestMapping("/lendacm.do")
-    public void lendAnnouncement(){
+    @RequestMapping(value = "/lendacm.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String lendAnnouncement(String content){
         Announcement announcement = new Announcement();
-        announcement.setContent("请各大版主注意,本坛严禁发布涉黄,涉毒,邪教等恶劣性的文章内容,一经发现,将作永久封号处理!!!");
+        announcement.setContent(content);
 
-        announcementService.insertAnnouncement(announcement);
+        boolean result = announcementService.insertAnnouncement(announcement);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 
-    @RequestMapping("/deleteacm.do")
-    public void delAnnouncement(){
+    @RequestMapping(value = "/deleteacm.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String delAnnouncement(Integer acid){
         Announcement announcement = new Announcement();
-        announcement.setId(1);
+        announcement.setId(acid);
 
-        announcementService.deleteAnnouncement(announcement);
+        boolean result = announcementService.deleteAnnouncement(announcement);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 
-    @RequestMapping("/queryacm.do")
-    public void queryAnnouncement(){
-        Announcement announcement = new Announcement();
-        announcement.setId(1);
+    @RequestMapping("/gotoBgACAdd.do")
+    public String gotoBgACAdd(){
+        return "bg_ac_add";
+    }
 
+    @RequestMapping("/gotoBgACList.do")
+    public String gotoBgACList(ModelMap modelMap){
+        Announcement announcement = new Announcement();
+        announcement.setIsDelete(1);
         List<Announcement> announcements = announcementService.selectAllByCondition(announcement);
-        System.out.println(announcements);
+        modelMap.addAttribute("announcements",announcements);
+        return "bg_ac_list";
     }
 
 }

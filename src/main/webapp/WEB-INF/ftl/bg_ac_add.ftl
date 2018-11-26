@@ -24,11 +24,11 @@
 							<div class="layui-form-item layui-form-text">
 								<label class="layui-form-label">公告内容</label>
 								<div class="layui-input-block">
-									<textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+									<textarea id="content" placeholder="请输入内容" class="layui-textarea"></textarea>
 								</div>
 							</div>
 							&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;
-							<button class="layui-btn layui-btn-sm">添加</button>
+							<button class="layui-btn layui-btn-sm" type="button" onclick="add_ac()">添加</button>
 						</div>
 					</div>
 				</div>
@@ -37,6 +37,37 @@
 				</div>
 			</div>
 		</div>
+
+        <script>
+            var lyr;
+            layui.use(['table', 'layer'], function() {
+                var table = layui.table,
+                        layer=layui.layer;
+
+                lyr = layer;
+            });
+
+            function add_ac() {
+                var val = $("#content").val();
+                if(val.length==0){
+                    lyr.msg('请输入公告内容', {
+                        icon: 2
+                    });
+				}else{
+                    $.post("/lendacm.do",{content:val},function (data) {
+                        if(data.length==0){
+                            lyr.msg('添加成功', {
+                                icon: 1
+                            });
+                        }else{
+                            lyr.msg('添加失败', {
+                                icon: 2
+                            });
+                        }
+                    });
+				}
+            }
+        </script>
 	</body>
 
 </html>

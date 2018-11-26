@@ -29,30 +29,21 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td></td>
-								<td>2</td>
-								<td>体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育
-								体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育
-								体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育
-								体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育</td>
-								<td>2018-12-30 14:20:36</td>
-								<td>
-									<button class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-								</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td>2</td>
-								<td>体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育
-								体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育
-								体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育
-								体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育体育</td>
-								<td>2018-12-30 14:20:36</td>
-								<td>
-									<button onclick="del_name()" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-								</td>
-							</tr>
+							<#if announcements??>
+							    <#if (announcements?size>0)>
+							        <#list announcements as ac>
+							            <tr>
+                                            <td></td>
+                                            <td>${ac.id}</td>
+                                            <td>${ac.content}</td>
+                                            <td>${ac.time}</td>
+                                            <td>
+                                                <button class="layui-btn layui-btn-danger layui-btn-xs" onclick="del_ac('${ac.id}')">删除</button>
+                                            </td>
+                                        </tr>
+							        </#list>
+							    </#if>
+							</#if>
 						</tbody>
 					</table>
 				</div>
@@ -71,15 +62,23 @@
 				lyr = layer;
 			});
 			
-			function del_name() {
+			function del_ac(acid) {
 				lyr.confirm('确认删除？', {
 					btn: ['是', '否'] //按钮
 				}, function() {
-					layer.msg('删除成功', {
-						icon: 1
-					});
+					$.post("/deleteacm.do",{acid:acid},function (data) {
+						if(data.length==0){
+                            lyr.msg('删除成功', {
+                                icon: 1
+                            });
+						}else{
+                            lyr.msg('删除失败', {
+                                icon: 2
+                            });
+						}
+                    });
 				}, function() {
-					layer.msg('取消成功', {
+                    lyr.msg('取消成功', {
 						icon: 1
 					});
 				});

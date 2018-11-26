@@ -21,15 +21,15 @@
 						<div class="layui-card-header">修改分类: </div>
 
 						<div class="layui-card-body">
-							<input type="hidden" name="category_id" autocomplete="off" class="layui-input">
+							<input type="hidden" id="category_id" value="${category.id}" autocomplete="off" class="layui-input">
 							<div class="layui-form-item">
 								<label class="layui-form-label">分类名</label>
 								<div class="layui-input-block">
-									<input type="text" name="category_name" lay-verify="title" autocomplete="off" placeholder="请输入分类名" class="layui-input">
+									<input type="text" id="category_name" autocomplete="off" placeholder="请输入分类名" class="layui-input">
 								</div>
 							</div>
 							&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;
-							<button class="layui-btn layui-btn-sm">修改</button>
+							<button class="layui-btn layui-btn-sm" onclick="edit_cate()">修改</button>
 						</div>
 					</div>
 				</div>
@@ -38,6 +38,33 @@
 				</div>
 			</div>
 		</div>
+
+	<script>
+		var lyr;
+        layui.use(['table', 'layer'], function() {
+            var table = layui.table,
+                    layer = layui.layer;
+
+            lyr = layer;
+        });
+
+        function edit_cate() {
+            var id = $("#category_id").val();
+            var cate_name = $("#category_name").val();
+
+            if(cate_name.length==0){
+                lyr.msg("请输入分类名");
+			}else{
+                $.post("/editCategory.do",{catename: cate_name,cateid:id},function (data) {
+					if(data.length==0){
+                        lyr.msg("修改成功");
+					}else{
+                        lyr.msg("修改失败");
+					}
+                });
+			}
+        }
+	</script>
 	</body>
 
 </html>

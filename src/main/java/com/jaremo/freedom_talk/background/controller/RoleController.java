@@ -2,10 +2,14 @@ package com.jaremo.freedom_talk.background.controller;
 
 import com.jaremo.freedom_talk.background.domain.Permission;
 import com.jaremo.freedom_talk.background.domain.Role;
+import com.jaremo.freedom_talk.background.service.PermissionService;
 import com.jaremo.freedom_talk.background.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,9 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private PermissionService permissionService;
 
     @RequestMapping("/lendRole.do")
     public void lendRole(){
@@ -39,29 +46,61 @@ public class RoleController {
         roleService.insertRole(role);
     }
 
-    @RequestMapping("/delRole.do")
-    public void delRole(){
-//        Role role = new Role();
-//        role.setId(1);
-        roleService.deleteRole(2850);
+    @RequestMapping(value = "/delRole.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String delRole(Integer roleid){
+        boolean result = roleService.deleteRole(roleid);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 
     @RequestMapping("/editRole.do")
-    public void editRole(){
+    @ResponseBody
+    public String editRole(){
         Role role = new Role();
         role.setName("admin");
         role.setId(2850);
 
         roleService.updateRole(role);
+        return null;
     }
-
-    @RequestMapping("/queryRole.do")
-    public void queryRole(){
+    @RequestMapping("/gotoBgRoleAdd.do")
+    public String gotoBgRoleAdd(Integer roleid , ModelMap modelMap){
         Role role = new Role();
-        role.setId(2850);
+        role.setId(roleid);
         role.setIsDelete(1);
 
         List<Role> roles = roleService.selectRoleByCondition(role);
-        System.out.println(roles);
+        modelMap.addAttribute("role",roles.get(0));
+
+        Permission permission = new Permission();
+        List<Permission> permissionList = permissionService.selectAllByCondition(permission);
+        modelMap.addAttribute("permissionList",permissionList);
+        return "bg_role_add";
+    }
+
+    @RequestMapping("/gotoBgRoleEdit.do")
+    public String gotoBgRoleEdit(Integer roleid , ModelMap modelMap){
+        Role role = new Role();
+        role.setId(roleid);
+        role.setIsDelete(1);
+        List<Role> roles = roleService.selectRoleByCondition(role);
+        modelMap.addAttribute("role",roles.get(0));
+
+        Permission permission = new Permission();
+        List<Permission> permissionList = permissionService.selectAllByCondition(permission);
+        modelMap.addAttribute("permissionList",permissionList);
+        return "bg_role_edit";
+    }
+
+    @RequestMapping("/gotoBgRoleManage.do")
+    public String gotoBgRoleManage(ModelMap modelMap){
+        Role role = new Role();
+        role.setIsDelete(1);
+        List<Role> roles = roleService.selectRoleByCondition(role);
+        modelMap.addAttribute("roles",roles);
+        return "bg_role_manage";
     }
 }

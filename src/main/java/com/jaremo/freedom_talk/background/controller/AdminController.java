@@ -43,20 +43,6 @@ public class AdminController {
         return "bg_category_list";
     }
 
-    @RequestMapping("/gotoBgACAdd.do")
-    public String gotoBgACAdd(){
-        return "bg_ac_add";
-    }
-
-    @RequestMapping("/gotoBgACList.do")
-    public String gotoBgACList(){
-        return "bg_ac_list";
-    }
-
-    @RequestMapping("/gotoBgRoleManage.do")
-    public String gotoBgRoleManage(){
-        return "bg_role_manage";
-    }
 
     @RequestMapping("/gotoBgPermManage.do")
     public String gotoBgPermManage(){

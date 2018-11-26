@@ -23,20 +23,30 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @RequestMapping("/lendCategory.do")
-    public void lendCategory(){
+    @ResponseBody
+    public String lendCategory(String catename){
         Category category = new Category();
-        category.setName("社会");
+        category.setName(catename);
 
-        categoryService.insertCategory(category);
+        boolean result = categoryService.insertCategory(category);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 
-    @RequestMapping("/editCategory.do")
-    public void editCategory(){
+    @RequestMapping(value = "/editCategory.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String editCategory(Integer cateid,String catename){
         Category category = new Category();
-        category.setId(1);
-        category.setName("体育");
+        category.setId(cateid);
+        category.setName(catename);
 
-        categoryService.updateCategory(category);
+        boolean result = categoryService.updateCategory(category);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 
     @RequestMapping(value = "/editCate.do",method = RequestMethod.POST)

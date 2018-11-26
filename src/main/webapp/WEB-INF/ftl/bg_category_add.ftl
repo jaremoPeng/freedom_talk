@@ -24,11 +24,11 @@
 							<div class="layui-form-item">
 								<label class="layui-form-label">分类名</label>
 								<div class="layui-input-block">
-									<input type="text" name="category_name" lay-verify="title" autocomplete="off" placeholder="请输入分类名" class="layui-input">
+									<input type="text" id="category_name" lay-verify="title" autocomplete="off" placeholder="请输入分类名" class="layui-input">
 								</div>
 							</div>
 							&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;
-							<button class="layui-btn layui-btn-sm">添加</button>
+							<button class="layui-btn layui-btn-sm" onclick="addcate()">添加</button>
 						</div>
 					</div>
 				</div>
@@ -37,6 +37,32 @@
 				</div>
 			</div>
 		</div>
+
+        <script>
+            var lyr;
+            layui.use(['table', 'layer'], function() {
+                var table = layui.table,
+                        layer = layui.layer;
+
+                lyr = layer;
+            });
+
+            function addcate() {
+                var cate_name = $("#category_name").val();
+
+                if(cate_name.length==0){
+                    lyr.msg("请输入分类名");
+                }else{
+                    $.post("/lendCategory.do",{catename: cate_name},function (data) {
+                        if(data.length==0){
+                            lyr.msg("添加成功");
+                        }else{
+                            lyr.msg("添加失败");
+                        }
+                    });
+                }
+            }
+        </script>
 	</body>
 
 </html>
