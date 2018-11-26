@@ -100,7 +100,7 @@ public class CustomerController {
                         subject.login(token);
                         if (subject.isAuthenticated()) {
                             modelMap.addAttribute("now_customer",customers.get(0));
-                            if(customers.get(0).getType().equals("0")){
+                            if(customers.get(0).getType()==0){
                                 return "bg_index";
                             }
                             return "index";
@@ -108,7 +108,7 @@ public class CustomerController {
                             allErrors.add("登录失败");
                         }
                     } catch (AuthenticationException e) {
-                        allErrors.add("用户验证失败(可能原因有: <br>1.密码输入错误;<br>2该用户未注册[如实在还有问题,请发至邮箱 jaremo@163.com])");
+                        allErrors.add("用户验证失败(可能原因有: 1.密码输入错误;2该用户未注册[如实在还有问题,请发至邮箱 jaremo@163.com])");
                     }
                 }else{
                     allErrors.add("该用户已被禁用");

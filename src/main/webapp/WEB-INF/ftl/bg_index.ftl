@@ -18,7 +18,7 @@
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item">
 						<a href="javascript:;">
-							<img src="../img/j20.png" class="layui-nav-img"> DaJ
+							<img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2309262615,3096530225&fm=200&gp=0.jpg" class="layui-nav-img"> ${now_customer.loginName}
 						</a>
 						<dl class="layui-nav-child">
 							<dd>
@@ -30,7 +30,7 @@
 						</dl>
 					</li>
 					<li class="layui-nav-item">
-						<a href="">退出</a>
+						<a href="/exit.do">退出</a>
 					</li>
 				</ul>
 			</div>
@@ -43,12 +43,12 @@
 							<a class="" href="javascript:;">用户管理</a>
 							<dl class="layui-nav-child">
 								<dd>
-									<a href="javascript:;" data-id="1" data-title="普通用户管理" data-url="bg_cus_manage.html"
+									<a href="javascript:;" data-id="1" data-title="普通用户管理" data-url="/gotoBgCusManage.do"
 										 class="site-demo-active" data-type="tabAdd">普通用户管理</a>
 								</dd>
 								<dd>
 									<a href="javascript:;" data-id="2" data-title="版主管理"
-										 data-url="bg_bm_manage.html" class="site-demo-active" data-type="tabAdd">版主管理</a>
+										 data-url="/gotoBgBmManage.do" class="site-demo-active" data-type="tabAdd">版主管理</a>
 								</dd>
 							</dl>
 						</li>
@@ -56,11 +56,11 @@
 							<a href="javascript:;">分类管理</a>
 							<dl class="layui-nav-child">
 								<dd>
-									<a href="javascript:;" data-id="4" data-title="添加分类" data-url="bg_category_add.html"
+									<a href="javascript:;" data-id="4" data-title="添加分类" data-url="/gotoBgCategoryAdd.do"
 								 class="site-demo-active" data-type="tabAdd">添加分类</a>
 								</dd>
 								<dd>
-									<a href="javascript:;" data-id="5" data-title="查看分类" data-url="bg_category_list.html"
+									<a href="javascript:;" data-id="5" data-title="查看分类" data-url="/gotoBgCategoryList.do"
 								 class="site-demo-active" data-type="tabAdd">查看分类</a>
 								</dd>
 							</dl>
@@ -69,11 +69,11 @@
 							<a href="javascript:;">公告管理</a>
 							<dl class="layui-nav-child">
 								<dd>
-									<a href="javascript:;" data-id="6" data-title="添加公告" data-url="bg_ac_add.html"
+									<a href="javascript:;" data-id="6" data-title="添加公告" data-url="/gotoBgACAdd.do"
 								 class="site-demo-active" data-type="tabAdd">添加公告</a>
 								</dd>
 								<dd>
-									<a href="javascript:;" data-id="7" data-title="查看公告" data-url="bg_ac_list.html"
+									<a href="javascript:;" data-id="7" data-title="查看公告" data-url="/gotoBgACList.do"
 								 class="site-demo-active" data-type="tabAdd">查看公告</a>
 								</dd>
 							</dl>
@@ -82,11 +82,11 @@
 							<a href="javascript:;">权限配置</a>
 							<dl class="layui-nav-child">
 								<dd>
-									<a href="javascript:;" data-id="8" data-title="角色管理" data-url="bg_role_manage.html"
+									<a href="javascript:;" data-id="8" data-title="角色管理" data-url="/gotoBgRoleManage.do"
 								 class="site-demo-active" data-type="tabAdd">角色管理</a>
 								</dd>
 								<dd>
-									<a href="javascript:;" data-id="9" data-title="权限管理" data-url="bg_perm_manage.html"
+									<a href="javascript:;" data-id="9" data-title="权限管理" data-url="/gotoBgPermManage.do"
 								 class="site-demo-active" data-type="tabAdd">权限管理</a>
 								</dd>
 							</dl>
@@ -106,7 +106,7 @@
 
 			<div class="layui-footer" style="text-align:center;">
 				<!-- 底部固定区域 -->
-				© DAj 宇宙最强
+				© yj_Peng 宇宙最强
 			</div>
 		</div>
 
