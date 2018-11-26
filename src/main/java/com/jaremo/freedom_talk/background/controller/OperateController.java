@@ -28,6 +28,22 @@ public class OperateController {
     public String searchCus(String cuskw){
         Customer customer = new Customer();
         customer.setLoginName(cuskw);
+        customer.setIsBm(0);
+
+        List<Customer> customers = customerService.selectAllByCondition(customer);
+        if(customers!=null && customers.size()>0){
+            String jsonStr = gson.toJson(customers.get(0));
+            return jsonStr;
+        }
+        return "";
+    }
+
+    @RequestMapping("/searchBm.do")
+    @ResponseBody
+    public String searchBm(String cuskw){
+        Customer customer = new Customer();
+        customer.setLoginName(cuskw);
+        customer.setIsBm(1);
 
         List<Customer> customers = customerService.selectAllByCondition(customer);
         if(customers!=null && customers.size()>0){
@@ -50,20 +66,22 @@ public class OperateController {
 
     @RequestMapping("/editCusBm.do")
     @ResponseBody
-    public String editCusBm(String cusid){
+    public String editCusBm(String cusid,String type){
         Customer customer = new Customer();
         customer.setId(cusid);
-        customer.setType(2);
-        customer.setIsBm(1);
+        if(type.equals("up")){
+            customer.setType(2);
+            customer.setIsBm(1);
+        }
+        if(type.equals("down")){
+            customer.setType(1);
+            customer.setIsBm(0);
+        }
 
         customerService.updateCustomer(customer);
         return "";
     }
-//
-//    @RequestMapping("/gotoBgCategoryList.do")
-//    public String gotoBgCategoryList(){
-//        return "bg_category_list";
-//    }
+
 //
 //    @RequestMapping("/gotoBgACAdd.do")
 //    public String gotoBgACAdd(){

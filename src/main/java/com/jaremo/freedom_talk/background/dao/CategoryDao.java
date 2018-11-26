@@ -21,6 +21,9 @@ public interface CategoryDao {
     @Update("update tb_category set cate_name=#{category.name} where cate_id = #{category.id}")
     void editCategory(@Param("category") Category category);
 
+    @Update("update tb_category set isDelete=#{category.isDelete} where cate_id = #{category.id}")
+    void editCate(@Param("category") Category category);
+
     @Update("update tb_category set isDelete=0 where cate_id = #{id}")
     void removeCategory(Integer id);
 

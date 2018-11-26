@@ -28,28 +28,29 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td></td>
-								<td>2</td>
-								<td>体育</td>
-								<td>是</td>
-								<td>
-									<button onclick="del_name()" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-									<button onclick="find_back()" class="layui-btn layui-btn-normal layui-btn-xs">找回</button>
-									<button onclick="edit_name()" class="layui-btn layui-btn-warm layui-btn-xs">修改</button>
-								</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td>3</td>
-								<td>社会</td>
-								<td>是</td>
-								<td>
-									<button class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-									<button class="layui-btn layui-btn-normal layui-btn-xs">找回</button>
-									<button class="layui-btn layui-btn-warm layui-btn-xs">修改</button>
-								</td>
-							</tr>
+							<#if categoryList??>
+							    <#if (categoryList?size>0)>
+							        <#list categoryList as category>
+							            <tr>
+                                            <td></td>
+                                            <td>${category.id}</td>
+                                            <td>${category.name}</td>
+                                            <td>
+												<#if category.isDelete==1>
+												    否
+													<#else >
+														是
+												</#if>
+											</td>
+                                            <td>
+                                                <button onclick="del_category('${category.id}')" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
+                                                <button onclick="find_back('${category.id}')" class="layui-btn layui-btn-normal layui-btn-xs">找回</button>
+                                                <button onclick="edit_category('${category.id}')" class="layui-btn layui-btn-warm layui-btn-xs">修改</button>
+                                            </td>
+                                        </tr>
+							        </#list>
+							    </#if>
+							</#if>
 						</tbody>
 					</table>
 				</div>
@@ -68,13 +69,21 @@
 				lyr = layer;
 			});
 
-			function del_name() {
+			function del_category(categoryid) {
 				lyr.confirm('确认删除？', {
 					btn: ['是', '否'] //按钮
 				}, function() {
-					layer.msg('删除成功', {
-						icon: 1
-					});
+				    $.post('/delCategory.do',{cateid:categoryid},function (data) {
+                        if(data.length==0){
+                            layer.msg('删除成功', {
+                                icon: 1
+                            });
+						}else{
+                            layer.msg('删除失败', {
+                                icon: 2
+                            });
+						}
+                    });
 				}, function() {
 					layer.msg('取消成功', {
 						icon: 1
@@ -82,13 +91,21 @@
 				});
 			}
 
-			function find_back() {
+			function find_back(categoryid) {
 				lyr.confirm('是否找回？', {
 					btn: ['是', '否'] //按钮
 				}, function() {
-					layer.msg('找回成功', {
-						icon: 1
-					});
+                    $.post('/editCate.do',{cateid:categoryid},function (data) {
+                        if(data.length==0){
+                            layer.msg('找回成功', {
+                                icon: 1
+                            });
+                        }else{
+                            layer.msg('找回失败', {
+                                icon: 2
+                            });
+                        }
+                    });
 				}, function() {
 					layer.msg('取消成功', {
 						icon: 1
@@ -96,7 +113,7 @@
 				});
 			}
 
-			function edit_name() {
+			function edit_category(categoryid) {
 				lyr.open({
 					type: 2,
 					title: '',
@@ -104,7 +121,7 @@
 					shade: false,
 					maxmin: false, //开启最大化最小化按钮
 					area: ['600px', '300px'],
-					content: '//127.0.0.1:8020/freedom_talk2/ftl/bg_category_edit.html'
+					content: '/gotoBgCategoryEdit.do?categoryid='+categoryid
 				});
 			}
 		</script>

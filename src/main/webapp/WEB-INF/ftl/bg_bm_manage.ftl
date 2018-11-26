@@ -18,23 +18,24 @@
 					版主搜索:
 					<div class="layui-input-block">
 						<!-- 此处搜索不应将普通用户搜索出来 修改用户类型-->
-						<input type="text" name="cus_keyword" autocomplete="off" placeholder="请输入用户 (用户名或者邮箱) 进行搜索" class="layui-input">
+						<input type="text" id="cus_keyword" autocomplete="off" placeholder="请输入用户 (用户名或者邮箱) 进行搜索" class="layui-input">
 						<br />
-						<button class="layui-btn layui-btn-sm">搜索</button>
+						<button class="layui-btn layui-btn-sm" onclick="search()">搜索</button>
 					</div>
 					<br />
 
-					<div class="layui-card" style="border: 1px solid lightgray;display: none;">
+					<div id="result" class="layui-card" style="border: 1px solid lightgray;display: none;">
 						<div class="layui-card-header">搜索结果: </div>
-						<div class="layui-card-body">
-							<a href="">
-								<img src="../img/uugai.com_1542371006215.png" class="layui-nav-img" style="width: 60px;height: 60px;">
-							</a>
-							<a href="">Jaremo</a>
-						</div>
+                        <div class="layui-card-body">
+                            <a id="url">
+                                <img id="img" class="layui-nav-img" style="width: 60px;height: 60px;">
+                                <span id="name"></span>
+                            </a>
+                        </div>
+                        <input type="hidden" id="cusid">
 						&emsp;&emsp;&emsp;&emsp;
-						<button class="layui-btn layui-btn-danger layui-btn-sm">禁用此用户</button>
-						<button class="layui-btn layui-btn-sm">取消该版主权限</button>
+						<button class="layui-btn layui-btn-danger layui-btn-sm" onclick="unuse()">禁用此用户</button>
+						<button class="layui-btn layui-btn-sm" onclick="downlevel()">取消该版主权限</button>
 						<br />
 						&emsp;&emsp;
 					</div>
@@ -44,5 +45,60 @@
 				</div>
 			</div>
 		</div>
+
+	<script>
+        var lyr;
+        layui.use('layer',function () {
+            var layer=layui.layer;
+
+            lyr=layer;
+        });
+
+        function search() {
+            var ck = $('#cus_keyword');
+            if(ck.val().length==0){
+                lyr.msg("请输入用户名");
+            }else{
+                $.post("/searchBm.do",{cuskw: ck.val()},function (data) {
+                    if(data.length==0){
+                        lyr.msg("该用户不存在,或者是普通用户");
+                    }else{
+                        $("#result").css("display","block");
+                        var obj = $.parseJSON(data);
+                        $("#url").attr("href","/gotoCusDetail.do?cus_id="+obj.id);
+                        $("#img").attr("src",obj.img);
+                        $("#name").text(obj.loginName);
+                        $("#cusid").val(obj.id);
+                    }
+                });
+            }
+        }
+
+        function unuse() {
+            var val = $("#cusid").val();
+            if(val.length==0){
+                lyr.msg("操作失败");
+            }else{
+                $.post("/editCusUnuse.do",{cusid: val},function (data) {
+                    if(data.length==0){
+                        lyr.msg("操作成功");
+                    }
+                });
+            }
+        }
+
+        function downlevel() {
+            var val = $("#cusid").val();
+            if(val.length==0){
+                lyr.msg("操作失败");
+            }else{
+                $.post("/editCusBm.do",{cusid: val,type: 'down'},function (data) {
+                    if(data.length==0){
+                        lyr.msg("操作成功");
+                    }
+                });
+            }
+        }
+	</script>
 	</body>
 </html>

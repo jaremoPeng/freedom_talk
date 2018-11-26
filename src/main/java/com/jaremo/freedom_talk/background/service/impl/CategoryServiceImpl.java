@@ -56,4 +56,13 @@ public class CategoryServiceImpl implements CategoryService{
         }
         return null;
     }
+
+    @Override
+    public boolean updateCate(Category category) {
+        if(category.getIsDelete()!=null && category.getId()!=null){
+            categoryDao.editCate(category);
+            return true;
+        }
+        return false;
+    }
 }

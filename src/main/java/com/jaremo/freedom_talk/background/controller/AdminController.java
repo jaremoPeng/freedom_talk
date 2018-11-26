@@ -1,7 +1,13 @@
 package com.jaremo.freedom_talk.background.controller;
 
+import com.jaremo.freedom_talk.background.domain.Category;
+import com.jaremo.freedom_talk.background.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * @描述: 后台控制层
@@ -10,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class AdminController {
+
+    @Autowired
+    private CategoryService categoryService;
 
     @RequestMapping("/gotoBgCusManage.do")
     public String gotoBgCusManage(){
@@ -27,7 +36,10 @@ public class AdminController {
     }
 
     @RequestMapping("/gotoBgCategoryList.do")
-    public String gotoBgCategoryList(){
+    public String gotoBgCategoryList(ModelMap modelMap){
+        Category category = new Category();
+        List<Category> categoryList = categoryService.selectAllByCondition(category);
+        modelMap.addAttribute("categoryList",categoryList);
         return "bg_category_list";
     }
 

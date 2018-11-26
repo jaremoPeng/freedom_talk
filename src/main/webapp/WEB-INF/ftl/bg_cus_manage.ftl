@@ -63,7 +63,7 @@
             }else{
                 $.post("/searchCus.do",{cuskw: ck.val()},function (data) {
 					if(data.length==0){
-                        lyr.msg("该用户不存在");
+                        lyr.msg("该用户不存在,或者是版主");
 					}else{
 					    $("#result").css("display","block");
 					    var obj = $.parseJSON(data);
@@ -94,7 +94,7 @@
             if(val.length==0){
                 lyr.msg("操作失败");
             }else{
-                $.post("/editCusBm.do",{cusid: val},function (data) {
+                $.post("/editCusBm.do",{cusid: val,type: 'up'},function (data) {
                     if(data.length==0){
                         lyr.msg("操作成功");
                     }
