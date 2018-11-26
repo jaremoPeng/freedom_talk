@@ -60,7 +60,7 @@
 							</h3>
 							&emsp;
 							<br>
-                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">评论</button>
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs" onclick="show_vp('${note.id}','${now_customer.id}')">评论</button>
 						</div>
 					</div>
 					<div class="layui-card" style="border: 1px solid lightgray;">
@@ -89,7 +89,7 @@
                                             <span><u>${viewPoint.content}</u></span>
                                             <br />
                                             <br /> &emsp;&emsp;&emsp;&emsp;
-                                            <button id="view_point_reply" type="button" class="layui-btn layui-btn-primary layui-btn-xs">回复</button>
+                                            <button type="button" class="layui-btn layui-btn-primary layui-btn-xs" onclick="show_vpr('${viewPoint.id}','${now_customer.id}','${viewPoint.customer.id}')">回复</button>
                                             <br />
                                             <hr />
 
@@ -170,15 +170,16 @@
 					}
 				});
 			});
-            function show_vp() { // 发表观点
+
+            function show_vp(noteid,fromid) { // 发表观点
                 lyr.open({
                     type: 2,
-                    title: '填写回复',
+                    title: '填写评论',
                     shadeClose: true,
                     shade: false,
                     maxmin: false, //开启最大化最小化按钮
                     area: ['600px', '400px'],
-                    content: '/gotoVpR.do'
+                    content: '/gotoVp.do?noteid='+noteid+'&fromid='+fromid
                 });
             }
 
@@ -190,7 +191,7 @@
 					shade: false,
 					maxmin: false, //开启最大化最小化按钮
 					area: ['600px', '400px'],
-					content: '/gotoVpR.do'
+					content: '/gotoVpR.do?vpid='+vpid+'&fromid='+fromid+'&toid='+toid
 				});
             }
 		</script>

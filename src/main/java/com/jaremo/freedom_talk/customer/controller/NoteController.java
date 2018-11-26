@@ -110,7 +110,10 @@ public class NoteController {
 
 
     @RequestMapping(value = "/gotoNoteDetail.do")
-    public String gotoNoteDetail(Integer note_id,ModelMap modelMap) { // 做一个中转
+    public String gotoNoteDetail(String cus_id,Integer note_id,ModelMap modelMap) { // 做一个中转
+        Customer customer = new Customer();
+        customer.setId(cus_id);
+
         Note note = new Note();
         note.setId(note_id);
 
@@ -119,8 +122,11 @@ public class NoteController {
         List<ViewPoint> viewPointList = viewPointService.selectAllByCondition(viewPoint);
 
         List<Note> noteList = noteService.selectAllByCondition(note);
+
+        List<Customer> customers = customerService.selectAllByCondition(customer);
         modelMap.addAttribute("note",noteList.get(0));
         modelMap.addAttribute("viewPointList",viewPointList);
+        modelMap.addAttribute("now_customer",customers.get(0));
         return "note_detail";
     }
 }

@@ -26,7 +26,7 @@
 							<#list noteList as note>
 							    <div class="layui-card layui-text" style="border: 1px solid lightgray;">
                                     <div class="layui-card-header">
-                                        <a href="/gotoNoteDetail.do?note_id=${note.id}">${note.title}</a>
+                                        <a href="/gotoNoteDetail.do?note_id=${note.id}&cus_id=${now_customer.id}">${note.title}</a>
                                         &emsp;&emsp;&emsp;&emsp;
                                         <button class="layui-btn layui-btn-primary layui-btn-xs" onclick="del_note('${note.id}')">删除帖子</button>
                                     </div>

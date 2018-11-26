@@ -3,10 +3,15 @@ package com.jaremo.freedom_talk.customer.controller;
 import com.jaremo.freedom_talk.customer.domain.Customer;
 import com.jaremo.freedom_talk.customer.domain.Note;
 import com.jaremo.freedom_talk.customer.domain.ViewPoint;
+import com.jaremo.freedom_talk.customer.service.CustomerService;
+import com.jaremo.freedom_talk.customer.service.NoteService;
 import com.jaremo.freedom_talk.customer.service.ViewPointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -21,17 +26,22 @@ public class ViewPointController {
     @Autowired
     private ViewPointService viewPointService;
 
-    @RequestMapping("/lendvp.do")
-    public void lendViewPoint(){
+    @Autowired
+    private NoteService noteService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @RequestMapping(value = "/lendvp.do",method = RequestMethod.POST)
+    @ResponseBody
+    public void lendViewPoint(Integer note_id,String cus_id,ViewPoint viewPoint){
         Note note = new Note();
-        note.setId(2);
+        note.setId(note_id);
 
         Customer customer = new Customer();
-        customer.setId("c");
+        customer.setId(cus_id);
 
-        ViewPoint viewPoint = new ViewPoint();
         viewPoint.setNote(note);
-        viewPoint.setContent("真是血的教训!!!");
         viewPoint.setCustomer(customer);
 
         viewPointService.insertViewPoint(viewPoint);
@@ -62,5 +72,21 @@ public class ViewPointController {
         System.out.println(viewPointList);
     }
 
+    @RequestMapping("/gotoVp.do")
+    public String gotoVp(Integer noteid, String fromid, ModelMap modelMap){
+        Note note = new Note();
+        note.setId(noteid);
 
+        List<Note> noteList = noteService.selectAllByCondition(note);
+
+        Customer customer = new Customer();
+        customer.setId(fromid);
+
+        List<Customer> customers = customerService.selectAllByCondition(customer);
+
+        modelMap.addAttribute("note",noteList.get(0));
+        modelMap.addAttribute("now_customer",customers.get(0));
+
+        return "view_point";
+    }
 }
