@@ -28,22 +28,26 @@ public class RoleController {
     @Autowired
     private PermissionService permissionService;
 
-    @RequestMapping("/lendRole.do")
-    public void lendRole(){
-        Permission perm1 = new Permission();
-        perm1.setId(1);
-        Permission perm2 = new Permission();
-        perm2.setId(2);
-
-        List<Permission> permissionList = new ArrayList<>();
-        permissionList.add(perm1);
-        permissionList.add(perm2);
-
+    @RequestMapping(value = "/lendRole.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String lendRole(String rolename,String perms){
         Role role = new Role();
-        role.setPermList(permissionList);
-        role.setName("youke");
+        role.setName(rolename);
+        String[] split = perms.split(",");
 
-        roleService.insertRole(role);
+        List<Permission> permList = new ArrayList<>();
+        for(int i=0;i<split.length;i++){
+            Permission permission = new Permission();
+            permission.setId(Integer.parseInt(split[i]));
+            permList.add(permission);
+        }
+        role.setPermList(permList);
+
+        boolean result = roleService.insertRole(role);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 
     @RequestMapping(value = "/delRole.do",method = RequestMethod.POST)
@@ -84,6 +88,7 @@ public class RoleController {
         modelMap.addAttribute("role",roles.get(0));
 
         Permission permission = new Permission();
+        permission.setIsDelete(1);
         List<Permission> permissionList = permissionService.selectAllByCondition(permission);
         modelMap.addAttribute("permissionList",permissionList);
         return "bg_role_add";
@@ -98,6 +103,7 @@ public class RoleController {
         modelMap.addAttribute("role",roles.get(0));
 
         Permission permission = new Permission();
+        permission.setIsDelete(1);
         List<Permission> permissionList = permissionService.selectAllByCondition(permission);
         modelMap.addAttribute("permissionList",permissionList);
         return "bg_role_edit";

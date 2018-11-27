@@ -4,7 +4,10 @@ import com.jaremo.freedom_talk.background.domain.Permission;
 import com.jaremo.freedom_talk.background.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -19,39 +22,61 @@ public class PermissionController {
     @Autowired
     private PermissionService permissionService;
 
-    @RequestMapping("/lendPerm.do")
-    public void lendPerm(){
+    @RequestMapping(value = "/lendPerm.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String lendPerm(String permname,String permurl,String permsign){
         Permission permission = new Permission();
-        permission.setName("customer:delete");
-        permission.setUrl("/deleteCus.do");
-        permission.setSign("cus_del");
+        permission.setName(permname);
+        permission.setUrl(permurl);
+        permission.setSign(permsign);
 
-        permissionService.insertPermission(permission);
+        boolean result = permissionService.insertPermission(permission);
+        if(result){
+            return "";
+        }
+        return "failed";
     }
 
-    @RequestMapping("/delPerm.do")
-    public void delPerm(){
-        permissionService.deletePermission(2);
+    @RequestMapping(value = "/delPerm.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String delPerm(Integer permid){
+
+        permissionService.deletePermission(permid);
+        return "";
     }
 
-    @RequestMapping("/editPerm.do")
-    public void editPerm(){
+    @RequestMapping(value = "/editPerm.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String editPerm(Integer permid,String permname,String permurl,String permsign){
         Permission permission = new Permission();
-        permission.setName("customer:update");
-        permission.setUrl("/updateCus.do");
-        permission.setSign("cus_update");
-        permission.setId(3);
+        permission.setName(permname);
+        permission.setUrl(permurl);
+        permission.setSign(permsign);
+        permission.setId(permid);
 
         permissionService.updatePermission(permission);
+        return "";
     }
 
-    @RequestMapping("/queryPerm.do")
-    public void queryPerm(){
-        Permission permission = new Permission();
-        permission.setId(1);
-        permission.setIsDelete(1);
+    @RequestMapping("/gotoBgPermAdd.do")
+    public String gotoBgPermAdd(){
+        return "bg_perm_add";
+    }
 
+    @RequestMapping("/gotoBgPermEdit.do")
+    public String gotoBgPermEdit(Integer permid , ModelMap modelMap){
+        Permission permission = new Permission();
+        permission.setId(permid);
         List<Permission> permissionList = permissionService.selectAllByCondition(permission);
-        System.out.println(permissionList);
+        modelMap.addAttribute("permission",permissionList.get(0));
+        return "bg_perm_edit";
+    }
+
+    @RequestMapping("/gotoBgPermManage.do")
+    public String gotoBgPermManage(ModelMap modelMap){
+        Permission permission = new Permission();
+        List<Permission> permissionList = permissionService.selectAllByCondition(permission);
+        modelMap.addAttribute("permissionList",permissionList);
+        return "bg_perm_manage";
     }
 }

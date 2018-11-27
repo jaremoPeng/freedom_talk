@@ -25,27 +25,28 @@
 								
 								<!-- 需要修改的权限的id -->
 								<input type="hidden" name="perm_id" class="layui-input">
+								<input id="perm_id" type="hidden" value="${permission.id}">
 								<div class="layui-form-item">
 									<label class="layui-form-label">权限名</label>
 									<div class="layui-input-block">
-										<input type="text" name="perm_name" autocomplete="off" placeholder="请输入权限名" class="layui-input">
+										<input type="text" id="perm_name" autocomplete="off" placeholder="请输入权限名" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">权限路径</label>
 									<div class="layui-input-block">
-										<input type="text" name="perm_url" autocomplete="off" placeholder="请输入权限路径" class="layui-input">
+										<input type="text" id="perm_url" autocomplete="off" placeholder="请输入权限路径" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">权限标识</label>
 									<div class="layui-input-block">
-										<input type="text" name="perm_url" autocomplete="off" placeholder="请输入权限标识" class="layui-input">
+										<input type="text" id="perm_sign" autocomplete="off" placeholder="请输入权限标识" class="layui-input">
 									</div>
 								</div>
 								&emsp;&emsp;&emsp;&emsp;
 								&emsp;&emsp;&emsp;&emsp;
-								<button class="layui-btn layui-btn-sm" type="button">确认</button>
+								<button class="layui-btn layui-btn-sm" type="button" onclick="true_edit()">确认</button>
 							</form>
 						</div>
 					</div>
@@ -55,7 +56,35 @@
 				</div>
 			</div>
 		</div>
-		
+		<script>
+            var lyr;
+            layui.use(['table', 'layer'], function() {
+                var table = layui.table,
+                        $ = layui.jquery,
+                        layer = layui.layer;
+
+                lyr = layer;
+            });
+
+            function true_edit() {
+                var permid = $("#perm_id").val();
+				var permname = $("#perm_name").val();
+                var permurl = $("#perm_url").val();
+                var permsign = $("#perm_sign").val();
+
+                if(permname.length==0 || permurl.length==0 || permsign==0){
+                    lyr.msg("权限名未填写,或者权限地址未填写,或者权限标识未填写");
+				}else{
+                    $.post("/editPerm.do",{permid:permid,permname:permname,permurl:permurl,permsign:permsign},function (data) {
+						if(data.length==0){
+                            lyr.msg("修改成功");
+						}else{
+                            lyr.msg("修改失败");
+						}
+                    });
+				}
+            }
+		</script>
 	</body>
 
 </html>

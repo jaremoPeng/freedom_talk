@@ -34,7 +34,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public boolean insertRole(Role role) {
         if(role.getName()!=null){
-            role.setId(Integer.parseInt(RandomUtil.getRandom(4)));
+            role.setId(Integer.parseInt(RandomUtil.getRandom(3)));
             roleDao.addRole(role);
             for (Permission perm:role.getPermList()) { // 中间表添加记录
                 rolePermRelationDao.addRolePermRelation(role.getId(),perm.getId());
@@ -57,8 +57,15 @@ public class RoleServiceImpl implements RoleService{
     public boolean updateRole(Role role) {
         if(role!=null){
             roleDao.editRole(role);
-            rolePermRelationDao.removeRole(role.getId());
-            insertRole(role);
+            List<RolePermRelation> rolePermRelationList = rolePermRelationDao.findPidByRid(role.getId());
+            if(rolePermRelationList!=null && rolePermRelationList.size()!=0){
+                rolePermRelationDao.removeRole(role.getId());
+            }
+
+            List<Permission> permList = role.getPermList();
+            for (Permission perm : permList) {
+                rolePermRelationDao.addRolePermRelation(role.getId(),perm.getId());
+            }
             return true;
         }
         return false;

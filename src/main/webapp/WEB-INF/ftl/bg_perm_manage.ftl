@@ -30,23 +30,35 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td></td>
-								<td>1</td>
-								<td>customer:add</td>
-								<td>/lendCus.do</td>
-								<td>cus_add</td>
-								<td>是</td>
-								<td>
-									<!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-									<a  class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
-									<button onclick="del_name()" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-									<button onclick="edit_name()" class="layui-btn layui-btn-warm layui-btn-xs">修改</button>
-								</td>
-							</tr>
+							<#if permissionList??>
+								<#if (permissionList?size>0)>
+									<#list permissionList as perm>
+										<tr>
+                                            <td></td>
+                                            <td>${perm.id}</td>
+                                            <td>${perm.name}</td>
+                                            <td>${perm.url}</td>
+                                            <td>${perm.sign}</td>
+                                            <td>
+												<#if perm.isDelete==0>
+													是
+													<#else >
+												    	否
+												</#if>
+											</td>
+                                            <td>
+                                                <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                                                <a  class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+                                                <button onclick="del_perm('${perm.id}')" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
+                                                <button onclick="edit_perm('${perm.id}')" class="layui-btn layui-btn-warm layui-btn-xs">修改</button>
+                                            </td>
+                                        </tr>
+									</#list>
+								</#if>
+							</#if>
 						</tbody>
 					</table>
-					<button id='perm_add' class="layui-btn layui-btn-xs">添加</button>
+					<button class="layui-btn layui-btn-xs" onclick="add_perm()">添加</button>
 				</div>
 				<div class="layui-col-md3">
 
@@ -55,54 +67,61 @@
 		</div>
 
 		<script>
-			var lyr;
-			layui.use(['table', 'layer'], function() {
-				var table = layui.table,
-					$ = layui.jquery,
-					layer = layui.layer;
+            var lyr;
+            layui.use(['table', 'layer'], function() {
+                var table = layui.table,
+                        $ = layui.jquery,
+                        layer = layui.layer;
 
-				lyr = layer;
+                lyr = layer;
+            });
 
-				$("#perm_add").on("click", function() {
-					layer.open({
-						type: 2,
-						title: '',
-						shadeClose: true,
-						shade: false,
-						maxmin: false, //开启最大化最小化按钮
-						area: ['600px', '300px'],
-						content: '//127.0.0.1:8020/freedom_talk2/ftl/bg_perm_add.html'
-					});
-				});
+            function add_perm() {
+                lyr.open({
+                    type: 2,
+                    title: '',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: false, //开启最大化最小化按钮
+                    area: ['600px', '300px'],
+                    content: '/gotoBgPermAdd.do'
+                });
+            }
 
-			});
+            function edit_perm(permid) {
+                lyr.open({
+                    type: 2,
+                    title: '',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: false, //开启最大化最小化按钮
+                    area: ['600px', '300px'],
+                    content: '/gotoBgPermEdit.do?permid='+permid
+                });
+            }
 
-			function edit_name() {
-				lyr.open({
-					type: 2,
-					title: '',
-					shadeClose: true,
-					shade: false,
-					maxmin: false, //开启最大化最小化按钮
-					area: ['600px', '300px'],
-					content: '//127.0.0.1:8020/freedom_talk2/ftl/bg_perm_edit.html'
-				});
-			}
-
-			function del_name() {
-				lyr.confirm('确认删除？', {
-					btn: ['是', '否'] //按钮
-				}, function() {
-					layer.msg('删除成功', {
-						icon: 1
-					});
-				}, function() {
-					layer.msg('取消成功', {
-						icon: 1
-					});
-				});
-			}
-		</script>
+            function del_perm(permid) {
+                lyr.confirm('确认删除？', {
+                    btn: ['是', '否'] //按钮
+                }, function() {
+                    $.post("/delPerm.do",{permid:permid},function (data) {
+                        if(data.length==0){
+                            lyr.msg('删除成功', {
+                                icon: 1
+                            });
+                        }else{
+                            lyr.msg('删除失败', {
+                                icon: 2
+                            });
+                        }
+                    });
+                }, function() {
+                    lyr.msg('取消成功', {
+                        icon: 1
+                    });
+                });
+            }
+        </script>
 	</body>
 
 </html>

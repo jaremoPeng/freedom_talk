@@ -42,10 +42,4 @@ public class AdminController {
         modelMap.addAttribute("categoryList",categoryList);
         return "bg_category_list";
     }
-
-
-    @RequestMapping("/gotoBgPermManage.do")
-    public String gotoBgPermManage(){
-        return "bg_perm_manage";
-    }
 }
