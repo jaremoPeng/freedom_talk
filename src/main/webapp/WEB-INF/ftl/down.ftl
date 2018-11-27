@@ -15,12 +15,12 @@
 					
 				</div>
 				<div class="layui-col-md5 layui-text">
-					<a href=""><font style="font-size: 14px;font-weight: 700;">关于论坛</font></a> |
-					<a href=""><font style="font-size: 14px;font-weight: 700;">论坛客服</font></a> |
-					<a href=""><font style="font-size: 14px;font-weight: 700;">隐私及版权</font></a> |
-					<a href=""><font style="font-size: 14px;font-weight: 700;">联系我们</font></a> |
-					<a href=""><font style="font-size: 14px;font-weight: 700;">论坛帮助</font></a>
-					<h6>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;@2018-xxxx 自由说社区</h6>
+					<a href="/gotoYejiao.do"><font style="font-size: 14px;font-weight: 700;">关于论坛</font></a> |
+					<a href="/gotoYejiao.do"><font style="font-size: 14px;font-weight: 700;">论坛客服</font></a> |
+					<a href="/gotoYejiao.do"><font style="font-size: 14px;font-weight: 700;">隐私及版权</font></a> |
+					<a href="/gotoYejiao.do"><font style="font-size: 14px;font-weight: 700;">联系我们</font></a> |
+					<a href="/gotoYejiao.do"><font style="font-size: 14px;font-weight: 700;">论坛帮助</font></a>
+					<h6>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;@2018-Yj_peng 自由说社区</h6>
 				</div>
 				<div class="layui-col-md3">
 					

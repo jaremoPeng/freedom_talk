@@ -27,4 +27,17 @@ public class CategoryProvider {
         }
         return sql.toString();
     }
+
+    public String findByKw(Map map){
+        Category category = (Category) map.get("category");
+        SQL sql = new SQL();
+        sql.SELECT("*").FROM("tb_category");
+        if(category.getName()!=null){
+            sql.WHERE("cate_name like CONCAT('%',#{category.name},'%')");
+        }
+        if(category.getIsDelete()!=null){
+            sql.WHERE("isDelete=#{category.isDelete}");
+        }
+        return sql.toString();
+    }
 }

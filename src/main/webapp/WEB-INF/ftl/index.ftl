@@ -23,7 +23,11 @@
 							<#if categoryList??>
 							    <#if (categoryList?size>0)>
 							        <#list categoryList as category>
-							            <a href="">${category.name}</a><br>
+                                        <#if now_customer??>
+                                            <a href="/gotoCategoryNoteList.do?cus_id=${now_customer.id}&cate_id=${category.id}">${category.name}</a><br>
+                                            <#else >
+                                                <a href="/gotoCategoryNoteList.do?cus_id=&cate_id=${category.id}">${category.name}</a><br>
+                                        </#if>
 							        </#list>
 							    </#if>
 							</#if>

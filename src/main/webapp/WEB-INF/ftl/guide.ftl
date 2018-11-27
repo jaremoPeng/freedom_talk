@@ -39,12 +39,13 @@
     <div class="layui-col-xs4">
         <ul class="layui-nav layui-bg-green">
             <li class="layui-nav-item">
-                <form class="layui-form" action="" method="">
+                <form class="layui-form" action="/search.do" method="post">
+                    <input name="cus_id" value="${now_customer.id}" type="hidden">
                     <div class="layui-input-inline">
-                        <input id="keyword" type="text" name="keyword" lay-verify="title" autocomplete="off"
+                        <input id="keyword" type="text" name="keyword" lay-verify="required" autocomplete="off"
                                placeholder="搜索" class="layui-input">
                     </div>
-                    <button class="layui-btn layui-btn-primary" lay-submit="" lay-filter="demo1">搜索</button>
+                    <button class="layui-btn layui-btn-primary" lay-submit="" lay-filter="*">搜索</button>
                 </form>
             </li>
         </ul>

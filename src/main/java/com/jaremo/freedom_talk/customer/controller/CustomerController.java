@@ -470,4 +470,33 @@ public class CustomerController {
 
         return "index";
     }
+
+    @RequestMapping(value = "/gotoYejiao.do")
+    public String gotoYejiao() {
+        return "yejiao";
+    }
+
+    @RequestMapping(value = "/search.do",method = RequestMethod.POST)
+    public String search(String cus_id,String keyword,ModelMap modelMap) {
+        Customer nowCustomer = new Customer();
+        nowCustomer.setId(cus_id);
+        List<Customer> customers = customerService.selectAllByCondition(nowCustomer);
+        modelMap.addAttribute("now_customer",customers.get(0));
+
+        Category category = new Category();
+        category.setName(keyword);
+        category.setIsDelete(1);
+        List<Category> categoryList = categoryService.selectAllByKw(category);
+        modelMap.addAttribute("categoryList",categoryList);
+
+        Note note = new Note();
+        note.setTitle(keyword);
+        note.setIsDelete(1);
+        List<Note> noteList = noteService.selectAllByCondition(note);
+        modelMap.addAttribute("noteList",noteList);
+
+        Customer customer = customerService.selectCustomerByLoginName(keyword);
+        modelMap.addAttribute("query_customer",customer);
+        return "search_result";
+    }
 }

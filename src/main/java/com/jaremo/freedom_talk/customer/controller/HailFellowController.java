@@ -32,18 +32,23 @@ public class HailFellowController {
     @Autowired
     private ChatService chatService;
 
-    @RequestMapping("/lendHf.do")
-    public void lendHf(){
+    @RequestMapping(value = "/lendHf.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String lendHf(String fromid,String toid){
         Customer fromCustomer = new Customer();
-        fromCustomer.setId("a");
+        fromCustomer.setId(fromid);
         Customer toCustomer = new Customer();
-        toCustomer.setId("c");
+        toCustomer.setId(toid);
 
         HailFellow hailFellow = new HailFellow();
         hailFellow.setToCustomer(toCustomer);
         hailFellow.setFromCustomer(fromCustomer);
 
-        hailFellowService.insertHailFellow(hailFellow);
+        int result = hailFellowService.insertHailFellow(hailFellow);
+        if(result==1){
+            return "";
+        }
+        return "failed";
     }
 
     @RequestMapping(value = "/editHf.do",method = RequestMethod.POST)
@@ -136,5 +141,20 @@ public class HailFellowController {
         modelMap.addAttribute("now_customer",customers.get(0));
         modelMap.addAttribute("toCustomer",toCustomers.get(0));
         return "hf_remarks";
+    }
+
+    @RequestMapping(value = "/gotoHailFellowAdd.do")
+    public String gotoHailFellowAdd(String fromid,String toid,ModelMap modelMap) { // 做一个中转
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(toid);
+
+        Customer customer = new Customer();
+        customer.setId(fromid);
+
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        List<Customer> fCustomers = customerService.selectAllByCondition(customer);
+        modelMap.addAttribute("toCustomer",customers.get(0));
+        modelMap.addAttribute("now_customer",fCustomers.get(0));
+        return "hf_addpage";
     }
 }

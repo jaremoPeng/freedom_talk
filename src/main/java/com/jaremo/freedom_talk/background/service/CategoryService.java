@@ -56,4 +56,12 @@ public interface CategoryService {
      */
     List<Category> selectAllByCondition(Category category);
 
+    /**
+     * 功能描述 根据关键字查询分类
+     * @author pyj
+     * @date 2018/11/5 0005
+     * @param category
+     * @return java.util.List<com.jaremo.freedom_talk.background.domain.Category>
+     */
+    List<Category> selectAllByKw(Category category);
 }

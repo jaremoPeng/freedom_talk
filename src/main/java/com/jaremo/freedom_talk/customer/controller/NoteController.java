@@ -129,4 +129,24 @@ public class NoteController {
         modelMap.addAttribute("now_customer",customers.get(0));
         return "note_detail";
     }
+
+    @RequestMapping(value = "/gotoCategoryNoteList.do")
+    public String gotoCategoryNoteList(String cus_id,Integer cate_id,ModelMap modelMap) { // 做一个中转
+        if(cus_id!=null){
+            Customer tempCustomer = new Customer();
+            tempCustomer.setId(cus_id);
+            List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+            modelMap.addAttribute("now_customer",customers.get(0));
+        }
+
+        Category category = new Category();
+        category.setId(cate_id);
+
+        Note note = new Note();
+        note.setCategory(category);
+        List<Note> noteList = noteService.selectAllByCondition(note);
+        modelMap.addAttribute("noteList",noteList);
+
+        return "category_note_list";
+    }
 }

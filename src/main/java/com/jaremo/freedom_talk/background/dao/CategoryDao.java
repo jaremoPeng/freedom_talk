@@ -42,4 +42,12 @@ public interface CategoryDao {
     })
     @SelectProvider(type = CategoryProvider.class,method = "findAll")
     List<Category> findAllByCondition(@Param("category") Category category);
+
+    @Results({
+            @Result(property = "id",column = "cate_id",id = true),
+            @Result(property = "name",column = "cate_name"),
+            @Result(property = "isDelete",column = "isDelete")
+    })
+    @SelectProvider(type = CategoryProvider.class,method = "findByKw")
+    List<Category> findAllByKw(@Param("category") Category category);
 }

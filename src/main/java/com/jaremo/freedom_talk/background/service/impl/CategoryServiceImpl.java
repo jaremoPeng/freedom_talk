@@ -65,4 +65,13 @@ public class CategoryServiceImpl implements CategoryService{
         }
         return false;
     }
+
+    @Override
+    public List<Category> selectAllByKw(Category category) {
+        if (category!=null){
+            List<Category> categoryList = categoryDao.findAllByKw(category);
+            return categoryList;
+        }
+        return null;
+    }
 }

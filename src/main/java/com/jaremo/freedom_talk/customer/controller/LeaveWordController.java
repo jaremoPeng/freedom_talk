@@ -36,20 +36,24 @@ public class LeaveWordController {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping("/lendlw.do")
-    public void lendLeaveWord(){
+    @RequestMapping(value = "/lendlw.do",method = RequestMethod.POST)
+    @ResponseBody
+    public String lendLeaveWord(String fromid,String toid,String content){
         LeaveWord leaveWord = new LeaveWord();
-        leaveWord.setContent("b say to a?");
+        leaveWord.setContent(content);
         Customer from = new Customer();
-        from.setId("b");
+        from.setId(fromid);
         Customer to = new Customer();
-        to.setId("a");
+        to.setId(toid);
 
         leaveWord.setFromCustomer(from);
         leaveWord.setToCustomer(to);
 
         int i = leaveWordService.insertLeaveWord(leaveWord);
-        System.out.println(i);
+        if(i==1){
+            return "";
+        }
+        return "failed";
     }
 
     @RequestMapping(value = "/editlwIsStart.do",method = RequestMethod.POST)
@@ -165,5 +169,20 @@ public class LeaveWordController {
         modelMap.addAttribute("unLeaveWordList",unLeaveWordList); // 禁止留言的用户列表
         modelMap.addAttribute("now_customer",customers.get(0)); // 当前用户
         return "leave_word";
+    }
+
+    @RequestMapping(value = "/gotoLeaveWordAdd.do")
+    public String gotoLeaveWordAdd(String cus_id,String toid,ModelMap modelMap) { // 做一个中转
+        Customer nowCustomer = new Customer();
+        nowCustomer.setId(cus_id);
+        List<Customer> fCustomers = customerService.selectAllByCondition(nowCustomer);
+        modelMap.addAttribute("now_customer",fCustomers.get(0));
+
+        Customer tempCustomer = new Customer();
+        tempCustomer.setId(toid);
+
+        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
+        modelMap.addAttribute("tocustomer",customers.get(0));
+        return "leave_word_add";
     }
 }
