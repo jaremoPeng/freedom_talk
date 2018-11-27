@@ -21,7 +21,7 @@
         <ul class="layui-nav layui-bg-green">
             <li class="layui-nav-item">
                 <#if now_customer??>
-                    <a href="/index.do?cus_id=${now_customer.id}"><img style="width: 50px;height: 30px;" src="/img/uugai.com_1542371006215.png"/></a>
+                    <a href="/freedom_talk/index.do?cus_id=${now_customer.id}"><img style="width: 50px;height: 30px;" src="/img/uugai.com_1542371006215.png"/></a>
                 <#else >
                     <a href="#"><img style="width: 50px;height: 30px;" src="/img/uugai.com_1542371006215.png"/></a>
                 </#if>
@@ -29,7 +29,7 @@
             </li>
             <li class="layui-nav-item">
                 <#if now_customer??>
-                    <a href="/index.do?cus_id=${now_customer.id}"><strong>自由说论坛</strong></a>
+                    <a href="/freedom_talk/index.do?cus_id=${now_customer.id}"><strong>自由说论坛</strong></a>
                 <#else >
                     <a href="#"><strong>自由说论坛</strong></a>
                 </#if>

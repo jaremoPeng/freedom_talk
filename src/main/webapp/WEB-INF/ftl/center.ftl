@@ -62,7 +62,7 @@
 							</dl>
 						</li>
                         <li class="layui-nav-item">
-                            <a href="/index.do?cus_id=${now_customer.id}">返回首页</a>
+                            <a href="/freedom_talk/index.do?cus_id=${now_customer.id}">返回首页</a>
                         </li>
 					</ul>
 				</div>

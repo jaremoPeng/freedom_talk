@@ -1,8 +1,14 @@
 package com.jaremo.freedom_talk.customer.controller;
 
+import com.jaremo.freedom_talk.background.domain.Announcement;
+import com.jaremo.freedom_talk.background.domain.Category;
 import com.jaremo.freedom_talk.background.domain.Question;
+import com.jaremo.freedom_talk.background.service.AnnouncementService;
+import com.jaremo.freedom_talk.background.service.CategoryService;
 import com.jaremo.freedom_talk.customer.domain.Customer;
+import com.jaremo.freedom_talk.customer.domain.Note;
 import com.jaremo.freedom_talk.customer.service.CustomerService;
+import com.jaremo.freedom_talk.customer.service.NoteService;
 import com.jaremo.freedom_talk.utils.RandomUtil;
 import com.jaremo.freedom_talk.utils.RedisUtil;
 import com.jaremo.freedom_talk.utils.UUIDPlusUtil;
@@ -103,6 +109,43 @@ public class CustomerController {
                             if(customers.get(0).getType()==0){
                                 return "bg_index";
                             }
+                            // 分类
+                            Category category = new Category();
+                            category.setIsDelete(1);
+                            List<Category> categoryList = categoryService.selectAllByCondition(category);
+                            modelMap.addAttribute("categoryList",categoryList);
+
+                            // 公告
+                            Announcement announcement = new Announcement();
+                            announcement.setIsDelete(1);
+                            List<Announcement> announcements = announcementService.selectAllByCondition(announcement);
+                            modelMap.addAttribute("announcements",announcements);
+
+                            // 热门版主
+                            Customer hotcustomer = new Customer();
+                            hotcustomer.setType(2);
+                            hotcustomer.setIsBm(1);
+                            hotcustomer.setIsUnuse(1);
+                            List<Customer> hotCustomers = customerService.selectAllByCondition(hotcustomer); // 查询所有的版主,帖子浏览数和评论数,推选出最热门的版主
+                            modelMap.addAttribute("customers",hotCustomers);
+
+                            // 热帖(一周的时间,评选最优帖子 , 条件是以评论数,和浏览数 相加)
+                            Note note = new Note();
+                            note.setIsDelete(1);
+                            List<Note> noteList = noteService.selectAllByCondition(note);
+                            modelMap.addAttribute("noteList",noteList);
+
+                            // 昨日热帖(统计昨天最火爆的帖子)
+                            Note yestoday_note = new Note();
+                            yestoday_note.setIsDelete(1);
+                            List<Note> ytNoteList = noteService.selectAllByCondition(yestoday_note);
+                            modelMap.addAttribute("ytNoteList",ytNoteList);
+
+                            // 每日新帖(展示今天最新发布的帖子)
+                            Note new_note = new Note();
+                            new_note.setIsDelete(1);
+                            List<Note> newNoteList = noteService.selectAllByCondition(new_note);
+                            modelMap.addAttribute("newNoteList",newNoteList);
                             return "index";
                         } else {
                             allErrors.add("登录失败");
@@ -150,6 +193,7 @@ public class CustomerController {
                 return "errors";
             }
             customerService.insertCustomer(customer, question_id); // 这里选择验证问题 写死
+            modelMap.addAttribute("questionList",customerService.selectAllQuestion());
             return "login";
         }else{
             errors.addError(new FieldError("customer","loginName","验证码失效,或者不存在"));
@@ -207,6 +251,43 @@ public class CustomerController {
     @RequestMapping("/exit.do")
     public String exit(ModelMap modelMap) { // 退出action
         modelMap.remove("now_customer");
+        // 分类
+        Category category = new Category();
+        category.setIsDelete(1);
+        List<Category> categoryList = categoryService.selectAllByCondition(category);
+        modelMap.addAttribute("categoryList",categoryList);
+
+        // 公告
+        Announcement announcement = new Announcement();
+        announcement.setIsDelete(1);
+        List<Announcement> announcements = announcementService.selectAllByCondition(announcement);
+        modelMap.addAttribute("announcements",announcements);
+
+        // 热门版主
+        Customer customer = new Customer();
+        customer.setType(2);
+        customer.setIsBm(1);
+        customer.setIsUnuse(1);
+        List<Customer> customers = customerService.selectAllByCondition(customer); // 查询所有的版主,帖子浏览数和评论数,推选出最热门的版主
+        modelMap.addAttribute("customers",customers);
+
+        // 热帖(一周的时间,评选最优帖子 , 条件是以评论数,和浏览数 相加)
+        Note note = new Note();
+        note.setIsDelete(1);
+        List<Note> noteList = noteService.selectAllByCondition(note);
+        modelMap.addAttribute("noteList",noteList);
+
+        // 昨日热帖(统计昨天最火爆的帖子)
+        Note yestoday_note = new Note();
+        yestoday_note.setIsDelete(1);
+        List<Note> ytNoteList = noteService.selectAllByCondition(yestoday_note);
+        modelMap.addAttribute("ytNoteList",ytNoteList);
+
+        // 每日新帖(展示今天最新发布的帖子)
+        Note new_note = new Note();
+        new_note.setIsDelete(1);
+        List<Note> newNoteList = noteService.selectAllByCondition(new_note);
+        modelMap.addAttribute("newNoteList",newNoteList);
         return "index";
     }
 
@@ -252,15 +333,6 @@ public class CustomerController {
             return "邮箱已注册";
         }
         return "";
-    }
-
-    @RequestMapping(value = "/index.do")
-    public String gotoIndex(String cus_id,ModelMap modelMap) { // 做一个中转
-        Customer tempCustomer = new Customer();
-        tempCustomer.setId(cus_id);
-        List<Customer> customers = customerService.selectAllByCondition(tempCustomer);
-        modelMap.addAttribute("now_customer",customers.get(0));
-        return "index";
     }
 
     @RequestMapping(value = "/gotoCenter.do")
@@ -332,5 +404,70 @@ public class CustomerController {
         question.setId(question_id);
         customer.setQuestion(question);
         customerService.updateCustomer(customer);
+    }
+
+    @RequestMapping(value = "/gotoForgetPass.do")
+    public String gotoForgetPass() { // 做一个中转
+        return "edit_question";
+    }
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private AnnouncementService announcementService;
+
+    @Autowired
+    private NoteService noteService;
+
+    @RequestMapping(value = "/freedom_talk/index.do")
+    public String gotoFtIndex(String cus_id , ModelMap modelMap) { // 做一个中转
+        // 分类
+        Category category = new Category();
+        category.setIsDelete(1);
+        List<Category> categoryList = categoryService.selectAllByCondition(category);
+        modelMap.addAttribute("categoryList",categoryList);
+
+        // 公告
+        Announcement announcement = new Announcement();
+        announcement.setIsDelete(1);
+        List<Announcement> announcements = announcementService.selectAllByCondition(announcement);
+        modelMap.addAttribute("announcements",announcements);
+
+        // 热门版主
+        Customer customer = new Customer();
+        customer.setType(2);
+        customer.setIsBm(1);
+        customer.setIsUnuse(1);
+        List<Customer> customers = customerService.selectAllByCondition(customer); // 查询所有的版主,帖子浏览数和评论数,推选出最热门的版主
+        modelMap.addAttribute("customers",customers);
+
+        // 热帖(一周的时间,评选最优帖子 , 条件是以评论数,和浏览数 相加)
+        Note note = new Note();
+        note.setIsDelete(1);
+        List<Note> noteList = noteService.selectAllByCondition(note);
+        modelMap.addAttribute("noteList",noteList);
+
+        // 昨日热帖(统计昨天最火爆的帖子)
+        Note yestoday_note = new Note();
+        yestoday_note.setIsDelete(1);
+        List<Note> ytNoteList = noteService.selectAllByCondition(yestoday_note);
+        modelMap.addAttribute("ytNoteList",ytNoteList);
+
+        // 每日新帖(展示今天最新发布的帖子)
+        Note new_note = new Note();
+        new_note.setIsDelete(1);
+        List<Note> newNoteList = noteService.selectAllByCondition(new_note);
+        modelMap.addAttribute("newNoteList",newNoteList);
+
+        // 当前登录的用户
+        if(cus_id!=null){
+            Customer tempCustomer = new Customer();
+            tempCustomer.setId(cus_id);
+            List<Customer> nowcustomers = customerService.selectAllByCondition(tempCustomer);
+            modelMap.addAttribute("now_customer",nowcustomers.get(0));
+        }
+
+        return "index";
     }
 }

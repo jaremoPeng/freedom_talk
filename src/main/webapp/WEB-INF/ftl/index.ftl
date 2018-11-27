@@ -20,19 +20,20 @@
 					<div class="layui-card layui-text">
 						<div class="layui-card-header"><h3>分类</h3></div>
 						<div class="layui-card-body">
-							<a href="">社会</a><br>
-							<a href="">白色背景会</a><br>
-							<a href="">常用于</a><br>
-							<a href="">映衬</a><br>
-							<a href="">边框投影</a><br>
-							<a href="">社会</a><br>
-							<a href="">社会</a><br>
+							<#if categoryList??>
+							    <#if (categoryList?size>0)>
+							        <#list categoryList as category>
+							            <a href="">${category.name}</a><br>
+							        </#list>
+							    </#if>
+							</#if>
 						</div>
 					</div>
 					<div class="layui-card">
-						<div class="layui-card-header"><h3>分类</h3></div>
+						<div class="layui-card-header"><h3>来口鸡汤补补!</h3></div>
 						<div class="layui-card-body">
-							卡片式面板面板通常用于非白色背景色的主体内<br> 从而映衬出边框投影
+							再往前一点点,再努力一点点
+							<img src="/img/960a304e251f95ca49a0bc89cc177f3e670952b3.jpg" style="width: 200px;height: 150px;">
 						</div>
 					</div>
 				</div>
@@ -42,33 +43,47 @@
 					</fieldset>
 					<div class="layui-carousel" style="width: 500px;" id="test3" lay-filter="test4">
 						<div carousel-item="">
-							<div><img src="img/kebi.jpg" /></div>
-							<div><img src="img/kebi.jpg" /></div>
-							<div><img src="img/heizeiwang2.jpg" /></div>
-							<div><img src="img/kebi.jpg" /></div>
-							<div><img src="img/heizeiwang1.jpg" /></div>
+							<div><img src="/img/kebi.jpg" /></div>
+							<div><img src="/img/kebi.jpg" /></div>
+							<div><img src="/img/heizeiwang2.jpg" /></div>
+							<div><img src="/img/kebi.jpg" /></div>
+							<div><img src="/img/heizeiwang1.jpg" /></div>
 						</div>
 					</div>
 					<div class="layui-card layui-text">
 						<div class="layui-card-header"><h3>热帖榜</h3></div>
 						<div class="layui-card-body">
-							<a href="">关于用户私人转赠的风险提示</a><br>
-							<a href="">黄兴：您为何甘当满清走狗，也不帮汉人恢复江山？李鸿章如此回答</a><br>
-							<a href="">自由自在吃瓜楼（包容不同意见，但拒绝喷脏）</a><br>
+							<#if noteList??>
+								<#if (noteList?size>0)>
+									<#list noteList as note>
+							            <a href="/gotoNoteDetail.do?note_id=${note.id}">${note.title}</a><br>
+									</#list>
+								</#if>
+							</#if>
 						</div>
 					</div>
 					<div class="layui-card layui-text">
-						<div class="layui-card-header"><h3>每日热帖</h3></div>
+						<div class="layui-card-header"><h3>昨日热帖</h3></div>
 						<div class="layui-card-body">
-							<a href="">关于用户私人转赠的风险提示</a><br>
-							<a href="">黄兴：您为何甘当满清走狗，也不帮汉人恢复江山？李鸿章如此回答</a><br>
-							<a href="">自由自在吃瓜楼（包容不同意见，但拒绝喷脏）</a><br>
+							<#if ytNoteList??>
+								<#if (ytNoteList?size>0)>
+									<#list ytNoteList as note>
+							            <a href="/gotoNoteDetail.do?note_id=${note.id}">${note.title}</a><br>
+									</#list>
+								</#if>
+							</#if>
 						</div>
 					</div>
 					<div class="layui-card layui-text">
-						<div class="layui-card-header"><h3>城市榜</h3></div>
+						<div class="layui-card-header"><h3>今日新帖</h3></div>
 						<div class="layui-card-body">
-							卡片式面板面板通常用于非白色背景色的主体内<br> 从而映衬出边框投影
+							<#if newNoteList??>
+								<#if (newNoteList?size>0)>
+									<#list newNoteList as note>
+							            <a href="/gotoNoteDetail.do?note_id=${note.id}">${note.title}</a><br>
+									</#list>
+								</#if>
+							</#if>
 						</div>
 					</div>
 				</div>
@@ -76,19 +91,37 @@
 					<div class="layui-card layui-text">
 						<div class="layui-card-header"><h3>常看分类</h3></div>
 						<div class="layui-card-body">
-							卡片式面板面板通常用于非白色背景色的主体内<br> 从而映衬出边框投影
+							<#if categoryList??>
+							    <#if (categoryList?size>0)>
+									<#list categoryList as category>
+							            <a href="">${category.name}</a>
+									</#list>
+								</#if>
+							</#if>
 						</div>
 					</div>
 					<div class="layui-card layui-text">
 						<div class="layui-card-header"><h3>论坛公告</h3></div>
 						<div class="layui-card-body">
-							卡片式面板面板通常用于非白色背景色的主体内<br> 从而映衬出边框投影
+							<#if announcements??>
+							    <#if (announcements?size>0)>
+									<#list announcements as ac>
+										<small>${ac.content} &emsp;${ac.time}</small><br>
+									</#list>
+								</#if>
+							</#if>
 						</div>
 					</div>
 					<div class="layui-card layui-text">
 						<div class="layui-card-header"><h3>热门版主</h3></div>
 						<div class="layui-card-body">
-							卡片式面板面板通常用于非白色背景色的主体内<br> 从而映衬出边框投影
+							<#if customers??>
+							    <#if (customers?size>0)>
+									<#list customers as customer>
+							            <a href="/gotoCusDetail.do?cus_id=${customer.id}">${customer.loginName}</a><br>
+									</#list>
+								</#if>
+							</#if>
 						</div>
 					</div>
 				</div>

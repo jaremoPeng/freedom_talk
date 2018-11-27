@@ -119,7 +119,7 @@
 											<div class="layui-form-item">
 												没有账号?
 												<a href="/getAllQue.do?type=2">去注册</a> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-												<a href="">忘记密码?</a>
+												<a href="/gotoForgetPass.do">忘记密码?</a>
 											</div>
 											<div class="layui-form-item">
 												<button class="layui-btn" lay-submit="" lay-filter="*" type="submit">登录</button>
