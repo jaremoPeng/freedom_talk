@@ -40,7 +40,9 @@
         <ul class="layui-nav layui-bg-green">
             <li class="layui-nav-item">
                 <form class="layui-form" action="/search.do" method="post">
-                    <input name="cus_id" value="${now_customer.id}" type="hidden">
+                     <#if now_customer??>
+                        <input name="cus_id" value="${now_customer.id}" type="hidden">
+                     </#if>
                     <div class="layui-input-inline">
                         <input id="keyword" type="text" name="keyword" lay-verify="required" autocomplete="off"
                                placeholder="搜索" class="layui-input">
